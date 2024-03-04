@@ -8,12 +8,19 @@
     "src"
   ],
   "scripts": {
-    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 || echo '' "
+    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 || echo '' ",
+    "start": "zellij --layout zellij.kdl a template-redprint || zellij --layout zellij.kdl -s template-redprint",
+    "stop": "zellij kill-session template-redprint",
+    "start:wezterm": "wezterm --config-file wezterm.lua",
+    "test": "forge test",
+    "watch_test": "as-soon -w script -w src -w test pnpm test",
+    "local_node": "rm -Rf deployments/localhost && anvil"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "as-soon": "^0.0.8",
     "set-defaults": "^0.0.2"
   }
 }
