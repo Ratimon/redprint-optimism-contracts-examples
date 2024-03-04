@@ -4,6 +4,7 @@
 
 
 ```bash
+nvm use 18.17.0
 forge init optimism-contracts-foundry
 ```
 

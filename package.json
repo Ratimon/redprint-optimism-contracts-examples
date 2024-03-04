@@ -2,9 +2,13 @@
   "name": "optimism-contracts-foundry",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "files": [
+    "deployments",
+    "src"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 || echo '' "
   },
   "keywords": [],
   "author": "",

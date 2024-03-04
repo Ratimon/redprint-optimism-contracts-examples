@@ -10,5 +10,33 @@ out/
 # Docs
 docs/
 
-# Dotenv file
-.env
+# local files
+*.local
+
+# env files
+.env.testnet
+
+# deploy tool packages
+/generated
+/deployments/localhost
+/deployments/31337
+/deployments/void
+
+# forge: we do not use submodule instead we specify dependencies in package.json `prepare` script
+# if you use git and want to make use of the submodule
+# delete that line and execute `just reinstall git`
+
+/lib
+
+# npm
+node_modules/
+
+# vscode
+.vscode/*
+!.vscode/extensions.json
+!*.default
+
+.DS_Store
+
+test/test-case-generator/fuzz
+test/differential-testing/differential-testing
