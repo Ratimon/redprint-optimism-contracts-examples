@@ -1,0 +1,6 @@
+@main/=src/
+@script/=script/
+@test/=test/
+@generated/=generated/
+@forge-std/=lib/forge-std/src/
+@solady/=lib/solady/src/

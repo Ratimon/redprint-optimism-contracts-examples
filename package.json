@@ -8,7 +8,7 @@
     "src"
   ],
   "scripts": {
-    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 || echo '' ",
+    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 Vectorized/solady@v0.0.174 || echo '' ",
     "start": "zellij --layout zellij.kdl a template-redprint || zellij --layout zellij.kdl -s template-redprint",
     "stop": "zellij kill-session template-redprint",
     "start:wezterm": "wezterm --config-file wezterm.lua",
