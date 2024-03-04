@@ -4,3 +4,4 @@
 @generated/=generated/
 @forge-std/=lib/forge-std/src/
 @solady/=lib/solady/src/
+@safe-contracts/=lib/safe-smart-account/contracts/
