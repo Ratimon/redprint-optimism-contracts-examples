@@ -208,5 +208,30 @@ contract Deploy is Deployer {
         console.log("Proxy %s ownership transferred to ProxyAdmin at: %s", _name, proxyAdmin);
     }
 
+    ////////////////////////////////////////////////////////////////
+    //                    SetUp and Run                           //
+    ////////////////////////////////////////////////////////////////
+
+    function setUp() public virtual override {
+        super.setUp();
+
+        // Load the `useFaultProofs` slot value prior to etching the DeployConfig's bytecode and reading the deploy
+        // config file. If this slot has already been set, it will override the preference in the deploy config.
+        bytes32 useFaultProofsOverride = vm.load(address(cfg), USE_FAULT_PROOFS_SLOT);
+
+        string memory path = string.concat(vm.projectRoot(), "script/deploy-config/", deploymentContext, ".json");
+        vm.etch(address(cfg), vm.getDeployedCode("DeployConfig.s.sol:DeployConfig"));
+        vm.label(address(cfg), "DeployConfig");
+        vm.allowCheatcodes(address(cfg));
+        cfg.read(path);
+
+        if (useFaultProofsOverride != 0) {
+            vm.store(address(cfg), USE_FAULT_PROOFS_SLOT, useFaultProofsOverride);
+        }
+
+        console.log("Deploying from %s", deployScript);
+        console.log("Deployment context: %s", deploymentContext);
+    }
+
 
 }
