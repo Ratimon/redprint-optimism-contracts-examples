@@ -3,5 +3,6 @@
 @test/=test/
 @generated/=generated/
 @forge-std/=lib/forge-std/src/
+@openzeppelin/=lib/openzeppelin-contracts/contracts
 @solady/=lib/solady/src/
 @safe-contracts/=lib/safe-smart-account/contracts/
