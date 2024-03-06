@@ -8,7 +8,7 @@
     "src"
   ],
   "scripts": {
-    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 openzeppelin/openzeppelin-contracts@v4.9.4 Vectorized/solady@v0.0.174 safe-global/safe-smart-account@v1.4.1 || echo '' ",
+    "prepare": "set-defaults .vscode && forge install --no-git foundry-rs/forge-std@v1.7.6 safe-global/safe-smart-account@v1.4.1 || echo '' ",
     "start": "zellij --layout zellij.kdl a template-redprint || zellij --layout zellij.kdl -s template-redprint",
     "stop": "zellij kill-session template-redprint",
     "start:wezterm": "wezterm --config-file wezterm.lua",
@@ -20,7 +20,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@openzeppelin/contracts": "4.9.4",
+    "@openzeppelin/contracts-upgradeable": "4.9.4",
     "as-soon": "^0.0.8",
-    "set-defaults": "^0.0.2"
+    "clones-with-immutable-args": "1.0.0",
+    "set-defaults": "^0.0.2",
+    "solady": "0.0.174"
   }
 }

@@ -5,14 +5,36 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@openzeppelin/contracts':
+    specifier: 4.9.4
+    version: 4.9.4
+  '@openzeppelin/contracts-upgradeable':
+    specifier: 4.9.4
+    version: 4.9.4
   as-soon:
     specifier: ^0.0.8
     version: 0.0.8
+  clones-with-immutable-args:
+    specifier: 1.0.0
+    version: 1.0.0
   set-defaults:
     specifier: ^0.0.2
     version: 0.0.2
+  solady:
+    specifier: 0.0.174
+    version: 0.0.174
 
 packages:
+
+  /@openzeppelin/contracts-upgradeable@4.9.4:
+    resolution: {integrity: sha512-sVlteLCQ1RMgz7xbuhz/PRtBGT3oAPqmk1a/QWx+aeBibp+hFFeYodZJNXR7fs/4jbRQsXzPh1kuQ6RwMCCEMQ==}
+    deprecated: Duplicated line in Multicall.sol
+    dev: true
+
+  /@openzeppelin/contracts@4.9.4:
+    resolution: {integrity: sha512-cZ47skkw2iUz7ApIkgin5bNff7GkCJCZev48HKp81+sRBE0So9yi+Nm5O9G2BMysbjSdA9o9dKDUx0J9Yy1LUQ==}
+    deprecated: Duplicated line in Multicall.sol
+    dev: true
 
   /@parcel/watcher-android-arm64@2.4.1:
     resolution: {integrity: sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==}
@@ -162,6 +184,10 @@ packages:
       fill-range: 7.0.1
     dev: true
 
+  /clones-with-immutable-args@1.0.0:
+    resolution: {integrity: sha512-DYv2cgcmNuNaxa00Q/HSWAnsIc8H0mMjZHyGHxHUuyj3JoApOS2dcEb9SQ53qCy3SvDAhKZdaHSNHxbLvlIawg==}
+    dev: true
+
   /commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
@@ -246,6 +272,10 @@ packages:
     hasBin: true
     dependencies:
       commander: 10.0.1
+    dev: true
+
+  /solady@0.0.174:
+    resolution: {integrity: sha512-N2k+PZHLQUxwWS5nX6qlZ1vcjf3Wd53r7rzcxnbRV7zSrPaw3j2AjP61eU1qPtQITlUD0VyU7J7DW/heFZAoAg==}
     dev: true
 
   /to-regex-range@5.0.1:
