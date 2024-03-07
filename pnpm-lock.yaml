@@ -17,6 +17,9 @@ devDependencies:
   clones-with-immutable-args:
     specifier: 1.0.0
     version: 1.0.0
+  ldenv:
+    specifier: ^0.3.9
+    version: 0.3.9
   set-defaults:
     specifier: ^0.0.2
     version: 0.0.2

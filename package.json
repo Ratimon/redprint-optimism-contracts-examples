@@ -14,7 +14,9 @@
     "start:wezterm": "wezterm --config-file wezterm.lua",
     "test": "forge test",
     "watch_test": "as-soon -w script -w src -w test pnpm test",
-    "local_node": "rm -Rf deployments/localhost && anvil"
+    "local_node": "rm -Rf deployments/localhost && anvil",
+    "----------------------LOCAL DEPLOYMENT ----------------------": "",
+    "generate_config": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost script/getting-started/config.sh"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,7 @@
     "@openzeppelin/contracts-upgradeable": "4.9.4",
     "as-soon": "^0.0.8",
     "clones-with-immutable-args": "1.0.0",
+    "ldenv": "^0.3.9",
     "set-defaults": "^0.0.2",
     "solady": "0.0.174"
   }
