@@ -11,7 +11,7 @@ import { Safe } from "@safe-contracts/Safe.sol";
 import { SafeProxyFactory } from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import { Enum as SafeOps } from "@safe-contracts/common/Enum.sol";
 
-import { Deployer } from "@script/Deployer.sol";
+import { Deployer2 } from "@script/Deployer2.sol";
 import "@script/DeployConfig.s.sol";
 
 import { Config } from "@script/Config.sol";
@@ -42,7 +42,7 @@ import { IBigStepper } from "@main/dispute/interfaces/IBigStepper.sol";
 ///         The `CONTRACT_ADDRESSES_PATH` environment variable can be set to a path that contains a JSON file full of
 ///         contract name to address pairs. That enables this script to be much more flexible in the way it is used.
 ///         This contract must not have constructor logic because it is set into state using `etch`.
-contract Deploy is Deployer {
+contract Deploy is Deployer2 {
 
     DeployConfig public constant cfg =
     DeployConfig(address(uint160(uint256(keccak256(abi.encode("optimism.deployconfig"))))));
@@ -110,7 +110,7 @@ contract Deploy is Deployer {
     //                        Accessors                           //
     ////////////////////////////////////////////////////////////////
 
-    /// @inheritdoc Deployer
+    /// @inheritdoc Deployer2
     function name() public pure override returns (string memory name_) {
         name_ = "Deploy";
     }

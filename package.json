@@ -13,6 +13,7 @@
     "stop": "zellij kill-session template-redprint",
     "start:wezterm": "wezterm --config-file wezterm.lua",
     "test": "forge test",
+    "show_address": "forge script ShowPrecomputedAddress",
     "watch_test": "as-soon -w script -w src -w test pnpm test",
     "local_node": "rm -Rf deployments/localhost && anvil",
     "----------------------LOCAL DEPLOYMENT ----------------------": "",
