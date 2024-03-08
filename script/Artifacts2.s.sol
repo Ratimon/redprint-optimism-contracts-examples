@@ -9,18 +9,6 @@ import { Predeploys } from "@main/libraries/Predeploys.sol";
 import { Chains } from "@script/Chains.sol";
 import { Config } from "@script/Config.sol";
 
-// /// @notice store the new deployment to be saved
-// struct DeployerDeployment {
-//     string name;
-//     address payable addr;
-//     bytes bytecode;
-//     bytes args;
-//     string artifact;
-//     string deploymentContext;
-//     string chainIdAsString;
-// }
-
-
 /// @notice Represents a deployment. Is serialized to JSON as a key/value
 ///         pair. Can be accessed from within scripts.
 struct Deployment {
@@ -28,14 +16,9 @@ struct Deployment {
     address payable addr;
 }
 
-struct Prank {
-    bool active;
-    address addr;
-}
-
 /// @title Artifacts
 /// @notice Useful for accessing deployment artifacts from within scripts.
-abstract contract Artifacts {
+abstract contract Artifacts2 {
     /// @notice Foundry cheatcode VM.
     Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
     /// @notice Error for when attempting to fetch a deployment and it does not exist
@@ -55,32 +38,10 @@ abstract contract Artifacts {
     /// @notice The namespace for the deployment. Can be set with the env var DEPLOYMENT_CONTEXT.
     string internal deploymentContext;
 
-    string internal chainIdAsString;
-
-    bool internal _autoBroadcast = true;
-
-    Prank internal _prank;
-
-        /// @notice init a deployer with the current context
-    /// the context is by default the current chainId
-    /// but if the DEPLOYMENT_CONTEXT env variable is set, the context take that value
-    /// The context allow you to organise deployments in a set as well as make specific configurations
-    function init() external {
-        _autoBroadcast = true; // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
-        if (bytes(chainIdAsString).length > 0) {
-            return;
-        }
-        // TODO? allow to pass context in constructor
-        uint256 currentChainID;
-        assembly {
-            currentChainID := chainid()
-        }
-        chainIdAsString = vm.toString(currentChainID);
-
-        // we read the deployment folder for a .chainId file
-        // if the chainId here do not match the current one
-        // we are using the same context name on different chain, this is an error
+    /// @notice Setup function. The arguments here
+    function setUp() public virtual {
         string memory root = vm.projectRoot();
+
         // The `deploymentContext` should match the name of the deploy-config file.
         deploymentContext = _getDeploymentContext();
         deploymentsDir = string.concat(root, "/deployments/", deploymentContext);
@@ -108,57 +69,7 @@ abstract contract Artifacts {
             console.log("Loading addresses from %s", addresses);
             _loadAddresses(addresses);
         }
-
-        // // TODO? configure deployments folder via deploy.toml / deploy.json
-        // string memory path = string.concat(root, "/deployments/", deploymentContext, "/.chainId");
-
-        // try vm.readFile(path) returns (string memory chainId) {
-
-        //     if (keccak256(bytes(chainId)) != keccak256(bytes(chainIdAsString))) {
-        //         revert(
-        //             string.concat(
-        //                 "Current chainID: ",
-        //                 chainIdAsString,
-        //                 " But Context '",
-        //                 deploymentContext,
-        //                 "' Already Exists With a Different Chain ID (",
-        //                 chainId,
-        //                 ")"
-        //             )
-        //         );
-        //     }
-
-        // } catch {}
     }
-
-    // --------------------------------------------------------------------------------------------
-    // Public Interface
-    // --------------------------------------------------------------------------------------------
-
-    function autoBroadcasting() external view returns (bool) {
-        return _autoBroadcast;
-    }
-
-    function setAutoBroadcast(bool broadcast) external {
-        _autoBroadcast = broadcast;
-    }
-
-    function activatePrank(address addr) external {
-        _prank.active = true;
-        _prank.addr = addr;
-    }
-
-    function deactivatePrank() external {
-        _prank.active = false;
-        _prank.addr = address(0);
-    }
-
-    function prankStatus() external view returns (bool active, address addr) {
-        active = _prank.active;
-        addr = _prank.addr;
-    }
-
-
 
     /// @notice Populates the addresses to be used in a script based on a JSON file.
     ///         The format of the JSON file is the same that it output by this script
@@ -185,7 +96,7 @@ abstract contract Artifacts {
 
     /// @notice Returns whether or not a particular deployment exists.
     /// @param _name The name of the deployment.
-    /// @return exists  Whether the deployment exists or not.
+    /// @return Whether the deployment exists or not.
     function has(string memory _name) public view returns (bool) {
         Deployment memory existing = _namedDeployments[_name];
         if (existing.addr != address(0)) {
@@ -267,46 +178,22 @@ abstract contract Artifacts {
         return payable(addr);
     }
 
-    /// @notice allow to override an existing deployment by ignoring the current one.
-    /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
-    /// @param name deployment's name to override
-    function ignoreDeployment(string memory name) public {
-        _namedDeployments[name].name = "";
-        _namedDeployments[name].addr = payable(address(1)); // TO ensure it is picked up as being ignored
-    }
-
     /// @notice Returns a deployment that is suitable to be used to interact with contracts.
     /// @param _name The name of the deployment.
-    /// @return deployment The deployment.
+    /// @return The deployment.
     function get(string memory _name) public view returns (Deployment memory) {
         Deployment memory deployment = _namedDeployments[_name];
-        // DeployerDeployment memory newDeployment = _namedDeployments[_name];
         if (deployment.addr != address(0)) {
             return deployment;
-            // if (bytes(newDeployment.name).length > 0) {
-            //     deployment.addr = newDeployment.addr;
-            //     deployment.bytecode = newDeployment.bytecode;
-            //     deployment.args = newDeployment.args;
-            // }
         } else {
             return _getExistingDeployment(_name);
         }
     }
 
     /// @notice Appends a deployment to disk as a JSON deploy artifact.
-    /// this is a low level call and is used by ./DefaultDeployerFunction.sol
-    /// @param _name deployment's name
-    /// @param _deployed address of the deployed contract
-    // / @param artifact forge's artifact path <solidity file>.sol:<contract name>
-    // / @param args arguments' bytes provided to the constructor
-    // / @param bytecode the contract's bytecode used to deploy the contract
-    function save(
-        string memory _name,
-        address _deployed
-        // string memory artifact,
-        // bytes memory args,
-        // bytes memory bytecode
-    ) public {
+    /// @param _name The name of the deployment.
+    /// @param _deployed The address of the deployment.
+    function save(string memory _name, address _deployed) public {
         if (bytes(_name).length == 0) {
             revert InvalidDeployment("EmptyName");
         }
@@ -316,60 +203,31 @@ abstract contract Artifacts {
 
         console.log("Saving %s: %s", _name, _deployed);
         Deployment memory deployment = Deployment({ name: _name, addr: payable(_deployed) });
-        // Deployment memory deployment = DeployerDeployment({
-        //     name: _name,
-        //     addr: payable(address(_deployed)),
-        //     bytecode: bytecode,
-        //     args: args,
-        //     artifact: artifact,
-        //     deploymentContext: deploymentContext,
-        //     chainIdAsString: chainIdAsString
-        // });
         _namedDeployments[_name] = deployment;
         _newDeployments.push(deployment);
         _appendDeployment(_name, _deployed);
     }
 
-    // /// @notice save the deployment info under the name provided
-    // /// this is a low level call and is used by ./DefaultDeployerFunction.sol
-    // /// @param name deployment's name
-    // /// @param deployed address of the deployed contract
-    // /// @param artifact forge's artifact path <solidity file>.sol:<contract name>
-    // /// @param args arguments' bytes provided to the constructor
-    // function save(string memory name, address deployed, string memory artifact, bytes memory args) public {
-    //     return save(name, deployed, artifact, args, vm.getCode(artifact));
-    // }
+    /// @notice Reads the deployment artifact from disk that were generated
+    ///         by the deploy script.
+    /// @return An array of deployments.
+    function _getDeployments() internal returns (Deployment[] memory) {
+        string memory json = vm.readFile(deployArtifactPath);
+        string[] memory cmd = new string[](3);
+        cmd[0] = Executables.bash;
+        cmd[1] = "-c";
+        cmd[2] = string.concat(Executables.jq, " 'keys' <<< '", json, "'");
+        bytes memory res = vm.ffi(cmd);
+        string[] memory names = stdJson.readStringArray(string(res), "");
 
-    // /// @notice save the deployment info under the name provided
-    // /// this is a low level call and is used by ./DefaultDeployerFunction.sol
-    // /// @param name deployment's name
-    // /// @param deployed address of the deployed contract
-    // /// @param artifact forge's artifact path <solidity file>.sol:<contract name>
-    // function save(string memory name, address deployed, string memory artifact) public {
-    //     return save(name, deployed, artifact, "", vm.getCode(artifact));
-    // }
-
-    // /// @notice Reads the deployment artifact from disk that were generated
-    // ///         by the deploy script.
-    // /// @return An array of deployments.
-    // function _getDeployments() internal returns (Deployment[] memory) {
-    //     string memory json = vm.readFile(deployArtifactPath);
-    //     string[] memory cmd = new string[](3);
-    //     cmd[0] = Executables.bash;
-    //     cmd[1] = "-c";
-    //     cmd[2] = string.concat(Executables.jq, " 'keys' <<< '", json, "'");
-    //     bytes memory res = vm.ffi(cmd);
-    //     string[] memory names = stdJson.readStringArray(string(res), "");
-
-    //     Deployment[] memory deployments = new Deployment[](names.length);
-    //     for (uint256 i; i < names.length; i++) {
-    //         string memory contractName = names[i];
-    //         address addr = stdJson.readAddress(json, string.concat("$.", contractName));
-    //         deployments[i] = Deployment({ name: contractName, addr: payable(addr) });
-    //     }
-    //     return deployments;
-    // }
-
+        Deployment[] memory deployments = new Deployment[](names.length);
+        for (uint256 i; i < names.length; i++) {
+            string memory contractName = names[i];
+            address addr = stdJson.readAddress(json, string.concat("$.", contractName));
+            deployments[i] = Deployment({ name: contractName, addr: payable(addr) });
+        }
+        return deployments;
+    }
 
     /// @notice Adds a deployment to the temp deployments file
     function _appendDeployment(string memory _name, address _deployed) internal {
@@ -438,29 +296,4 @@ abstract contract Artifacts {
             return vm.toString(chainid);
         }
     }
-
-
-        // function _getDeploymentContext() private returns (string memory context) {
-    //     // no deploymentContext provided we fallback on chainID
-    //     uint256 currentChainID;
-    //     assembly {
-    //         currentChainID := chainid()
-    //     }
-    //     context = vm.envOr("DEPLOYMENT_CONTEXT", string(""));
-    //     if (bytes(context).length == 0) {
-    //         // on local dev network we fallback on the special void context
-    //         // this allow `forge test` without any env setup to work as normal, without trying to read deployments
-    //         if (currentChainID == 1337 || currentChainID == 31337) {
-    //             context = "void";
-    //         } else {
-    //             context = vm.toString(currentChainID);
-    //         }
-    //     }
-    // }
-
-
-
-
-
-
 }
