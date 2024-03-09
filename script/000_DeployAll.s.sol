@@ -12,11 +12,10 @@ import { SafeProxyFactory } from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import { Enum as SafeOps } from "@safe-contracts/common/Enum.sol";
 
 import { Deployer2 } from "@script/Deployer2.sol";
-import "@script/DeployConfig.s.sol";
+import "@script/deployer/DeployConfig.s.sol";
 
-import { Config } from "@script/Config.sol";
-
-import { Types } from "@script/Types.sol";
+import { Config } from "@script/deployer/Config.sol";
+import { Types } from "@script/deployer/Types.sol";
 import { LibStateDiff } from "@script/libraries/LibStateDiff.sol";
 
 import { ProxyAdmin } from "@main/universal/ProxyAdmin.sol";

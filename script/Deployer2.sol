@@ -4,12 +4,12 @@ pragma solidity ^0.8.0;
 import { Script } from "@forge-std/Script.sol";
 import { stdJson } from "@forge-std/StdJson.sol";
 import { console2 as console } from "@forge-std/console2.sol";
-import { Executables } from "@script/Executables.sol";
 import { EIP1967Helper } from "test/mocks/EIP1967Helper.sol";
 import { IAddressManager } from "@script/interfaces/IAddressManager.sol";
 import { LibString } from "@solady/utils/LibString.sol";
 import { Artifacts2, Deployment } from "@script/Artifacts2.s.sol";
-import { Config } from "@script/Config.sol";
+import { Config } from "@script/deployer/Config.sol";
+import { Executables } from "@script/deployer/Executables.sol";
 
 /// @notice Contains information about a storage slot. Mirrors the layout of the storage
 ///         slot object in Forge artifacts so that we can deserialize JSON into this struct.
