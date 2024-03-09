@@ -54,7 +54,7 @@ abstract contract Artifacts {
     /// the context is by default the current chainId
     /// but if the DEPLOYMENT_CONTEXT env variable is set, the context take that value
     /// The context allow you to organise deployments in a set as well as make specific configurations
-    function init() external {
+    function init() public virtual {
         _autoBroadcast = true; // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
         if (bytes(chainIdAsString).length > 0) {
             return;
@@ -104,56 +104,46 @@ abstract contract Artifacts {
     // Public Interface
     // --------------------------------------------------------------------------------------------
 
-    function autoBroadcasting() external view returns (bool) {
+    function autoBroadcasting() public virtual view returns (bool) {
         return _autoBroadcast;
     }
 
-    function setAutoBroadcast(bool broadcast) external {
+    function setAutoBroadcast(bool broadcast) public virtual {
         _autoBroadcast = broadcast;
     }
 
-    function activatePrank(address addr) external {
+    function activatePrank(address addr) public virtual {
         _prank.active = true;
         _prank.addr = addr;
     }
 
-    function deactivatePrank() external {
+    function deactivatePrank() public virtual {
         _prank.active = false;
         _prank.addr = address(0);
     }
 
-    function prankStatus() external view returns (bool active, address addr) {
+    function prankStatus() public virtual view returns (bool active, address addr) {
         active = _prank.active;
         addr = _prank.addr;
     }
 
-    /// @notice Populates the addresses to be used in a script based on a JSON file.
-    ///         The format of the JSON file is the same that it output by this script
-    ///         as well as the JSON files that contain addresses in the `superchain-registry`
-    ///         repo. The JSON key is the name of the contract and the value is an address.
-    function _loadAddresses(string memory _path) internal {
-        string[] memory commands = new string[](3);
-        commands[0] = "bash";
-        commands[1] = "-c";
-        commands[2] = string.concat("jq -cr < ", _path);
-        string memory json = string(vm.ffi(commands));
-        string[] memory keys = vm.parseJsonKeys(json, "");
-        for (uint256 i; i < keys.length; i++) {
-            string memory key = keys[i];
-            address addr = stdJson.readAddress(json, string.concat("$.", key));
-            save(key, addr);
-        }
+    /// @notice Returns all of the deployments done in the current context.
+    function newDeployments() public virtual view returns (Deployment[] memory) {
+        return _newDeployments;
     }
 
-    /// @notice Returns all of the deployments done in the current context.
-    function newDeployments() external view returns (Deployment[] memory) {
-        return _newDeployments;
+    /// @notice allow to override an existing deployment by ignoring the current one.
+    /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
+    /// @param _name deployment's name to override
+    function ignoreDeployment(string memory _name) public virtual {
+        _namedDeployments[_name].name = "";
+        _namedDeployments[_name].addr = payable(address(1)); // TO ensure it is picked up as being ignored
     }
 
     /// @notice Returns whether or not a particular deployment exists.
     /// @param _name The name of the deployment.
     /// @return exists  Whether the deployment exists or not.
-    function has(string memory _name) public view returns (bool) {
+    function has(string memory _name) public virtual view returns (bool) {
         Deployment memory existing = _namedDeployments[_name];
         if (existing.addr != address(0)) {
             return bytes(existing.name).length > 0;
@@ -165,7 +155,7 @@ abstract contract Artifacts {
     /// @param _name The name of the deployment.
     /// @return The address of the deployment. May be `address(0)` if the deployment does not
     ///         exist.
-    function getAddress(string memory _name) public view returns (address payable) {
+    function getAddress(string memory _name) public virtual view returns (address payable) {
         Deployment memory existing = _namedDeployments[_name];
         if (existing.addr != address(0)) {
             if (bytes(existing.name).length == 0) {
@@ -226,7 +216,7 @@ abstract contract Artifacts {
     /// @notice Returns the address of a deployment and reverts if the deployment
     ///         does not exist.
     /// @return The address of the deployment.
-    function mustGetAddress(string memory _name) public view returns (address payable) {
+    function mustGetAddress(string memory _name) public virtual view returns (address payable) {
         address addr = getAddress(_name);
         if (addr == address(0)) {
             revert DeploymentDoesNotExist(_name);
@@ -234,18 +224,11 @@ abstract contract Artifacts {
         return payable(addr);
     }
 
-    /// @notice allow to override an existing deployment by ignoring the current one.
-    /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
-    /// @param name deployment's name to override
-    function ignoreDeployment(string memory name) public {
-        _namedDeployments[name].name = "";
-        _namedDeployments[name].addr = payable(address(1)); // TO ensure it is picked up as being ignored
-    }
 
     /// @notice Returns a deployment that is suitable to be used to interact with contracts.
     /// @param _name The name of the deployment.
     /// @return deployment The deployment.
-    function get(string memory _name) public view returns (Deployment memory) {
+    function get(string memory _name) public virtual view returns (Deployment memory) {
         Deployment memory deployment = _namedDeployments[_name];
         if (deployment.addr != address(0)) {
             return deployment;
@@ -264,7 +247,7 @@ abstract contract Artifacts {
     function save(
         string memory _name,
         address _deployed
-    ) public {
+    ) public virtual {
         if (bytes(_name).length == 0) {
             revert InvalidDeployment("EmptyName");
         }
@@ -283,6 +266,25 @@ abstract contract Artifacts {
     function _appendDeployment(string memory _name, address _deployed) internal {
         vm.writeJson({ json: stdJson.serialize("", _name, _deployed), path: deployArtifactPath });
     }
+
+    /// @notice Populates the addresses to be used in a script based on a JSON file.
+    ///         The format of the JSON file is the same that it output by this script
+    ///         as well as the JSON files that contain addresses in the `superchain-registry`
+    ///         repo. The JSON key is the name of the contract and the value is an address.
+    function _loadAddresses(string memory _path) internal {
+        string[] memory commands = new string[](3);
+        commands[0] = "bash";
+        commands[1] = "-c";
+        commands[2] = string.concat("jq -cr < ", _path);
+        string memory json = string(vm.ffi(commands));
+        string[] memory keys = vm.parseJsonKeys(json, "");
+        for (uint256 i; i < keys.length; i++) {
+            string memory key = keys[i];
+            address addr = stdJson.readAddress(json, string.concat("$.", key));
+            save(key, addr);
+        }
+    }
+
 
     /// @notice Reads the artifact from the filesystem by name and returns the address.
     /// @param _name The name of the artifact to read.
