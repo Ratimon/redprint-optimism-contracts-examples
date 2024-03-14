@@ -8,9 +8,11 @@ solc_version = '0.8.15'
 ffi = true
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
+    { access = "read", path = "./out" },
     { access = 'read', path = './deploy-config/' },
+    { access = 'read', path = './script/deploy/' },
+    { access = "read", path = "./" },
 ]
-
 
 [fmt]
 ignore = ['generated/**/*.sol', "lib/**/*.sol"]

@@ -10,11 +10,22 @@ import { Config } from "@script/deployer/Config.sol";
 import { Executables } from "@script/deployer/Executables.sol";
 
 
-/// @notice Represents a deployment. Is serialized to JSON as a key/value
-///         pair. Can be accessed from within scripts.
-struct Deployment {
+/// @notice store the new deployment to be saved
+struct DeployerDeployment {
     string name;
     address payable addr;
+    bytes bytecode;
+    bytes args;
+    string artifact;
+    string deploymentContext;
+    string chainIdAsString;
+}
+
+/// @notice represent a deployment
+struct Deployment {
+    address payable addr;
+    bytes bytecode;
+    bytes args;
 }
 
 struct Prank {
@@ -34,9 +45,9 @@ abstract contract Artifacts {
     error InvalidDeployment(string);
     /// @notice The set of deployments that have been done during execution.
 
-    mapping(string => Deployment) internal _namedDeployments;
+    mapping(string => DeployerDeployment) internal _namedDeployments;
     /// @notice The same as `_namedDeployments` but as an array.
-    Deployment[] internal _newDeployments;
+    DeployerDeployment[] internal _newDeployments;
     /// @notice Path to the directory containing the hh deploy style artifacts
     string internal deploymentsDir;
     /// @notice The path to the deployment artifact that is being written to.
@@ -90,13 +101,14 @@ abstract contract Artifacts {
         uint256 chainId = Config.chainID();
         console.log("Connected to network with chainid %s", chainId);
 
-        // Load addresses from a JSON file if the CONTRACT_ADDRESSES_PATH environment variable
-        // is set. Great for loading addresses from `superchain-registry`.
-        string memory addresses = Config.contractAddressesPath();
-        if (bytes(addresses).length > 0) {
-            console.log("Loading addresses from %s", addresses);
-            _loadAddresses(addresses);
-        }
+        // //todo check
+        // // Load addresses from a JSON file if the CONTRACT_ADDRESSES_PATH environment variable
+        // // is set. Great for loading addresses from `superchain-registry`.
+        // string memory addresses = Config.contractAddressesPath();
+        // if (bytes(addresses).length > 0) {
+        //     console.log("Loading addresses from %s", addresses);
+        //     _loadAddresses(addresses);
+        // }
 
     }
 
@@ -128,7 +140,7 @@ abstract contract Artifacts {
     }
 
     /// @notice Returns all of the deployments done in the current context.
-    function newDeployments() public virtual view returns (Deployment[] memory) {
+    function newDeployments() public virtual view returns (DeployerDeployment[] memory) {
         return _newDeployments;
     }
 
@@ -144,7 +156,7 @@ abstract contract Artifacts {
     /// @param _name The name of the deployment.
     /// @return exists  Whether the deployment exists or not.
     function has(string memory _name) public virtual view returns (bool) {
-        Deployment memory existing = _namedDeployments[_name];
+        DeployerDeployment memory existing = _namedDeployments[_name];
         if (existing.addr != address(0)) {
             return bytes(existing.name).length > 0;
         }
@@ -156,7 +168,7 @@ abstract contract Artifacts {
     /// @return The address of the deployment. May be `address(0)` if the deployment does not
     ///         exist.
     function getAddress(string memory _name) public virtual view returns (address payable) {
-        Deployment memory existing = _namedDeployments[_name];
+        DeployerDeployment memory existing = _namedDeployments[_name];
         if (existing.addr != address(0)) {
             if (bytes(existing.name).length == 0) {
                 return payable(address(0));
@@ -228,38 +240,64 @@ abstract contract Artifacts {
     /// @notice Returns a deployment that is suitable to be used to interact with contracts.
     /// @param _name The name of the deployment.
     /// @return deployment The deployment.
-    function get(string memory _name) public virtual view returns (Deployment memory) {
-        Deployment memory deployment = _namedDeployments[_name];
-        if (deployment.addr != address(0)) {
-            return deployment;
+    function get(string memory _name) public virtual view returns (Deployment memory deployment) {
+        DeployerDeployment memory newDeployment = _namedDeployments[_name];
+        if (newDeployment.addr != address(0)) {
+            if (bytes(newDeployment.name).length > 0) {
+                deployment.addr = newDeployment.addr;
+                deployment.bytecode = newDeployment.bytecode;
+                deployment.args = newDeployment.args;
+            }
         } else {
             return _getExistingDeployment(_name);
         }
     }
 
-    /// @notice Appends a deployment to disk as a JSON deploy artifact.
+    /// @notice save the deployment info under the name provided
     /// this is a low level call and is used by ./DefaultDeployerFunction.sol
     /// @param _name deployment's name
     /// @param _deployed address of the deployed contract
-    // / @param artifact forge's artifact path <solidity file>.sol:<contract name>
-    // / @param args arguments' bytes provided to the constructor
-    // / @param bytecode the contract's bytecode used to deploy the contract
+    /// @param _artifact forge's artifact path <solidity file>.sol:<contract name>
+    /// @param _args arguments' bytes provided to the constructor
+    /// @param _bytecode the contract's bytecode used to deploy the contract
     function save(
         string memory _name,
-        address _deployed
+        address _deployed,
+        string memory _artifact,
+        bytes memory _args,
+        bytes memory _bytecode
     ) public virtual {
-        if (bytes(_name).length == 0) {
-            revert InvalidDeployment("EmptyName");
-        }
-        if (bytes(_namedDeployments[_name].name).length > 0) {
-            revert InvalidDeployment("AlreadyExists");
-        }
-
-        console.log("Saving %s: %s", _name, _deployed);
-        Deployment memory deployment = Deployment({ name: _name, addr: payable(_deployed) });
+        require(bytes(_name).length > 0, "EMPTY_NAME_NOT_ALLOWED");
+        DeployerDeployment memory deployment = DeployerDeployment({
+            name: _name,
+            addr: payable(address(_deployed)),
+            bytecode: _bytecode,
+            args: _args,
+            artifact: _artifact,
+            deploymentContext: deploymentContext,
+            chainIdAsString: chainIdAsString
+        });
         _namedDeployments[_name] = deployment;
         _newDeployments.push(deployment);
-        _appendDeployment(_name, _deployed);
+    }
+
+    /// @notice save the deployment info under the name provided
+    /// this is a low level call and is used by ./DefaultDeployerFunction.sol
+    /// @param name deployment's name
+    /// @param deployed address of the deployed contract
+    /// @param artifact forge's artifact path <solidity file>.sol:<contract name>
+    /// @param args arguments' bytes provided to the constructor
+    function save(string memory name, address deployed, string memory artifact, bytes memory args) public virtual {
+        return save(name, deployed, artifact, args, vm.getCode(artifact));
+    }
+
+    /// @notice save the deployment info under the name provided
+    /// this is a low level call and is used by ./DefaultDeployerFunction.sol
+    /// @param name deployment's name
+    /// @param deployed address of the deployed contract
+    /// @param artifact forge's artifact path <solidity file>.sol:<contract name>
+    function save(string memory name, address deployed, string memory artifact) public virtual {
+        return save(name, deployed, artifact, "", vm.getCode(artifact));
     }
 
     /// @notice Adds a deployment to the temp deployments file
@@ -267,23 +305,25 @@ abstract contract Artifacts {
         vm.writeJson({ json: stdJson.serialize("", _name, _deployed), path: deployArtifactPath });
     }
 
-    /// @notice Populates the addresses to be used in a script based on a JSON file.
-    ///         The format of the JSON file is the same that it output by this script
-    ///         as well as the JSON files that contain addresses in the `superchain-registry`
-    ///         repo. The JSON key is the name of the contract and the value is an address.
-    function _loadAddresses(string memory _path) internal {
-        string[] memory commands = new string[](3);
-        commands[0] = "bash";
-        commands[1] = "-c";
-        commands[2] = string.concat("jq -cr < ", _path);
-        string memory json = string(vm.ffi(commands));
-        string[] memory keys = vm.parseJsonKeys(json, "");
-        for (uint256 i; i < keys.length; i++) {
-            string memory key = keys[i];
-            address addr = stdJson.readAddress(json, string.concat("$.", key));
-            save(key, addr);
-        }
-    }
+    // /// @notice Populates the addresses to be used in a script based on a JSON file.
+    // ///         The format of the JSON file is the same that it output by this script
+    // ///         as well as the JSON files that contain addresses in the `superchain-registry`
+    // ///         repo. The JSON key is the name of the contract and the value is an address.
+    // function _loadAddresses(string memory _path) internal {
+    //     string[] memory commands = new string[](3);
+    //     commands[0] = "bash";
+    //     commands[1] = "-c";
+    //     commands[2] = string.concat("jq -cr < ", _path);
+    //     string memory json = string(vm.ffi(commands));
+    //     string[] memory keys = vm.parseJsonKeys(json, "");
+    //     for (uint256 i; i < keys.length; i++) {
+    //         string memory key = keys[i];
+    //         address addr = stdJson.readAddress(json, string.concat("$.", key));
+    //         // todo check
+    //         // save(key, addr);
+
+    //     }
+    // }
 
 
     /// @notice Reads the artifact from the filesystem by name and returns the address.
@@ -293,30 +333,43 @@ abstract contract Artifacts {
         return _getExistingDeployment(_name).addr;
     }
 
-    /// @notice Reads the artifact from the filesystem by name and returns the Deployment.
-    /// @param _name The name of the artifact to read.
-    /// @return The deployment corresponding to the name.
-    function _getExistingDeployment(string memory _name) internal view returns (Deployment memory) {
-        string memory path = string.concat(deploymentsDir, "/", _name, ".json");
+    // /// @notice Reads the artifact from the filesystem by name and returns the Deployment.
+    // /// @param _name The name of the artifact to read.
+    // /// @return The deployment corresponding to the name.
+    // function _getExistingDeployment(string memory _name) internal view returns (Deployment memory) {
+    //     string memory path = string.concat(deploymentsDir, "/", _name, ".json");
+    //     try vm.readFile(path) returns (string memory json) {
+    //         address addr = stdJson.readAddress(json, "$.address");
+    //         return Deployment({ addr: payable(addr), name: _name });
+    //     } catch {
+    //         return Deployment({ addr: payable(address(0)), name: "" });
+    //     }
+    // }
+
+    function _getExistingDeployment(string memory name) internal view returns (Deployment memory deployment) {
+        string memory root = vm.projectRoot();
+        string memory path = string.concat(root, "/deployments/", deploymentContext, "/", name, ".json");
         try vm.readFile(path) returns (string memory json) {
-            address addr = stdJson.readAddress(json, "$.address");
-            return Deployment({ addr: payable(addr), name: _name });
-        } catch {
-            return Deployment({ addr: payable(address(0)), name: "" });
-        }
+            bytes memory addrBytes = stdJson.parseRaw(json, ".address");
+            bytes memory bytecodeBytes = stdJson.parseRaw(json, ".bytecode");
+            bytes memory argsBytes = stdJson.parseRaw(json, ".args_data");
+            deployment.addr = abi.decode(addrBytes, (address));
+            deployment.bytecode = abi.decode(bytecodeBytes, (bytes));
+            deployment.args = abi.decode(argsBytes, (bytes));
+        } catch {}
     }
 
-    /// @notice Stubs a deployment retrieved through `get`.
-    /// @param _name The name of the deployment.
-    /// @param _addr The mock address of the deployment.
-    function prankDeployment(string memory _name, address _addr) public {
-        if (bytes(_name).length == 0) {
-            revert InvalidDeployment("EmptyName");
-        }
+    // /// @notice Stubs a deployment retrieved through `get`.
+    // /// @param _name The name of the deployment.
+    // /// @param _addr The mock address of the deployment.
+    // function prankDeployment(string memory _name, address _addr) public {
+    //     if (bytes(_name).length == 0) {
+    //         revert InvalidDeployment("EmptyName");
+    //     }
 
-        Deployment memory deployment = Deployment({ name: _name, addr: payable(_addr) });
-        _namedDeployments[_name] = deployment;
-    }
+    //     Deployment memory deployment = Deployment({ name: _name, addr: payable(_addr) });
+    //     _namedDeployments[_name] = deployment;
+    // }
 
     /// @notice The context of the deployment is used to namespace the artifacts.
     ///         An unknown context will use the chainid as the context name.

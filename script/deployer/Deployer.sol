@@ -9,7 +9,7 @@ import { EIP1967Helper } from "test/mocks/EIP1967Helper.sol";
 import { IAddressManager } from "@script/interfaces/IAddressManager.sol";
 import { LibString } from "@solady/utils/LibString.sol";
 import { Executables } from "@script/deployer/Executables.sol";
-import { Artifacts, Deployment } from "@script/deployer/Artifacts.s.sol";
+import { Artifacts, Deployment, DeployerDeployment } from "@script/deployer/Artifacts.s.sol";
 import { Config } from "@script/deployer/Config.sol";
 
 import {Vm} from "@forge-std/Vm.sol";
@@ -59,7 +59,7 @@ interface IDeployer {
     function prankStatus() external view returns (bool active, address addr);
 
     /// @notice function that return all new deployments as an array
-    function newDeployments() external view returns (Deployment[] memory);
+    function newDeployments() external view returns (DeployerDeployment[] memory);
 
     /// @notice allow to override an existing deployment by ignoring the current one.
     /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
@@ -89,8 +89,15 @@ interface IDeployer {
     /// @param _deployed address of the deployed contract
     function save(
         string memory _name,
-        address _deployed
+        address _deployed,
+        string memory _artifact,
+        bytes memory _args,
+        bytes memory _bytecode
     ) external;
+
+    function save(string memory _name, address _deployed, string memory _artifact, bytes memory _args) external;
+
+    function save(string memory _name, address _deployed, string memory _artifact) external;
 
 }
 
@@ -179,7 +186,7 @@ abstract contract GlobalDeployer is  IDeployer, Script , Artifacts {
         return super.prankStatus();
     }
 
-    function newDeployments() public override(IDeployer, Artifacts) view returns (Deployment[] memory) {
+    function newDeployments() public override(IDeployer, Artifacts) view returns (DeployerDeployment[] memory) {
         return super.newDeployments();
     }
 
@@ -205,9 +212,29 @@ abstract contract GlobalDeployer is  IDeployer, Script , Artifacts {
 
     function save(
         string memory _name,
-        address _deployed
+        address _deployed,
+        string memory _artifact,
+        bytes memory _args,
+        bytes memory _bytecode
     ) public override(IDeployer,Artifacts) {
-        super.save(_name, _deployed);
+        super.save(_name, _deployed,_artifact,_args,_bytecode);
+    }
+
+    function save(
+        string memory _name,
+        address _deployed,
+        string memory _artifact,
+        bytes memory _args
+    ) public override(IDeployer, Artifacts) {
+        super.save(_name, _deployed,_artifact,_args);
+    }
+
+    function save(
+        string memory _name,
+        address _deployed,
+        string memory _artifact
+    ) public override(IDeployer, Artifacts) {
+        super.save(_name, _deployed,_artifact);
     }
 
     /// @notice Removes the semantic versioning from a contract name. The semver will exist if the contract is compiled
@@ -313,6 +340,8 @@ abstract contract GlobalDeployer is  IDeployer, Script , Artifacts {
 
 function getGlobalDeployer() returns (IDeployer) {
     //0xD64C5B1F2952CBC28Bd79EB02d3065BbA2696E3A
+
+    // address addr = 0x666f7267652d6465706C6f790000000000000000;
     address addr = address(uint160(uint256(keccak256(abi.encode("optimism.deploy")))));
     if (addr.code.length > 0) {
         return IDeployer(addr);

@@ -93,8 +93,8 @@ library DefaultDeployerFunction {
                 revert(string.concat("Failed to deploy ", name));
             }
             // todo : may add artifact, args, bytecode later
-            // deployer.save(name, deployed, artifact, args, bytecode);
-            deployer.save(name, deployed);
+            deployer.save(name, deployed, artifact, args, bytecode);
+            // deployer.save(name, deployed);
         } else {
             deployed = existing;
         }
