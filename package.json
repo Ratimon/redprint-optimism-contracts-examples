@@ -13,17 +13,13 @@
     "start": "zellij --layout zellij.kdl a template-redprint || zellij --layout zellij.kdl -s template-redprint",
     "stop": "zellij kill-session template-redprint",
     "start:wezterm": "wezterm --config-file wezterm.lua",
-    "forge-deploy": "forge-deploy",
-    "gen-deployer": "forge-deploy gen-deployer --templates node_modules/forge-deploy-proxy/templates",
     "test": "forge test",
     "show_address": "forge script ShowPrecomputedAddress",
     "watch_test": "as-soon -w script -w src -w test pnpm test",
     "local_node": "rm -Rf deployments/localhost && anvil",
     "----------------------LOCAL DEPLOYMENT ----------------------": "",
     "generate_config": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost script/getting-started/config.sh",
-    "deploy_0_safe": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost forge script script/000_DeploySafe.s.sol --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast",
-    "deploy_0_proxy": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost forge script script/000_DeployProxyAdmin.s.sol --debug --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast",
-    "deploy_0_token": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost forge script  script/000_DeployToken.s.sol:TesttokenScript   --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast ~~ forge-deploy sync ~~ @@"
+    "deploy_0_safe": "DEPLOYMENT_CONTEXT=localhost ldenv -m localhost forge script script/000_DeploySafe.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +29,6 @@
     "@openzeppelin/contracts-upgradeable": "4.9.4",
     "as-soon": "^0.0.8",
     "clones-with-immutable-args": "1.0.0",
-    "forge-deploy": "^0.2.0",
     "ldenv": "^0.3.9",
     "set-defaults": "^0.0.2",
     "solady": "0.0.174"

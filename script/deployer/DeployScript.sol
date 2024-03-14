@@ -1,23 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { console2 as console } from "forge-std/console2.sol";
-
-
 import {Script} from "forge-std/Script.sol";
 import {Vm} from "forge-std/Vm.sol";
-// import "./Deployer.sol";
-import { Deployment, DeployerDeployment, IDeployer, getGlobalDeployer } from "@script/deployer/Deployer.sol";
-
-
+import { Deployment, DeployerDeployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
 
 abstract contract DeployScript is Script {
     // TODO internal and make use of global deployer
-    IDeployer internal deployer = getGlobalDeployer();
+    IDeployer internal deployer = getDeployer();
 
+    // global deplouyer
+    // function setAutoBroadcast(bool broadcast) external {
+    //     deployer.setAutoBroadcast(broadcast);
+    // }
+
+    // function activatePrank()
 
     function run() public virtual returns (DeployerDeployment[] memory newDeployments) {
-        // console.log('1111');
         _deploy();
 
         // for each named deployer.save we got a new deployment
