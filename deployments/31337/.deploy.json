@@ -1,3 +1,5 @@
 {
-  "AddressManager": "0x85C5Dd61585773423e378146D4bEC6f8D149E248"
+  "SafeProxyFactory": "0xfbAb4aa40C202E4e80390171E82379824f7372dd",
+  "SafeSingleton": "0xAfe1b5bdEbD4ae65AF2024738bf0735fbb65d44b",
+  "SystemOwnerSafe": "0xd04E3728f8CfFC859b4762935BA6c1f7A3B795B5"
 }
