@@ -1,5 +1,13 @@
 # Optimism Contracts
 
+## Quick Start
+
+These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.deploy)
+
+```bash
+pnpm deploy deploy_0_safe
+```
+
 ## Quick Installation
 
 ### zellij

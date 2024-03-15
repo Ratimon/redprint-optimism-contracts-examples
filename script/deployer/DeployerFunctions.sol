@@ -19,7 +19,6 @@ import "src/Testtoken.sol" as _Testtoken;
 import { Testtoken } from "src/Testtoken.sol";
 
 
-
 string constant Artifact_Counter = "Counter.sol:Counter";
 
 string constant Artifact_Testtoken = "Testtoken.sol:Testtoken";

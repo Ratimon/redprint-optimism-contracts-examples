@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
 import {Vm} from "forge-std/Vm.sol";
-import { Deployment, DeployerDeployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
+import { Deployment, Deployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
 
 abstract contract DeployScript is Script {
     // TODO internal and make use of global deployer
@@ -16,7 +16,7 @@ abstract contract DeployScript is Script {
 
     // function activatePrank()
 
-    function run() public virtual returns (DeployerDeployment[] memory newDeployments) {
+    function run() public virtual returns (Deployment[] memory newDeployments) {
         _deploy();
 
         // for each named deployer.save we got a new deployment

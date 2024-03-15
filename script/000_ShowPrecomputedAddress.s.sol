@@ -5,6 +5,10 @@ import {console} from "@forge-std/console.sol";
 
 import {Script} from "@forge-std/Script.sol";
 
+import { Config } from "@script/deployer/Config.sol";
+import { ForgeArtifacts } from "@script/deployer/ForgeArtifacts.sol";
+
+
 
 // import {Deployer} from "@script/Deployer.sol";
 import {Vm} from "forge-std/Vm.sol";
@@ -12,12 +16,19 @@ import { Deployment, IDeployer, getDeployer } from "@script/deployer/Deployer.so
 
 
 contract ShowPrecomputedAddress is Script {
+
+    string internal deploymentOutfile;
+
     function getAddress() public pure returns (address) {
         return address(uint160(uint256(keccak256(abi.encode("optimism.deploy")))));
     }
 
-    function run() public view {
+    function run() public {
         console.logAddress(getAddress());
+
+        deploymentOutfile = Config.deploymentOutfile();
+        console.log("Writing artifact to %s", deploymentOutfile);
+        ForgeArtifacts.ensurePath(deploymentOutfile);
 
         address addr = address(uint160(uint256(keccak256(abi.encode("optimism.deploy")))));
         // if (addr.code.length > 0) {

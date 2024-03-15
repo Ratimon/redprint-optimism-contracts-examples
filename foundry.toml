@@ -9,6 +9,8 @@ ffi = true
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
     { access = 'read', path = './deploy-config/' },
+    { access = 'read', path = './broadcast/' },
+    { access = 'read', path = './forge-artifacts/' },
     { access = "read", path = "./out" },
     { access = 'read', path = './script/deploy/' },
     { access = "read", path = "./" },
