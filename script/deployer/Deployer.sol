@@ -81,6 +81,8 @@ interface IDeployer {
     /// @return deployment the deployment (with address zero if not existent)
     function get(string memory name) external view returns (Deployment memory deployment);
 
+    function mustGetAddress(string memory _name) external view returns (address payable);
+
     function save(string memory name, address deployed) external;
 
 }
@@ -261,16 +263,16 @@ contract GlobalDeployer is IDeployer {
         return payable(address(0));
     }
 
-    // /// @notice Returns the address of a deployment and reverts if the deployment
-    // ///         does not exist.
-    // /// @return The address of the deployment.
-    // function mustGetAddress(string memory _name) public view returns (address payable) {
-    //     address addr = getAddress(_name);
-    //     if (addr == address(0)) {
-    //         revert DeploymentDoesNotExist(_name);
-    //     }
-    //     return payable(addr);
-    // }
+    /// @notice Returns the address of a deployment and reverts if the deployment
+    ///         does not exist.
+    /// @return The address of the deployment.
+    function mustGetAddress(string memory _name) public view returns (address payable) {
+        address addr = getAddress(_name);
+        if (addr == address(0)) {
+            revert DeploymentDoesNotExist(_name);
+        }
+        return payable(addr);
+    }
 
 
     /// @notice allow to override an existing deployment by ignoring the current one.
