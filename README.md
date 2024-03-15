@@ -26,7 +26,7 @@ DEPLOYER_PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f
 ENV_MODE=DEPLOYMENT_CONTEXT
 
 # script/Config.sol
-DEPLOYMENT_OUTFILE=/deployments/.deploy
+DEPLOYMENT_OUTFILE=deployments/31337/.deploy
 DEPLOY_CONFIG_PATH=
 CHAIN_ID=
 CONTRACT_ADDRESSES_PATH=
@@ -44,6 +44,10 @@ GS_PROPOSER_ADDRESS=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 GS_SEQUENCER_ADDRESS=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 L1_RPC_URL=http://localhost:8545
 ```
+
+> **Note**💡
+
+`deployments/31337/.deploy` is case sensitive.
 
 2. Run solidity deploymemt scripts:
 

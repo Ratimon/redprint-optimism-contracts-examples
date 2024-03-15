@@ -75,7 +75,7 @@ library DeployerFunctions{
     }
 
     // function deploy_SystemOwnerSafe(
-    //     Deployer deployer,
+    //     IDeployer deployer,
     //     string memory name,
     //     string memory safeProxyFactoryName,
     //     string memory safeSingletonyName,
@@ -98,8 +98,8 @@ library DeployerFunctions{
     //     // address safe = address(safeProxyFactory.createProxyWithNonce(address(safeSingleton), initData, block.timestamp));
     //     SafeProxy safeProxy = safeProxyFactory.createProxyWithNonce(address(safeSingleton), initData, block.timestamp);
         
-    //     // deployer.save(name, address(safeProxy));
-    //     deployer.save(name, address(safeProxy), "SafeProxy.sol:SafeProxy");
+    //     deployer.save(name, address(safeProxy));
+    //     // deployer.save(name, address(safeProxy), "SafeProxy.sol:SafeProxy");
 
     //     // console.log("New SystemOwnerSafe deployed at %s", address(safeProxy));
 

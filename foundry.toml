@@ -1,20 +1,33 @@
 [profile.default]
 src = "src"
 out = "out"
+script = 'script'
 libs = ["node_modules", "lib"]
 solc_version = '0.8.15'
 
 # Test / Script Runner Settings
 ffi = true
+# fs_permissions = [
+#     # { access = "write", path = "/" },
+#     { access = 'read-write', path = './deployments/' },
+#     { access = 'read', path = './deploy-config/' },
+#     { access = 'read', path = './broadcast/' },
+#     { access = 'read', path = './forge-artifacts/' },
+#     { access = "read", path = "./out" },
+#     { access = 'read', path = './script/deploy/' },
+#     { access = "read", path = "./" },
+# ]
+
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
     { access = 'read', path = './deploy-config/' },
     { access = 'read', path = './broadcast/' },
     { access = 'read', path = './forge-artifacts/' },
-    { access = "read", path = "./out" },
+    { access = 'read', path = './out' },
     { access = 'read', path = './script/deploy/' },
-    { access = "read", path = "./" },
+    { access = 'read-write', path = './' },
 ]
+
 
 [fmt]
 ignore = ['generated/**/*.sol', "lib/**/*.sol"]

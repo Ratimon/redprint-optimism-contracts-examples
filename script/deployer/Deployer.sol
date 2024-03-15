@@ -69,6 +69,8 @@ interface IDeployer {
     /// @return addr the deployment's address or the zero address
     function getAddress(string memory name) external view returns (address payable addr);
 
+    // function mustGetAddress(string memory _name) external view returns (address payable);
+
     /// @notice allow to override an existing deployment by ignoring the current one.
     /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
     /// @param name deployment's name to override
@@ -259,16 +261,16 @@ contract GlobalDeployer is IDeployer {
         return payable(address(0));
     }
 
-    /// @notice Returns the address of a deployment and reverts if the deployment
-    ///         does not exist.
-    /// @return The address of the deployment.
-    function mustGetAddress(string memory _name) public view returns (address payable) {
-        address addr = getAddress(_name);
-        if (addr == address(0)) {
-            revert DeploymentDoesNotExist(_name);
-        }
-        return payable(addr);
-    }
+    // /// @notice Returns the address of a deployment and reverts if the deployment
+    // ///         does not exist.
+    // /// @return The address of the deployment.
+    // function mustGetAddress(string memory _name) public view returns (address payable) {
+    //     address addr = getAddress(_name);
+    //     if (addr == address(0)) {
+    //         revert DeploymentDoesNotExist(_name);
+    //     }
+    //     return payable(addr);
+    // }
 
 
     /// @notice allow to override an existing deployment by ignoring the current one.
