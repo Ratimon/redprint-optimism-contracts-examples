@@ -55,7 +55,16 @@ These following commands will save deployment artifacts at [`deployments/<chain-
 
 ```bash
 pnpm deploy_000_safe
+```
+
+```bash
 pnpm deploy_101_address_manager
+```
+
+Alternatively:
+
+```bash
+pnpm setup_100_superchain
 ```
 
 ## Quick Installation
