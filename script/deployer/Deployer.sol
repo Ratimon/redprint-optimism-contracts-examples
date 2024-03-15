@@ -123,47 +123,14 @@ contract GlobalDeployer is IDeployer {
     /// The context allow you to organise deployments in a set as well as make specific configurations
     function init() external {
 
-        console.log('init');
         _autoBroadcast = true; // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
-
-        // if (bytes(chainIdAsString).length > 0) {
-        //     return;
-        // }
-
-        // // TODO? allow to pass context in constructor
-        // uint256 currentChainID;
-        // assembly {
-        //     currentChainID := chainid()
-        // }
-        // chainIdAsString = vm.toString(currentChainID);
-
-        // deploymentContext = _getDeploymentContext();
-
-        // // we read the deployment folder for a .chainId file
-        // // if the chainId here do not match the current one
-        // // we are using the same context name on different chain, this is an error
-        // string memory root = vm.projectRoot();
-        // // TODO? configure deployments folder via deploy.toml / deploy.json
-        // string memory path = string.concat(root, "/deployments/", deploymentContext, "/.chainId");
-        // try vm.readFile(path) returns (string memory chainId) {
-        //     if (keccak256(bytes(chainId)) != keccak256(bytes(chainIdAsString))) {
-        //         revert(
-        //             string.concat(
-        //                 "Current chainID: ",
-        //                 chainIdAsString,
-        //                 " But Context '",
-        //                 deploymentContext,
-        //                 "' Already Exists With a Different Chain ID (",
-        //                 chainId,
-        //                 ")"
-        //             )
-        //         );
-        //     }
-        // } catch {}
 
         deploymentOutfile = Config.deploymentOutfile();
         console.log("Writing artifact to %s", deploymentOutfile);
         ForgeArtifacts.ensurePath(deploymentOutfile);
+
+        uint256 chainId = Config.chainID();
+        console.log("Connected to network with chainid %s", chainId);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -312,25 +279,6 @@ contract GlobalDeployer is IDeployer {
     // --------------------------------------------------------------------------------------------
     // Internal
     // --------------------------------------------------------------------------------------------
-
-    // function _getDeploymentContext() private view returns (string memory context) {
-    //     // no deploymentContext provided we fallback on chainID
-    //     uint256 currentChainID;
-    //     assembly {
-    //         currentChainID := chainid()
-    //     }
-    //     context = vm.envOr("DEPLOYMENT_CONTEXT", string(""));
-    //     if (bytes(context).length == 0) {
-    //         // on local dev network we fallback on the special void context
-    //         // this allow `forge test` without any env setup to work as normal, without trying to read deployments
-    //         if (currentChainID == 1337 || currentChainID == 31337) {
-    //             context = "void";
-    //         } else {
-    //             context = vm.toString(currentChainID);
-    //         }
-    //     }
-    // }
-
 
     /// @notice Adds a deployment to the temp deployments file
     function _appendDeployment(string memory _name, address _deployed) internal {
