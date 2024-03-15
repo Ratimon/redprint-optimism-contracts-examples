@@ -8,12 +8,8 @@ import {Script} from "@forge-std/Script.sol";
 import { Config } from "@script/deployer/Config.sol";
 import { ForgeArtifacts } from "@script/deployer/ForgeArtifacts.sol";
 
-
-
-// import {Deployer} from "@script/Deployer.sol";
 import {Vm} from "forge-std/Vm.sol";
 import { Deployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
-
 
 contract ShowPrecomputedAddress is Script {
 

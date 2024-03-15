@@ -54,7 +54,8 @@ L1_RPC_URL=http://localhost:8545
 These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.deploy)
 
 ```bash
-pnpm deploy deploy_0_safe
+pnpm deploy_000_safe
+pnpm deploy_101_address_manager
 ```
 
 ## Quick Installation

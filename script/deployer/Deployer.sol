@@ -107,14 +107,8 @@ contract GlobalDeployer is IDeployer {
     mapping(string => Deployment) internal _namedDeployments;
     Deployment[] internal _newDeployments;
 
-    // Context
-    // string internal deploymentContext;
-    // string internal chainIdAsString;
-
     bool internal _autoBroadcast = true;
-
     Prank internal _prank;
-
     string internal deploymentOutfile;
 
     /// @notice init a deployer with the current context

@@ -10,8 +10,13 @@ import { SafeProxy } from "@safe-contracts/proxies/SafeProxy.sol";
 import { SafeProxyFactory } from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import { Safe } from "@safe-contracts/Safe.sol";
 
+import { AddressManager } from "src/legacy/AddressManager.sol";
+
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
 string constant Artifact_Safe = "Safe.sol:Safe";
+
+string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
+
 
 library DeployerFunctions{
 
@@ -76,6 +81,14 @@ library DeployerFunctions{
         console.log("New SystemOwnerSafe deployed at %s", address(safeProxy));
 
         return safeProxy;
+    }
+
+    function deploy_AddressManager(
+        IDeployer deployer,
+        string memory name 
+    ) internal returns (AddressManager) {
+        bytes memory args = abi.encode();
+        return AddressManager(DefaultDeployerFunction.deploy(deployer, name, Artifact_AddressManager, args));
     }
     
 }

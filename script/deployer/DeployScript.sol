@@ -9,7 +9,7 @@ abstract contract DeployScript is Script {
     // TODO internal and make use of global deployer
     IDeployer internal deployer = getDeployer();
 
-    // global deplouyer
+    // global deployer
     // function setAutoBroadcast(bool broadcast) external {
     //     deployer.setAutoBroadcast(broadcast);
     // }
