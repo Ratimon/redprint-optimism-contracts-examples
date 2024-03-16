@@ -15,7 +15,7 @@ library Config {
     ///         written to disk after doing a deployment.
     function deploymentOutfile() internal view returns (string memory _env) {
         _env = vm.envOr(
-            "DEPLOYMENT_OUTFILE", string.concat(vm.projectRoot(), "/deployments/", _getDeploymentContext(), "/.deploy")
+            "DEPLOYMENT_OUTFILE", string.concat(vm.projectRoot(), "/deployments/", _getDeploymentContext(), "/.deploy.json")
         );
     }
 

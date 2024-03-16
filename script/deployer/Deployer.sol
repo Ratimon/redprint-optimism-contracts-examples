@@ -44,6 +44,8 @@ interface IDeployer {
     /// @param broadcast whether to acitvate auto-broadcast
     function setAutoBroadcast(bool broadcast) external;
 
+    function setAutoSave(bool enable) external;
+
     /// @notice function to activate prank for a given address
     /// @param addr address to prank
     function activatePrank(address addr) external;
@@ -108,6 +110,7 @@ contract GlobalDeployer is IDeployer {
     Deployment[] internal _newDeployments;
 
     bool internal _autoBroadcast = true;
+    bool internal _autoSave = false;
     Prank internal _prank;
     string internal deploymentOutfile;
 
@@ -117,7 +120,9 @@ contract GlobalDeployer is IDeployer {
     /// The context allow you to organise deployments in a set as well as make specific configurations
     function init() external {
 
-        _autoBroadcast = true; // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
+        // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
+        _autoBroadcast = true;
+        _autoSave = false;
 
         deploymentOutfile = Config.deploymentOutfile();
         console.log("Writing artifact to %s", deploymentOutfile);
@@ -125,6 +130,23 @@ contract GlobalDeployer is IDeployer {
 
         uint256 chainId = Config.chainID();
         console.log("Connected to network with chainid %s", chainId);
+
+        // Load addresses from a JSON file if the CONTRACT_ADDRESSES_PATH environment variable
+        // is set. Great for loading addresses from `superchain-registry`.
+        string memory addresses = Config.contractAddressesPath();
+
+        // when we run first script, we DONOT load the addresses
+        // it will be generate the entire new deployment schema which will used later
+        if (_autoSave) {
+            if (bytes(addresses).length > 0) {
+                console.log("Loading addresses from %s", addresses);
+                _loadAddresses(addresses);
+            }
+
+            // then we load when running another deploy script
+            _autoSave = true;
+        }
+
     }
 
     // --------------------------------------------------------------------------------------------
@@ -137,6 +159,10 @@ contract GlobalDeployer is IDeployer {
 
     function setAutoBroadcast(bool broadcast) external {
         _autoBroadcast = broadcast;
+    }
+
+    function setAutoSave(bool _save) external {
+        _autoSave = _save;
     }
 
     function activatePrank(address addr) external {
@@ -152,6 +178,25 @@ contract GlobalDeployer is IDeployer {
     function prankStatus() external view returns (bool active, address addr) {
         active = _prank.active;
         addr = _prank.addr;
+    }
+
+    /// @notice Populates the addresses to be used in a script based on a JSON file.
+    ///         The format of the JSON file is the same that it output by this script
+    ///         as well as the JSON files that contain addresses in the `superchain-registry`
+    ///         repo. The JSON key is the name of the contract and the value is an address.
+    function _loadAddresses(string memory _path) internal {
+        string[] memory commands = new string[](3);
+        commands[0] = "bash";
+        commands[1] = "-c";
+        commands[2] = string.concat("jq -cr < ", _path);
+        string memory json = string(vm.ffi(commands));
+        string[] memory keys = vm.parseJsonKeys(json, "");
+        for (uint256 i; i < keys.length; i++) {
+            string memory key = keys[i];
+            address addr = stdJson.readAddress(json, string.concat("$.", key));
+            save(key, addr);
+        }
+
     }
 
     /// @notice Returns all of the deployments done in the current context.
