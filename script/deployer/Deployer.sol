@@ -223,6 +223,17 @@ contract GlobalDeployer is IDeployer {
             }
             return existing.addr;
         }
+        return payable(address(0));
+    }
+
+    function getL2Address(string memory _name) public pure returns (address payable) {
+        // Deployment memory existing = _namedDeployments[_name];
+        // if (existing.addr != address(0)) {
+        //     if (bytes(existing.name).length == 0) {
+        //         return payable(address(0));
+        //     }
+        //     return existing.addr;
+        // }
 
         bytes32 digest = keccak256(bytes(_name));
         if (digest == keccak256(bytes("L2CrossDomainMessenger"))) {

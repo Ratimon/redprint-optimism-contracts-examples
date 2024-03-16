@@ -25,11 +25,12 @@ contract SetupSuperchainScript is Script {
 
         DeploySafeScript safeDeployments = new DeploySafeScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
-
+        
         safeDeployments.deploy();
         addressManagerDeployments.deploy();
-        console.log("SystemOwnerSafe at: ", deployerProcedue.getAddress('SystemOwnerSafe'));
 
+        console.log("SystemOwnerSafe at: ", deployerProcedue.getAddress('SystemOwnerSafe'));
+       
         // address addressManager = addressManagerDeployments.deploy();
         // return addressManager;
 

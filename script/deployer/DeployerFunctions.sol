@@ -11,11 +11,13 @@ import { SafeProxyFactory } from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import { Safe } from "@safe-contracts/Safe.sol";
 
 import { AddressManager } from "src/legacy/AddressManager.sol";
+import { ProxyAdmin } from "src/universal/ProxyAdmin.sol";
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
 string constant Artifact_Safe = "Safe.sol:Safe";
 
 string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
+string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 
 
 library DeployerFunctions{
@@ -89,6 +91,24 @@ library DeployerFunctions{
     ) internal returns (AddressManager) {
         bytes memory args = abi.encode();
         return AddressManager(DefaultDeployerFunction.deploy(deployer, name, Artifact_AddressManager, args));
+    }
+
+    function deploy_ProxyAdmin(
+        IDeployer deployer,
+        string memory name 
+        ,address  _owner
+    ) internal returns (ProxyAdmin) {
+        bytes memory args = abi.encode(_owner);
+        return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args));
+    }
+    function deploy_ProxyAdmin(
+        IDeployer deployer,
+        string memory name,
+        address  _owner,
+        DeployOptions memory options
+    ) internal returns (ProxyAdmin) {
+        bytes memory args = abi.encode(_owner);
+        return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args, options));
     }
     
 }
