@@ -8,33 +8,32 @@ import { IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
 import { AddressManager } from "@main/legacy/AddressManager.sol";
 
-import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
+import {DeployProxyAdminScript} from "@script/202_DeployPloxyAdmin.s.sol";
 
 
 contract SetupSuperchainScript is Script {
 
     IDeployer deployerProcedue;
-
-    AddressManager addressManager;
+    // AddressManager addressManager;
 
     function run() public {
 
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
 
-        DeploySafeScript safeDeployments = new DeploySafeScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
+        DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
         
-        safeDeployments.deploy();
         addressManagerDeployments.deploy();
+        proxyAdminDeployments.deploy();
 
-        console.log("SystemOwnerSafe at: ", deployerProcedue.getAddress('SystemOwnerSafe'));
+        console.log("AddressManager at: ", deployerProcedue.getAddress('AddressManager'));
+        console.log("ProxyAdmin at: ", deployerProcedue.getAddress('ProxyAdmin'));
        
         // address addressManager = addressManagerDeployments.deploy();
         // return addressManager;
 
-        
     }
 
 }

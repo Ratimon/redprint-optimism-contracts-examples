@@ -65,10 +65,20 @@ pnpm deploy_100_safe
 pnpm deploy_201_address_manager
 ```
 
+```bash
+pnpm deploy_202_proxy_admin
+```
+
 - Alternatively, Deploy each set of contracts :
 
 ```bash
 pnpm setup_200_superchain
+```
+
+or deploy all of them in single script:
+
+```bash
+pnpm deploy_000_all
 ```
 
 > **Note**💡
