@@ -29,7 +29,7 @@ ENV_MODE=DEPLOYMENT_CONTEXT
 DEPLOYMENT_OUTFILE=deployments/31337/.save.json
 DEPLOY_CONFIG_PATH=
 CHAIN_ID=
-CONTRACT_ADDRESSES_PATH=deployments/31337/.deploy.json
+CONTRACT_ADDRESSES_PATH=deployments/31337/.save.json
 DEPLOYMENT_CONTEXT=localhost
 IMPL_SALT=
 STATE_DUMP_PATH=
@@ -51,21 +51,29 @@ L1_RPC_URL=http://localhost:8545
 
 2. Run solidity deploymemt scripts:
 
-These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.deploy)
+These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.save.json)
+
+There are two ways:
+
+- Deploy each of individual components:
 
 ```bash
-pnpm deploy_000_safe
+pnpm deploy_100_safe
 ```
 
 ```bash
-pnpm deploy_101_address_manager
+pnpm deploy_201_address_manager
 ```
 
-Alternatively:
+- Alternatively, Deploy each set of contracts :
 
 ```bash
-pnpm setup_100_superchain
+pnpm setup_200_superchain
 ```
+
+> **Note**💡
+
+The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
 
 ## Quick Installation
 

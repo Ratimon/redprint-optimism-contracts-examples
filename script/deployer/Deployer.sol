@@ -139,6 +139,8 @@ contract GlobalDeployer is IDeployer {
         // it will be generate the entire new deployment schema which will used later
         if (_autoSave) {
             if (bytes(addresses).length > 0) {
+                // console.log("_autoSave");
+                // console.logBool(_autoSave);
                 console.log("Loading addresses from %s", addresses);
                 _loadAddresses(addresses);
             }

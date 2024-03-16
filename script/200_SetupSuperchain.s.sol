@@ -6,11 +6,10 @@ import { console2 as console } from "@forge-std/console2.sol";
 
 import { IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-
 import { AddressManager } from "@main/legacy/AddressManager.sol";
 
-import {DeploySafeScript} from "@script/000_DeploySafe.s.sol";
-import {DeployAddressManagerScript} from "@script/101_DeployAddressManager.s.sol";
+import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
+import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
 
 
 contract SetupSuperchainScript is Script {
