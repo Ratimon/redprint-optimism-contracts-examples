@@ -12,7 +12,6 @@ contract DeployAddressManagerScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
     function deploy() external returns (AddressManager) {
-        // console.log("SystemOwnerSafe *** at: ", deployer.mustGetAddress('SystemOwnerSafe'));
         return AddressManager(deployer.deploy_AddressManager("AddressManager"));
     }
 }

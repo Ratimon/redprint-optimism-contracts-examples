@@ -15,7 +15,6 @@ import {DeployProxyAdminScript} from "@script/202_DeployPloxyAdmin.s.sol";
 contract SetupSuperchainScript is Script {
 
     IDeployer deployerProcedue;
-    // AddressManager addressManager;
 
     function run() public {
 
@@ -30,9 +29,6 @@ contract SetupSuperchainScript is Script {
 
         console.log("AddressManager at: ", deployerProcedue.getAddress('AddressManager'));
         console.log("ProxyAdmin at: ", deployerProcedue.getAddress('ProxyAdmin'));
-       
-        // address addressManager = addressManagerDeployments.deploy();
-        // return addressManager;
 
     }
 

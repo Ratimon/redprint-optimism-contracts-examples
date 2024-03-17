@@ -10,18 +10,6 @@ import { Config } from "@script/deployer/Config.sol";
 import { ForgeArtifacts } from "@script/deployer/ForgeArtifacts.sol";
 
 
-
-// /// @notice store the new deployment to be saved
-// struct DeployerDeployment {
-//     string name;
-//     address payable addr;
-//     bytes bytecode;
-//     bytes args;
-//     string artifact;
-//     string deploymentContext;
-//     string chainIdAsString;
-// }
-
 /// @notice represent a deployment
 struct Deployment {
     string name;
@@ -71,7 +59,7 @@ interface IDeployer {
     /// @return addr the deployment's address or the zero address
     function getAddress(string memory name) external view returns (address payable addr);
 
-    // function mustGetAddress(string memory _name) external view returns (address payable);
+    function mustGetAddress(string memory _name) external view returns (address payable);
 
     /// @notice allow to override an existing deployment by ignoring the current one.
     /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
@@ -82,8 +70,6 @@ interface IDeployer {
     /// @param name deployment's name to query
     /// @return deployment the deployment (with address zero if not existent)
     function get(string memory name) external view returns (Deployment memory deployment);
-
-    function mustGetAddress(string memory _name) external view returns (address payable);
 
     function save(string memory name, address deployed) external;
 
@@ -227,14 +213,6 @@ contract GlobalDeployer is IDeployer {
     }
 
     function getL2Address(string memory _name) public pure returns (address payable) {
-        // Deployment memory existing = _namedDeployments[_name];
-        // if (existing.addr != address(0)) {
-        //     if (bytes(existing.name).length == 0) {
-        //         return payable(address(0));
-        //     }
-        //     return existing.addr;
-        // }
-
         bytes32 digest = keccak256(bytes(_name));
         if (digest == keccak256(bytes("L2CrossDomainMessenger"))) {
             return payable(Predeploys.L2_CROSS_DOMAIN_MESSENGER);
@@ -292,7 +270,6 @@ contract GlobalDeployer is IDeployer {
         }
         return payable(addr);
     }
-
 
     /// @notice allow to override an existing deployment by ignoring the current one.
     /// the deployment will only be overriden on disk once the broadast is performed and `forge-deploy` sync is invoked.
