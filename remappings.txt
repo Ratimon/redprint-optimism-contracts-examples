@@ -1,13 +1,10 @@
 @main/=src/
 @script/=script/
 @test/=test/
-@generated/=generated/
 @forge-std/=lib/forge-std/src/
 @safe-contracts/=lib/safe-smart-account/contracts/
 @openzeppelin/=node_modules/@openzeppelin/contracts
 @openzeppelin-upgradable/=node_modules/@openzeppelin/contracts-upgradeable
 @clones-with-immutable-args/=node_modules/clones-with-immutable-args
 @solady/=node_modules/solady/src/
-
-forge-deploy/=node_modules/forge-deploy/contracts/
-@generated/=generated
+@solmate/=node_modules/solmate/src/

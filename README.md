@@ -102,3 +102,11 @@ forge init optimism-contracts-foundry
 cd optimism-contracts-foundry
 pnpm init
 ```
+
+## How to use?
+
+### Test your contracts
+
+```bash
+pnpm test
+```
