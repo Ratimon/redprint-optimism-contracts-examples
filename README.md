@@ -1,8 +1,52 @@
-<h1>📚 Optimism Contracts</h1>
+<h1>📚 OPStack Contracts 's Deployment Pipline using `redprint-forge` 's POC 📚</h1>
+
+An PoC showing how `Redprint` works. This developer toolkit includes interactive code generator and template to modify & deploy OPstack ’s smart contract components in modular style
+
+> **Note**💡
+
+> The code is not audited yet. Please use it carefully in production.
+
+- [What is it for](#what-is-it-for)
+- [How It Works](#how-it-works)
+- [Benchmarks](#benchmarks)
+- [Installation](#installation)
+- [Quickstart](#quickstart)
+- [Contributing](#contributing)
+- [Architecture](#architecture)
+
+## What is it for ?
+
+This OP-Stack-oriented App-chain building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain Ecosystem](https://docs.optimism.io/stack/explainer).
+
+> **Note**💡
+
+**The OP Stack can be thought of as software components that either help define a specific layer of the Optimism ecosystem or fill a role as a module within an existing layer.**
+
+![modular stack](./assets/modular_stack.png)
+
+While developer experience is our top priority, we aim to provide the developer-focused educational tool, such that the new experiment layer2 or Appchain can be quicky bootstapped in superchain community & ecosystem.
+
+## How It Works
+
+`Redprint` consists of:
+
+1. **Redprint Wizard** (Web UI)
+
+We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy L2 OPStack chain/ App-chain.
+
+It can be as educational platform to explore and select different versions of smart contract components for different usecases/features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
+
+By way of illustration, this is a **low-fidelity wireframe** showing how it works:
+
+![ui demo](./assets/demo.png)
+
+It can be seen above that the developers have several options to choose their own desired layer. In our example, it is **the governance layer** and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is chosen over other Governor-style contract systems.
+
+Another example is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **voting delay**, **voting period**, **time lock period** and etc.
 
 ## Quick Start
 
-1. Copy `.env` into `.env.<network>.local` and modidy as required. For example, this is a file (`.env.optimism.local`)(https://github.com/Ratimon/optimism-contracts-foundry/.env.optimism.local) for optimism network:
+1. Copy [`.env`](./.env) into `.env.<network>.local` and modify as required. For example, this is a file (`.env.optimism.local`)(https://github.com/Ratimon/optimism-contracts-foundry/.env.optimism.local) for optimism network:
 
 > **Note**💡
 
