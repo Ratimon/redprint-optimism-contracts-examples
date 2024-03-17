@@ -8,7 +8,6 @@ An PoC showing how `Redprint` works. This developer toolkit includes interactive
 
 - [What is it for](#what-is-it-for)
 - [How It Works](#how-it-works)
-- [Benchmarks](#benchmarks)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
 - [Contributing](#contributing)
@@ -44,7 +43,21 @@ It can be seen above that the developers have several options to choose their ow
 
 Another example is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **voting delay**, **voting period**, **time lock period** and etc.
 
-## Quick Start
+## Installation
+
+[zellij](https://zellij.dev/) is a useful multiplexer (think tmux) for which we have included a [layout file](./zellij.kdl) to get started
+
+Once installed, simply run:
+
+```bash
+nvm use 18.17.0
+```
+
+```bash
+pnpm i
+```
+
+## Quickstart
 
 1. Copy [`.env`](./.env) into `.env.<network>.local` and modify as required. For example, this is a file (`.env.optimism.local`)(https://github.com/Ratimon/optimism-contracts-foundry/.env.optimism.local) for optimism network:
 
@@ -93,7 +106,13 @@ L1_RPC_URL=http://localhost:8545
 
 `deployments/31337/.deploy` is case sensitive.
 
-2. Run solidity deploymemt scripts:
+2. Run multi-windows terminal:
+
+```sh
+pnpm start
+```
+
+3. Run solidity deploymemt scripts:
 
 These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.save.json)
 
@@ -129,27 +148,7 @@ pnpm deploy_000_all
 
 The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
 
-## Quick Installation
-
-### zellij
-
-[zellij](https://zellij.dev/) is a useful multiplexer (think tmux) for which we have included a [layout file](./zellij.kdl) to get started
-
-Once installed simply run:
-
-```bash
-nvm use 18.17.0
-forge init optimism-contracts-foundry
-```
-
-```bash
-cd optimism-contracts-foundry
-pnpm init
-```
-
-## How to use?
-
-### Test your contracts
+4. Test your contracts
 
 ```bash
 pnpm test
