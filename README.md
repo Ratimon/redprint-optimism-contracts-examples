@@ -1,6 +1,6 @@
-<h1>📚 OPStack Contracts 's Deployment Pipline using `redprint-forge` 's POC 📚</h1>
+<h1>📚 OPStack Contracts 's Deployment Pipline using Redprint` 's POC 📚</h1>
 
-An PoC showing how `Redprint` works. This developer toolkit includes interactive code generator and template to modify & deploy OPstack ’s smart contract components in modular style
+A PoC showing how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style
 
 > **Note**💡
 
@@ -33,7 +33,7 @@ While developer experience is our top priority, we aim to provide the developer-
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy L2 OPStack chain/ App-chain.
+We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy L2 **OPStack** chain / App-chain.
 
 It can be as educational platform to explore and select different versions of smart contract components for different usecases/features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
 
@@ -41,7 +41,7 @@ By way of illustration, this is a **low-fidelity wireframe** showing how it work
 
 ![ui demo](./assets/demo.png)
 
-It can be seen above that the developers have several options to choose their own desired layer. In our example, it is **the governance layer** and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is chosen over other Governor-style contract systems.
+It can be seen above that the developers have several options to choose their own desired layer. In our example, it is the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is chosen over other Governor-style contract systems.
 
 Another example is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **Voting Delay**, **Voting Period**, **Time Lock Period** and etc.
 
@@ -49,13 +49,13 @@ Another example is **Compound-style contract**. Different sets of parameters can
 
 We are developing `redprint-forge`, a modular solidity-based framework to deploy OP stack smart contract. It works as an engine to:
 
-- Provide type-safe deployment functions for OPStack smart contract component. This ensure correct type and order of arguments
+- Provide type-safe deployment functions for **OPStack**'s smart contract component. This ensures correct type and order of arguments, enhancing security in smart contract development
 - Save deployment schemas in json file
-- Separate each modular and customizable components
+- Separate into each of modular and customizable components
 
 The directories below show how modular the `redprint-forge` 's **deployment system** is :
 
-The first one is the deployment script written, using `redprint-forge` lib
+The first one is the deployment script written in [/script](./script), using `redprint-forge` libirary and style guide:
 
 ```sh
 ├── script
@@ -69,15 +69,29 @@ The first one is the deployment script written, using `redprint-forge` lib
 
 and the second one is the original script from [`Optimism`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
-As you can see, the original deploy script is a single file, containing all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components.
+```sh
+├── script
+│   ├──
+│   ├── Deploy.s.sol
+│   ├──
+```
 
-Using together with `Redprint Wizard`, the generated solidity code which includes both smart contract parts and their relevant deploy scripts are displayed in hackable way, leading to better developer experience.
+As you can see, the original deployment script is a single file, containing all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components, enabling better readabillity for smart contract developer.
+
+Using together with `Redprint Wizard`, the generated solidity code which includes both smart contract parts and their relevant deploy scripts are displayed in customizable way, leading to better developer experience and creativity.
 
 Furthermore, these deployment components are extremely re-usable to replicate the same environment when testing. This will speed up the development process, as the developer does not need to write deployment logics again in test suites.
 
-As you can see in (ProxyAdmin.t.sol)[./test/ProxyAdmin.t.sol], we can use those deployment components as test harnesses.
+As you can see in [ProxyAdmin.t.sol](./test/ProxyAdmin.t.sol), we can use those deployment components as a test harness.
 
-This could also improve overall security, because it potentially minimize false positives from using different deployment logics between production and test environments.
+```sh
+├── test
+│   ├──
+│   ├── ProxyAdmin.t.sol
+│   ├──
+```
+
+This could, together with **Type-Safe Deployment** feature, also improve overall security, because it potentially minimize false positives from using different deployment logics among production and test environments.
 
 ## Installation
 
