@@ -31,7 +31,7 @@ contract DeployAllScript is Script {
         //2) set up superChain
         superchainSetups.run();
         //3) TODO set up plasma
-        //4) TODO set up L2 OP Chain
+        //4) TODO set up layer2 OP Chain
 
         console.log("SystemOwnerSafe at: ", deployerProcedue.getAddress('SystemOwnerSafe'));
 

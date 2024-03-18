@@ -15,7 +15,7 @@ A PoC showing how `Redprint` works. This developer toolkit includes both interac
 
 ## What is it for ?
 
-This OP-Stack-oriented App-chain building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain Ecosystem](https://docs.optimism.io/stack/explainer).
+This **OP-Stack-oriented App-chain** building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain](https://docs.optimism.io/stack/explainer) Ecosystem.
 
 > **Note**💡
 
@@ -23,9 +23,9 @@ This OP-Stack-oriented App-chain building block is intended to better introduce 
 
 ![modular stack](./assets/modular_stack.png)
 
-You can check out details in different layers here :[Reference] (https://docs.optimism.io/stack/components).
+You can check out details in different layers here : [Reference](https://docs.optimism.io/stack/components).
 
-While developer experience is our top priority, we aim to provide the developer-focused educational tool, such that the new experiment layer2 or Appchain can be quicky bootstapped in superchain community & ecosystem.
+While developer experience and security are our top priorities, we aim to provide the developer-focused educational tool, such that the new experimental **layer2** or **App-chain** can be quicky bootstapped in **superchain** community & ecosystem. This align with **Ethereum** 's Rollup-centric Roadmap.
 
 ## How It Works
 
@@ -33,24 +33,24 @@ While developer experience is our top priority, we aim to provide the developer-
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy L2 **OPStack** chain / App-chain.
+We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
 
-It can be as educational platform to explore and select different versions of smart contract components for different usecases/features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
+It can be as educational platform to explore and select different versions of smart contract components for different usecases / features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
 
 By way of illustration, this is a **low-fidelity wireframe** showing how it works:
 
 ![ui demo](./assets/demo.png)
 
-It can be seen above that the developers have several options to choose their own desired layer. In our example, it is the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is chosen over other Governor-style contract systems.
+It can be seen above that the developers have several options to choose their own desired layers. In our example above, it is the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is picked over other Governor-style contract systems.
 
-Another example is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **Voting Delay**, **Voting Period**, **Time Lock Period** and etc.
+To be more specific, another option is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **Voting Delay**, **Voting Period**, **Time Lock Period** and etc.
 
 2. `redprint-forge` (**Framework**)
 
 We are developing `redprint-forge`, a modular solidity-based framework to deploy OP stack smart contract. It works as an engine to:
 
 - Provide type-safe deployment functions for **OPStack**'s smart contract component. This ensures correct type and order of arguments, enhancing security in smart contract development
-- Save deployment schemas in json file
+- Save deployment schemas in **json** file
 - Separate into each of modular and customizable components
 
 The directories below show how modular the `redprint-forge` 's **deployment system** is :
@@ -90,7 +90,7 @@ contract DeployAllScript is Script {
         //2) set up superChain
         superchainSetups.run();
         //3) TODO set up plasma
-        //4) TODO set up L2 OP Chain
+        //4) TODO set up layer2 OP Chain
 
     }
     /** ... */
@@ -102,7 +102,11 @@ contract DeployAllScript is Script {
 
 The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
 
-On the otherhand, the second one is the original script from [`Optimism 's monorepo`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
+> **Note**💡
+
+You can also checkout how our MVP of deployer library works behind the scene here [Deployer.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/efa1d92424989f0b7c313f9a1d1592b64ea1aadd/script/deployer/Deployer.sol)
+
+On the otherhand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
 ```sh
 ├── script
@@ -111,7 +115,7 @@ On the otherhand, the second one is the original script from [`Optimism 's monor
 │   ├──
 ```
 
-As you can see, the original deployment script is a single file, containing all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components, enabling better readabillity for smart contract developer.
+As you can see, the original deployment script is a single file, containing more than 1000 lines of code for all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components, enabling better readabillity for smart contract developer.
 
 Using together with `Redprint Wizard`, the generated solidity code which includes both smart contract parts and their relevant deploy scripts are displayed in customizable way, leading to better developer experience and creativity.
 
@@ -234,3 +238,11 @@ pnpm deploy_000_all
 ```bash
 pnpm test
 ```
+
+## Contributing
+
+WIP
+
+## Architecture
+
+WIP
