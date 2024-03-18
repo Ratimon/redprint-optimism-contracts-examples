@@ -55,7 +55,7 @@ We are developing `redprint-forge`, a modular solidity-based framework to deploy
 
 The directories below show how modular the `redprint-forge` 's **deployment system** is :
 
-The first one is the deployment script written in [/script](./script), using `redprint-forge` libirary and style guide:
+On the one hand, the first one is the deployment script written in [/script](./script), using `redprint-forge` libirary and style guide:
 
 ```sh
 ├── script
@@ -67,7 +67,42 @@ The first one is the deployment script written in [/script](./script), using `re
 │   ├── A00_ShowPrecomputedAddress.s.sol
 ```
 
-and the second one is the original script from [`Optimism`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
+I highlight that the developer is able to aggregate all script into single one like in [/script](./script/000_DeployAll.s.sol):
+
+```ts
+
+/** ... */
+
+contract DeployAllScript is Script {
+
+    /** ... */
+
+    function run() public {
+
+        deployerProcedue = getDeployer();
+        deployerProcedue.setAutoSave(true);
+
+        DeploySafeScript safeDeployments = new DeploySafeScript();
+        SetupSuperchainScript superchainSetups = new SetupSuperchainScript();
+
+        //1) set up Safe Multisig
+        safeDeployments.deploy();
+        //2) set up superChain
+        superchainSetups.run();
+        //3) TODO set up plasma
+        //4) TODO set up L2 OP Chain
+
+    }
+    /** ... */
+
+}
+```
+
+> **Note**💡
+
+The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
+
+On the otherhand, the second one is the original script from [`Optimism 's monorepo`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
 ```sh
 ├── script
@@ -193,10 +228,6 @@ or deploy all of them in single script:
 ```bash
 pnpm deploy_000_all
 ```
-
-> **Note**💡
-
-The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
 
 4. Test your contracts
 
