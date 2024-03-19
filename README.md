@@ -74,13 +74,24 @@ I highlight that the developer is able to aggregate all script into single one l
 
 /** ... */
 
+// `redprint-forge` 's core engine
+import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+
+/** ... */
+
+// application-specific logic
+import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
+import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
+
 contract DeployAllScript is Script {
 
     /** ... */
 
     function run() public {
 
+        // a singleton global deployer that any deployment script can access
         deployerProcedue = getDeployer();
+        // auto saving address schema in .json file
         deployerProcedue.setAutoSave(true);
 
         DeploySafeScript safeDeployments = new DeploySafeScript();
