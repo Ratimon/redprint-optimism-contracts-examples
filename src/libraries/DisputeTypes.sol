@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import { LibHashing } from "@main/dispute/lib/LibHashing.sol";
+import {LibHashing} from "@main/dispute/lib/LibHashing.sol";
 import {
     LibClaim,
     LibHash,
@@ -11,8 +11,8 @@ import {
     LibVMStatus,
     LibGameType
 } from "@main/dispute/lib/LibUDT.sol";
-import { LibPosition } from "@main/dispute/lib/LibPosition.sol";
-import { LibGameId } from "@main/dispute/lib/LibGameId.sol";
+import {LibPosition} from "@main/dispute/lib/LibPosition.sol";
+import {LibGameId} from "@main/dispute/lib/LibGameId.sol";
 
 using LibClaim for Claim global;
 using LibHashing for Claim global;

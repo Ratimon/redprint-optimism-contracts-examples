@@ -143,10 +143,7 @@ library LibPosition {
     /// @param _upperBoundExclusive The exclusive upper depth bound, used to inform where to stop in order
     ///                             to not escape a sub-tree.
     /// @return ancestor_ The highest ancestor of `position` that commits to the same trace index.
-    function traceAncestorBounded(
-        Position _position,
-        uint256 _upperBoundExclusive
-    )
+    function traceAncestorBounded(Position _position, uint256 _upperBoundExclusive)
         internal
         pure
         returns (Position ancestor_)

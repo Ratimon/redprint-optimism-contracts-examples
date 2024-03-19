@@ -11,11 +11,7 @@ library LibHashing {
     /// @param _position The position of `claim`.
     /// @param _challengeIndex The index of the claim being moved against.
     /// @return claimHash_ A hash of abi.encodePacked(claim, position|challengeIndex);
-    function hashClaimPos(
-        Claim _claim,
-        Position _position,
-        uint256 _challengeIndex
-    )
+    function hashClaimPos(Claim _claim, Position _position, uint256 _challengeIndex)
         internal
         pure
         returns (ClaimHash claimHash_)

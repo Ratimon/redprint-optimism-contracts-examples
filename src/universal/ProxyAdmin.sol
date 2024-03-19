@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { Ownable } from "@openzeppelin/access/Ownable.sol";
-import { Proxy } from "@main/universal/Proxy.sol";
-import { AddressManager } from "@main/legacy/AddressManager.sol";
-import { L1ChugSplashProxy } from "@main/legacy/L1ChugSplashProxy.sol";
-import { Constants } from "@main/libraries/Constants.sol";
+import {Ownable} from "@openzeppelin/access/Ownable.sol";
+import {Proxy} from "@main/universal/Proxy.sol";
+import {AddressManager} from "@main/legacy/AddressManager.sol";
+import {L1ChugSplashProxy} from "@main/legacy/L1ChugSplashProxy.sol";
+import {Constants} from "@main/libraries/Constants.sol";
 
 /// @title IStaticERC1967Proxy
 /// @notice IStaticERC1967Proxy is a static version of the ERC1967 proxy interface.
@@ -181,22 +181,18 @@ contract ProxyAdmin is Ownable {
     /// @param _proxy          Address of the proxy to upgrade.
     /// @param _implementation Address of the new implementation address.
     /// @param _data           Data to trigger the new implementation with.
-    function upgradeAndCall(
-        address payable _proxy,
-        address _implementation,
-        bytes memory _data
-    )
+    function upgradeAndCall(address payable _proxy, address _implementation, bytes memory _data)
         external
         payable
         onlyOwner
     {
         ProxyType ptype = proxyType[_proxy];
         if (ptype == ProxyType.ERC1967) {
-            Proxy(_proxy).upgradeToAndCall{ value: msg.value }(_implementation, _data);
+            Proxy(_proxy).upgradeToAndCall{value: msg.value}(_implementation, _data);
         } else {
             // reverts if proxy type is unknown
             upgrade(_proxy, _implementation);
-            (bool success,) = _proxy.call{ value: msg.value }(_data);
+            (bool success,) = _proxy.call{value: msg.value}(_data);
             require(success, "ProxyAdmin: call to proxy after upgrade failed");
         }
     }

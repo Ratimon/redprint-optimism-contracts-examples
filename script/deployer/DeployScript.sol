@@ -3,10 +3,9 @@ pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
 import {Vm} from "forge-std/Vm.sol";
-import { Deployment, Deployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
+import {Deployment, Deployment, IDeployer, getDeployer} from "@script/deployer/Deployer.sol";
 
 abstract contract DeployScript is Script {
-    
     IDeployer internal deployer = getDeployer();
 
     function run() public virtual returns (Deployment[] memory newDeployments) {

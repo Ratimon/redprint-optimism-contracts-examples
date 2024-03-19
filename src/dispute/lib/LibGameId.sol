@@ -12,11 +12,7 @@ library LibGameId {
     /// @param _timestamp The timestamp of the game's creation.
     /// @param _gameProxy The game proxy address.
     /// @return gameId_ The packed GameId.
-    function pack(
-        GameType _gameType,
-        Timestamp _timestamp,
-        IDisputeGame _gameProxy
-    )
+    function pack(GameType _gameType, Timestamp _timestamp, IDisputeGame _gameProxy)
         internal
         pure
         returns (GameId gameId_)

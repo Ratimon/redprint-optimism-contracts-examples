@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { Initializable } from "@openzeppelin/proxy/utils/Initializable.sol";
-import { Math } from "@openzeppelin/utils/math/Math.sol";
-import { Burn } from "@main/libraries/Burn.sol";
-import { Arithmetic } from "@main/libraries/Arithmetic.sol";
+import {Initializable} from "@openzeppelin/proxy/utils/Initializable.sol";
+import {Math} from "@openzeppelin/utils/math/Math.sol";
+import {Burn} from "@main/libraries/Burn.sol";
+import {Arithmetic} from "@main/libraries/Arithmetic.sol";
 
 /// @custom:upgradeable
 /// @title ResourceMetering
@@ -155,7 +155,7 @@ abstract contract ResourceMetering is Initializable {
     ///         child contract.
     function __ResourceMetering_init() internal onlyInitializing {
         if (params.prevBlockNum == 0) {
-            params = ResourceParams({ prevBaseFee: 1 gwei, prevBoughtGas: 0, prevBlockNum: uint64(block.number) });
+            params = ResourceParams({prevBaseFee: 1 gwei, prevBoughtGas: 0, prevBlockNum: uint64(block.number)});
         }
     }
 }

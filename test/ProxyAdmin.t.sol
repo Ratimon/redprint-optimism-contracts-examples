@@ -12,7 +12,7 @@ import {ResolvedDelegateProxy} from "@main/legacy/ResolvedDelegateProxy.sol";
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 
 // import {Deployer, getDeployer} from "forge-deploy/Deployer.sol";
-import { IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
 import {DeployProxyAdminScript} from "@script/202_DeployPloxyAdmin.s.sol";
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
@@ -164,7 +164,7 @@ contract ProxyAdmin_Test is Test {
         getProxyAdmin(payable(resolved));
     }
 
-    function getProxyAdmin(address payable _proxy) view internal {
+    function getProxyAdmin(address payable _proxy) internal view {
         address proxyAdminOwner = admin.getProxyAdmin(_proxy);
         assertEq(proxyAdminOwner, address(admin));
     }

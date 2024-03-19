@@ -2,13 +2,12 @@
 pragma solidity ^0.8.0;
 
 import {Vm} from "forge-std/Vm.sol";
-import { console2 as console } from "@forge-std/console2.sol";
-import { stdJson } from "@forge-std/StdJson.sol";
+import {console2 as console} from "@forge-std/console2.sol";
+import {stdJson} from "@forge-std/StdJson.sol";
 
-import { Predeploys } from "@main/libraries/Predeploys.sol";
-import { Config } from "@script/deployer/Config.sol";
-import { ForgeArtifacts } from "@script/deployer/ForgeArtifacts.sol";
-
+import {Predeploys} from "@main/libraries/Predeploys.sol";
+import {Config} from "@script/deployer/Config.sol";
+import {ForgeArtifacts} from "@script/deployer/ForgeArtifacts.sol";
 
 /// @notice represent a deployment
 struct Deployment {
@@ -20,7 +19,6 @@ struct Prank {
     bool active;
     address addr;
 }
-
 
 interface IDeployer {
     /// @notice function that return whether deployments will be broadcasted
@@ -72,7 +70,6 @@ interface IDeployer {
     function get(string memory name) external view returns (Deployment memory deployment);
 
     function save(string memory name, address deployed) external;
-
 }
 
 /// @notice contract that keep track of the deployment and save them as return value in the forge's broadcast
@@ -105,7 +102,6 @@ contract GlobalDeployer is IDeployer {
     /// but if the DEPLOYMENT_CONTEXT env variable is set, the context take that value
     /// The context allow you to organise deployments in a set as well as make specific configurations
     function init() external {
-
         // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
         _autoBroadcast = true;
         _autoSave = false;
@@ -134,7 +130,6 @@ contract GlobalDeployer is IDeployer {
             // then we load when running another deploy script
             _autoSave = true;
         }
-
     }
 
     // --------------------------------------------------------------------------------------------
@@ -184,7 +179,6 @@ contract GlobalDeployer is IDeployer {
             address addr = stdJson.readAddress(json, string.concat("$.", key));
             save(key, addr);
         }
-
     }
 
     /// @notice Returns all of the deployments done in the current context.
@@ -199,7 +193,6 @@ contract GlobalDeployer is IDeployer {
         Deployment memory existing = _namedDeployments[_name];
         return bytes(existing.name).length > 0;
     }
-
 
     function getAddress(string memory _name) public view returns (address payable) {
         Deployment memory existing = _namedDeployments[_name];
@@ -298,12 +291,11 @@ contract GlobalDeployer is IDeployer {
         }
 
         console.log("Saving %s: %s", _name, _deployed);
-        Deployment memory deployment = Deployment({ name: _name, addr: payable(_deployed) });
+        Deployment memory deployment = Deployment({name: _name, addr: payable(_deployed)});
         _namedDeployments[_name] = deployment;
         _newDeployments.push(deployment);
         _appendDeployment(_name, _deployed);
     }
-
 
     // --------------------------------------------------------------------------------------------
     // Internal
@@ -311,9 +303,8 @@ contract GlobalDeployer is IDeployer {
 
     /// @notice Adds a deployment to the temp deployments file
     function _appendDeployment(string memory _name, address _deployed) internal {
-        vm.writeJson({ json: stdJson.serialize("", _name, _deployed), path: deploymentOutfile });
+        vm.writeJson({json: stdJson.serialize("", _name, _deployed), path: deploymentOutfile});
     }
-
 }
 
 function getDeployer() returns (IDeployer) {

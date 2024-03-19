@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { console2 as console } from "@forge-std/console2.sol";
+import {console2 as console} from "@forge-std/console2.sol";
 
 import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
 import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
 
-import { ProxyAdmin } from "@main/universal/ProxyAdmin.sol";
+import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 
 contract DeployProxyAdminScript is DeployScript {
     using DeployerFunctions for IDeployer;

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { ClonesWithImmutableArgs } from "@clones-with-immutable-args/ClonesWithImmutableArgs.sol";
-import { OwnableUpgradeable } from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
-import { ISemver } from "@main/universal/ISemver.sol";
+import {ClonesWithImmutableArgs} from "@clones-with-immutable-args/ClonesWithImmutableArgs.sol";
+import {OwnableUpgradeable} from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
+import {ISemver} from "@main/universal/ISemver.sol";
 
-import { IDisputeGame } from "@main/dispute/interfaces/IDisputeGame.sol";
-import { IDisputeGameFactory } from "@main/dispute/interfaces/IDisputeGameFactory.sol";
+import {IDisputeGame} from "@main/dispute/interfaces/IDisputeGame.sol";
+import {IDisputeGameFactory} from "@main/dispute/interfaces/IDisputeGameFactory.sol";
 
-import { LibGameId } from "@main/dispute/lib/LibGameId.sol";
+import {LibGameId} from "@main/dispute/lib/LibGameId.sol";
 
 import "@main/libraries/DisputeTypes.sol";
 import "@main/libraries/DisputeErrors.sol";
@@ -61,11 +61,7 @@ contract DisputeGameFactory is OwnableUpgradeable, IDisputeGameFactory, ISemver 
     }
 
     /// @inheritdoc IDisputeGameFactory
-    function games(
-        GameType _gameType,
-        Claim _rootClaim,
-        bytes calldata _extraData
-    )
+    function games(GameType _gameType, Claim _rootClaim, bytes calldata _extraData)
         external
         view
         returns (IDisputeGame proxy_, Timestamp timestamp_)
@@ -84,11 +80,7 @@ contract DisputeGameFactory is OwnableUpgradeable, IDisputeGameFactory, ISemver 
     }
 
     /// @inheritdoc IDisputeGameFactory
-    function create(
-        GameType _gameType,
-        Claim _rootClaim,
-        bytes calldata _extraData
-    )
+    function create(GameType _gameType, Claim _rootClaim, bytes calldata _extraData)
         external
         payable
         returns (IDisputeGame proxy_)
@@ -107,7 +99,7 @@ contract DisputeGameFactory is OwnableUpgradeable, IDisputeGameFactory, ISemver 
 
         // Clone the implementation contract and initialize it with the given parameters.
         proxy_ = IDisputeGame(address(impl).clone(abi.encodePacked(_rootClaim, parentHash, _extraData)));
-        proxy_.initialize{ value: msg.value }();
+        proxy_.initialize{value: msg.value}();
 
         // Compute the unique identifier for the dispute game.
         Hash uuid = getGameUUID(_gameType, _rootClaim, _extraData);
@@ -124,11 +116,7 @@ contract DisputeGameFactory is OwnableUpgradeable, IDisputeGameFactory, ISemver 
     }
 
     /// @inheritdoc IDisputeGameFactory
-    function getGameUUID(
-        GameType _gameType,
-        Claim _rootClaim,
-        bytes calldata _extraData
-    )
+    function getGameUUID(GameType _gameType, Claim _rootClaim, bytes calldata _extraData)
         public
         pure
         returns (Hash uuid_)
@@ -137,11 +125,7 @@ contract DisputeGameFactory is OwnableUpgradeable, IDisputeGameFactory, ISemver 
     }
 
     /// @inheritdoc IDisputeGameFactory
-    function findLatestGames(
-        GameType _gameType,
-        uint256 _start,
-        uint256 _n
-    )
+    function findLatestGames(GameType _gameType, uint256 _start, uint256 _n)
         external
         view
         returns (GameSearchResult[] memory games_)

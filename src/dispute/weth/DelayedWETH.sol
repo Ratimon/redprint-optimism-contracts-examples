@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { OwnableUpgradeable } from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
-import { ISemver } from "@main/universal/ISemver.sol";
+import {OwnableUpgradeable} from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
+import {ISemver} from "@main/universal/ISemver.sol";
 
-import { IDelayedWETH } from "@main/dispute/interfaces/IDelayedWETH.sol";
-import { IWETH } from "@main/dispute/interfaces/IWETH.sol";
-import { WETH98 } from "@main/dispute/weth/WETH98.sol";
+import {IDelayedWETH} from "@main/dispute/interfaces/IDelayedWETH.sol";
+import {IWETH} from "@main/dispute/interfaces/IWETH.sol";
+import {WETH98} from "@main/dispute/weth/WETH98.sol";
 
-import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
+import {SuperchainConfig} from "@main/L1/SuperchainConfig.sol";
 
 /// @title DelayedWETH
 /// @notice DelayedWETH is an extension to WETH9 that allows for delayed withdrawals. Accounts must
@@ -38,7 +38,7 @@ contract DelayedWETH is OwnableUpgradeable, WETH98, IDelayedWETH, ISemver {
     /// @param _delay The delay for withdrawals in seconds.
     constructor(uint256 _delay) {
         DELAY_SECONDS = _delay;
-        initialize({ _owner: address(0), _config: SuperchainConfig(address(0)) });
+        initialize({_owner: address(0), _config: SuperchainConfig(address(0))});
     }
 
     /// @notice Initializes the contract.

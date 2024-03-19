@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { Initializable } from "@openzeppelin/proxy/utils/Initializable.sol";
-import { ISemver } from "@main/universal/ISemver.sol";
-import { Storage } from "@main/libraries/Storage.sol";
+import {Initializable} from "@openzeppelin/proxy/utils/Initializable.sol";
+import {ISemver} from "@main/universal/ISemver.sol";
+import {Storage} from "@main/libraries/Storage.sol";
 
 /// @custom:audit none This contracts is not yet audited.
 /// @title SuperchainConfig
@@ -40,7 +40,7 @@ contract SuperchainConfig is Initializable, ISemver {
 
     /// @notice Constructs the SuperchainConfig contract.
     constructor() {
-        initialize({ _guardian: address(0), _paused: false });
+        initialize({_guardian: address(0), _paused: false});
     }
 
     /// @notice Initializer.

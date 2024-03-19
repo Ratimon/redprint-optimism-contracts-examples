@@ -32,13 +32,7 @@ interface IPreimageOracle {
     ///      │          4 │ L2 Block Number (u64)  │
     ///      │          5 │ Chain ID (u64)         │
     ///      └────────────┴────────────────────────┘
-    function loadLocalData(
-        uint256 _ident,
-        bytes32 _localContext,
-        bytes32 _word,
-        uint256 _size,
-        uint256 _partOffset
-    )
+    function loadLocalData(uint256 _ident, bytes32 _localContext, bytes32 _word, uint256 _size, uint256 _partOffset)
         external
         returns (bytes32 key_);
 
@@ -67,8 +61,7 @@ interface IPreimageOracle {
         bytes calldata _commitment,
         bytes calldata _proof,
         uint256 _partOffset
-    )
-        external;
+    ) external;
 
     /// @notice Prepares a point evaluation precompile result to be read by the keccak256 of its input.
     /// @param _input The point evaluation precompile input.

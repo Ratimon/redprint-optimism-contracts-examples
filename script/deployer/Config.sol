@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Vm } from "@forge-std/Vm.sol";
-import { Chains } from "@script/deployer/Chains.sol";
+import {Vm} from "@forge-std/Vm.sol";
+import {Chains} from "@script/deployer/Chains.sol";
 
 /// @title Config
 /// @notice Contains all env var based config. Add any new env var parsing to this file
@@ -15,7 +15,8 @@ library Config {
     ///         written to disk after doing a deployment.
     function deploymentOutfile() internal view returns (string memory _env) {
         _env = vm.envOr(
-            "DEPLOYMENT_OUTFILE", string.concat(vm.projectRoot(), "/deployments/", _getDeploymentContext(), "/.deploy.json")
+            "DEPLOYMENT_OUTFILE",
+            string.concat(vm.projectRoot(), "/deployments/", _getDeploymentContext(), "/.deploy.json")
         );
     }
 

@@ -1,6 +1,6 @@
 <h1>📚 OPStack Contracts 's Deployment Pipline using Redprint` 's POC 📚</h1>
 
-A PoC showing how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style
+A PoC showing how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
 
 > **Note**💡
 
@@ -33,7 +33,7 @@ While developer experience and security are our top priorities, we aim to provid
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
+We are building `Redprint Wizard`, a web application to interactively customize, mix & match, d`eploy layer2 **OPStack** chain / **App-chain**.
 
 It can be as educational platform to explore and select different versions of smart contract components for different usecases / features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
 
@@ -44,6 +44,8 @@ By way of illustration, this is a **low-fidelity wireframe** showing how it work
 It can be seen above that the developers have several options to choose their own desired layers. In our example above, it is the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is picked over other Governor-style contract systems.
 
 To be more specific, another option is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **Voting Delay**, **Voting Period**, **Time Lock Period** and etc.
+
+This is just one example. There are many other interesting customizable contracts to explore and add hackable features. For instance, customized bridge can be created by extending `IStandardard Bridge` as well as modifying `L1StandardBridge` or `L1ERC721Bridge`.
 
 2. `redprint-forge` (**Framework**)
 
@@ -64,7 +66,6 @@ On the one hand, the first one is the deployment script written in [/script](./s
 │   ├── 200_SetupSuperchain.s.sol
 │   ├── 201_DeployAddressManager.s.sol
 │   ├── 202_DeployPloxyAdmin.s.sol
-│   ├── A00_ShowPrecomputedAddress.s.sol
 ```
 
 I highlight that the developer is able to aggregate all script into single one like in [/script](./script/000_DeployAll.s.sol):

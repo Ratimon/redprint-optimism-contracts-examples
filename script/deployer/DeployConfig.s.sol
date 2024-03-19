@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Script } from "@forge-std/Script.sol";
-import { console2 as console } from "@forge-std/console2.sol";
-import { stdJson } from "@forge-std/StdJson.sol";
-import { Executables } from "@script/deployer/Executables.sol";
-import { Chains } from "@script/deployer/Chains.sol";
+import {Script} from "@forge-std/Script.sol";
+import {console2 as console} from "@forge-std/console2.sol";
+import {stdJson} from "@forge-std/StdJson.sol";
+import {Executables} from "@script/deployer/Executables.sol";
+import {Chains} from "@script/deployer/Chains.sol";
 
 // Global constant for the `useFaultProofs` slot in the DeployConfig contract, which can be overridden in the testing
 // environment.
@@ -157,7 +157,7 @@ contract DeployConfig is Script {
             } catch {
                 try vm.parseJsonUint(_json, "$.l1StartingBlockTag") returns (uint256 tag) {
                     return _getBlockByTag(vm.toString(tag));
-                } catch { }
+                } catch {}
             }
         }
         revert("l1StartingBlockTag must be a bytes32, string or uint256 or cannot fetch l1StartingBlockTag");
