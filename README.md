@@ -1,4 +1,4 @@
-<h1>📚 OPStack Contracts 's Deployment Pipline using Redprint` 's POC 📚</h1>
+<h1>📚 POC : OPStack Contracts 's Deployment Pipline using Redprint 📚</h1>
 
 A PoC showing how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
 
@@ -33,7 +33,7 @@ While developer experience and security are our top priorities, we aim to provid
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a web application to interactively customize, mix & match, d`eploy layer2 **OPStack** chain / **App-chain**.
+We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
 
 It can be as educational platform to explore and select different versions of smart contract components for different usecases / features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
 
@@ -54,6 +54,7 @@ We are developing `redprint-forge`, a modular solidity-based framework to deploy
 - Provide type-safe deployment functions for **OPStack**'s smart contract component. This ensures correct type and order of arguments, enhancing security in smart contract development
 - Save deployment schemas in **json** file
 - Separate into each of modular and customizable components
+- All-Solidity-based so no context switching, no new testing syntax
 
 The directories below show how modular the `redprint-forge` 's **deployment system** is :
 
