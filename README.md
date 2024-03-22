@@ -33,9 +33,9 @@ While developer experience and security are our top priorities, we aim to provid
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a web application to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
+We are building `Redprint Wizard`, a code generator/ interactive educational playground to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
 
-It can be as educational platform to explore and select different versions of smart contract components for different usecases / features. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts.
+It supports spaces to experience, innovate and build features that either lie far along ether Optimism or Ethereum 's roadmaps which aren't yet available on the production at all. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts. this empowers developers to dream, tinker, and push the boundaries of what's possible.
 
 By way of illustration, this is a **low-fidelity wireframe** showing how it works:
 
