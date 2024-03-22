@@ -33,7 +33,7 @@ While developer experience and security are our top priorities, we aim to provid
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a code generator/ interactive educational playground to interactively customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
+We are building `Redprint Wizard`, a code generator/ interactive educational playground to customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
 
 It supports spaces to experience, innovate and build features that either lie far along ether Optimism or Ethereum 's roadmaps which aren't yet available on the production at all. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts. this empowers developers to dream, tinker, and push the boundaries of what's possible.
 
@@ -41,7 +41,7 @@ By way of illustration, this is a **low-fidelity wireframe** showing how it work
 
 ![ui demo](./assets/demo.png)
 
-It can be seen above that the developers have several options to choose their own desired layers. In our example above, it is the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is picked over other Governor-style contract systems.
+It can be seen above that the developers have several options to choose their own desired layers. In our example above, it is step 1 of the **governance** Layer and the [`Safe's Multi-sig`](https://github.com/safe-global/safe-smart-account) is picked over other Governor-style contract systems.
 
 To be more specific, another option is **Compound-style contract**. Different sets of parameters can be selected based on the preference. This includes **Voting Delay**, **Voting Period**, **Time Lock Period** and etc.
 
@@ -151,9 +151,25 @@ This could, together with **Type-Safe Deployment** feature, also improve overall
 
 Once installed, simply run:
 
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Ratimon/redprint-optimism-contracts-examples.git
+```
+
+2. Enter to the project directory:
+
+```bash
+cd redprint-optimism-contracts-examples
+```
+
+3. Select the correct node verison:
+
 ```bash
 nvm use 18.17.0
 ```
+
+4. Install the dependencies:
 
 ```bash
 pnpm i
