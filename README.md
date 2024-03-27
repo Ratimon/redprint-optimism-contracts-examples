@@ -1,6 +1,6 @@
 <h1>📚 POC : OPStack Contracts 's Deployment Pipline using Redprint 📚</h1>
 
-A PoC showing how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
+A PoC shows how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
 
 > **Note**💡
 
@@ -117,7 +117,7 @@ The first digit represents the higher level of deployment logic, compared to the
 
 > **Note**💡
 
-You can also checkout how our MVP of deployer library works behind the scene here [Deployer.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/efa1d92424989f0b7c313f9a1d1592b64ea1aadd/script/deployer/Deployer.sol)
+You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/efa1d92424989f0b7c313f9a1d1592b64ea1aadd/script/deployer/Deployer.sol)
 
 On the otherhand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
