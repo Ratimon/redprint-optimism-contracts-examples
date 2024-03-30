@@ -58,7 +58,7 @@ We are developing `redprint-forge`, a modular solidity-based framework to deploy
 
 The directories below show how modular the `redprint-forge` 's **deployment system** is :
 
-On the one hand, the first one is the deployment script written in [/script](./script), using `redprint-forge` libirary and style guide:
+On the one hand, the first one is a set of deployment scripts written in [/script](./script), using `redprint-forge` library and style guide:
 
 ```sh
 ├── script
@@ -69,7 +69,7 @@ On the one hand, the first one is the deployment script written in [/script](./s
 │   ├── 202_DeployPloxyAdmin.s.sol
 ```
 
-I highlight that the developer is able to aggregate all script into single one like in [/script](./script/000_DeployAll.s.sol):
+I highlight that developers are able to abstract and aggregate all scripts into just single one like in [/script](./script/000_DeployAll.s.sol):
 
 ```ts
 
@@ -119,7 +119,7 @@ The first digit represents the higher level of deployment logic, compared to the
 
 You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/efa1d92424989f0b7c313f9a1d1592b64ea1aadd/script/deployer/Deployer.sol)
 
-On the otherhand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
+On the other hand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
 ```sh
 ├── script
@@ -128,11 +128,11 @@ On the otherhand, the second one is the original script from **Optimism**'s [`De
 │   ├──
 ```
 
-As you can see, the original deployment script is a single file, containing more than 1000 lines of code for all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components, enabling better readabillity for smart contract developer.
+As you can see, the original script is a single file, containing more than 1000 lines of code for all deployment logics for all contracts. Meanwhile, `redprint-forge` abstracts and separates them into modular components, enabling better readability.
 
-Using together with `Redprint Wizard`, the generated solidity code which includes both smart contract parts and their relevant deploy scripts are displayed in customizable way, leading to better developer experience and creativity.
+Using together with `Redprint Wizard`, the generated solidity code which consists of both smart contract parts and their relevant deploy scripts are displayed in customizable ways, leading to better developer experience and creativity.
 
-Furthermore, these deployment components are extremely re-usable to replicate the same environment when testing. This will speed up the development process, as the developer does not need to write deployment logics again in test suites.
+Furthermore, these deployment components are extremely re-usable to replicate the same environment when testing. This will speed up the development process, as the developer does not need to re-write deployment logics again in test suites.
 
 As you can see in [ProxyAdmin.t.sol](./test/ProxyAdmin.t.sol), we can use those deployment components as a test harness.
 
@@ -230,7 +230,7 @@ L1_RPC_URL=http://localhost:8545
 pnpm start
 ```
 
-3. Run solidity deploymemt scripts:
+3. Run solidity deployment scripts:
 
 These following commands will save deployment artifacts at [`deployments/<chain-id>/`](./deployments/.save.json)
 
