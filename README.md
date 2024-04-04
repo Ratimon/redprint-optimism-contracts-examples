@@ -25,7 +25,7 @@ This **OP-Stack-oriented App-chain** building block is intended to better introd
 
 You can check out details in different layers here : [Reference](https://docs.optimism.io/stack/components).
 
-While developer experience and security are our top priorities, we aim to provide the developer-focused educational tool, such that the new experimental **layer2** or **App-chain** can be quicky bootstapped in **superchain** community & ecosystem. This align with **Ethereum** 's Rollup-centric Roadmap.
+While developer experience and security are our top priorities, we aim to provide the developer-focused educational tool, such that the new experimental **Rollup** or **App-chain** can be quicky bootstapped in **superchain** community & ecosystem. This align with **Ethereum** 's Rollup-centric Roadmap.
 
 ## How It Works
 
@@ -33,7 +33,7 @@ While developer experience and security are our top priorities, we aim to provid
 
 1. `Redprint Wizard` (**Web UI**)
 
-We are building `Redprint Wizard`, a code generator/ interactive educational playground to customize, mix & match, deploy layer2 **OPStack** chain / **App-chain**.
+We are building `Redprint Wizard`, a code generator/ interactive educational playground to customize, mix & match, deploy **OPStack** chain .
 
 It supports spaces to experience, innovate and build features that either lie far along ether Optimism or Ethereum 's roadmaps which aren't yet available on the production at all. Then, the `Redprint` will generate all required solidity code, including both smart contract parts and their relevant deploy scripts. this empowers developers to dream, tinker, and push the boundaries of what's possible.
 
