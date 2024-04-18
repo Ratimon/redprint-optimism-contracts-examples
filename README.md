@@ -1,4 +1,4 @@
-<h1>📚 POC : OPStack Contracts 's Deployment Pipline using Redprint 📚</h1>
+<h1>📚 POC : OPStack Contracts 's Deployment Pipeline using Redprint 📚</h1>
 
 A PoC shows how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
 
