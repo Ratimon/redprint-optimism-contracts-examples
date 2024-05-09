@@ -4,7 +4,8 @@ A PoC shows how `Redprint` works. This developer toolkit includes both interacti
 
 > **Note**💡
 
-> The code is not audited yet. Please use it carefully in production.
+> You can find our full code here for [`redprint-forge`](https://github.com/Ratimon/redprint-forge) and [`Redprint Wizard`](https://github.com/Ratimon/redprint-wizard). Everything is fully opensource from day one. 
+
 
 - [What is it for](#what-is-it-for)
 - [How It Works](#how-it-works)
