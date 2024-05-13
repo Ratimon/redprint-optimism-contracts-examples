@@ -1,6 +1,8 @@
 <h1>📚 POC : OPStack Contracts 's Deployment Pipeline using Redprint 📚</h1>
 
-A PoC shows how `Redprint` works. This developer toolkit includes both interactive code generator and template to modify & deploy **OPstack** ’s smart contract components in modular style. It also acts an educational place to study OPStack component at smart contract level.
+This repo shows how `Redprint` works. it includes a template experiment **OPstack** features. This can be done by modifying their smart contracts components using our [`Redprint Wizard`](https://github.com/Ratimon/redprint-wizard). Then, [`redprint-forge`](https://github.com/Ratimon/redprint-forge) could be used to deploy such customized contracts in production.
+
+Hence, this acts an educational place to study OPStack component at smart contract level.
 
 > **Note**💡
 
