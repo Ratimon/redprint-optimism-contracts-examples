@@ -10,8 +10,8 @@ import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
 import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import {Safe} from "@safe-contracts/Safe.sol";
 
-// import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
-// import { ICompoundTimelock} from"@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
+import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
+import { ICompoundTimelock} from"@openzeppelin-5_0_2/governance/extensions/GovernorTimelockCompound.sol";
 import {AddressManager} from "src/legacy/AddressManager.sol";
 import {ProxyAdmin} from "src/universal/ProxyAdmin.sol";
 
@@ -22,7 +22,7 @@ string constant Artifact_Safe = "Safe.sol:Safe";
 string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 
-// string constant Artifact_MyGovernor = "MyGovernor.sol:MyGovernor";
+string constant Artifact_MyGovernor = "MyGovernor.sol:MyGovernor";
 
 library DeployerFunctions {
     function deploy_SafeProxyFactory(IDeployer deployer, string memory name) internal returns (SafeProxyFactory) {
@@ -99,7 +99,27 @@ library DeployerFunctions {
         return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args, options));
     }
 
-    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock)
+    function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock)
+        internal
+        returns (MyGovernor)
+    {
+        console.log("Deploying Governer");
+        bytes memory args = abi.encode(address(_token), address(_timelock));
+
+        return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args));
+    }
+
+    function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock, DeployOptions memory options)
+        internal
+        returns (MyGovernor)
+    {
+        console.log("Deploying Governer");
+        bytes memory args = abi.encode(address(_token), address(_timelock));
+
+        return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args, options));
+    }
+
+    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, ICompoundTimelock _timelock)
     //     internal
     //     returns (MyGovernor)
     // {
@@ -109,7 +129,7 @@ library DeployerFunctions {
     //     return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args));
     // }
 
-    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock, DeployOptions memory options)
+    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, ICompoundTimelock _timelock, DeployOptions memory options)
     //     internal
     //     returns (MyGovernor)
     // {
@@ -119,5 +139,5 @@ library DeployerFunctions {
     //     return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args, options));
     // }
 
-
+    
 }

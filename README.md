@@ -273,7 +273,19 @@ pnpm test
 
 ## Contributing
 
-WIP
+### Develop guide
+
+Compile the non-default versions first:
+
+```sh
+FOUNDRY_PROFILE=oz_5_0_2 forge build
+```
+
+Compile the default version last:
+
+```sh
+forge build
+```
 
 ## Architecture
 

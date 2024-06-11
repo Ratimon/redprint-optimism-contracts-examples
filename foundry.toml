@@ -2,8 +2,19 @@
 src = "src"
 out = "out"
 script = 'script'
+test = 'test'
 libs = ["node_modules", "lib"]
-solc_version = '0.8.15'
+# solc_version = '0.8.15'
+auto_detect_solc = true
+
+[profile.oz_5_0_2]
+src = "src-oz_5_0_2"
+out = "out-oz_5_0_2"
+script = 'script-oz_5_0_2'
+test = 'test-oz_5_0_2'
+libs = ['lib-5_0_2']
+solc_version = '0.8.20'
+# auto_detect_solc = true
 
 # Test / Script Runner Settings
 ffi = true

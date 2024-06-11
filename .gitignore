@@ -1,6 +1,8 @@
 # Compiler files
 cache/
 out/
+out_5_0_2/
+out-oz_5_0_2/
 
 # Ignores development broadcast logs
 !/broadcast

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity ^0.8.15;
 
 import {ClonesWithImmutableArgs} from "@clones-with-immutable-args/ClonesWithImmutableArgs.sol";
 import {OwnableUpgradeable} from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
