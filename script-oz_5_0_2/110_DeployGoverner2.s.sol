@@ -9,10 +9,10 @@ contract DeployGovernerScript is Script {
     address token; // put your address here
     address timelock; // put your address here
 
-
     function run() external {
         
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        
         vm.startBroadcast(deployerPrivateKey);
 
         IVotes _token = IVotes(token);
