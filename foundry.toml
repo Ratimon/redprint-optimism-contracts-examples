@@ -13,7 +13,8 @@ out = "out-oz_5_0_2"
 script = 'script-oz_5_0_2'
 test = 'test-oz_5_0_2'
 libs = ['lib-5_0_2']
-solc_version = '0.8.20'
+solc_version = '0.8.25'
+evm_version = "cancun"
 # auto_detect_solc = true
 
 # Test / Script Runner Settings

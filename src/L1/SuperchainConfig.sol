@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {Initializable} from "@openzeppelin/proxy/utils/Initializable.sol";
+import {Initializable} from "@openzeppelin-4/proxy/utils/Initializable.sol";
 import {ISemver} from "@main/universal/ISemver.sol";
 import {Storage} from "@main/libraries/Storage.sol";
 

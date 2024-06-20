@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {Initializable} from "@openzeppelin/proxy/utils/Initializable.sol";
-import {Math} from "@openzeppelin/utils/math/Math.sol";
+import {Initializable} from "@openzeppelin-4/proxy/utils/Initializable.sol";
+import {Math} from "@openzeppelin-4/utils/math/Math.sol";
 import {Burn} from "@main/libraries/Burn.sol";
 import {Arithmetic} from "@main/libraries/Arithmetic.sol";
 

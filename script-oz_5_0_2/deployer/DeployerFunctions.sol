@@ -11,7 +11,7 @@ import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import {Safe} from "@safe-contracts/Safe.sol";
 
 import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
-import { ICompoundTimelock} from"@openzeppelin-5_0_2/governance/extensions/GovernorTimelockCompound.sol";
+import { ICompoundTimelock} from"@openzeppelin-4/governance/extensions/GovernorTimelockCompound.sol";
 import {AddressManager} from "src/legacy/AddressManager.sol";
 import {ProxyAdmin} from "src/universal/ProxyAdmin.sol";
 

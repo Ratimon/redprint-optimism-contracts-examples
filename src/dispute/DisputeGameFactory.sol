@@ -2,7 +2,7 @@
 pragma solidity ^0.8.15;
 
 import {ClonesWithImmutableArgs} from "@clones-with-immutable-args/ClonesWithImmutableArgs.sol";
-import {OwnableUpgradeable} from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin-upgradable-4/access/OwnableUpgradeable.sol";
 import {ISemver} from "@main/universal/ISemver.sol";
 
 import {IDisputeGame} from "@main/dispute/interfaces/IDisputeGame.sol";
