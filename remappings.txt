@@ -5,6 +5,11 @@
 @test/=test/
 @forge-std/=lib/forge-std/src/
 
+@safe-contracts/=lib/safe-smart-account/contracts/
+@clones-with-immutable-args/=node_modules/clones-with-immutable-args
+@solady/=node_modules/solady/src/
+@solmate/=node_modules/solmate/src/
+
 
 @openzeppelin=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts
 @openzeppelin-upgradable/=lib/openzeppelin-contracts-upgradeable/contracts
@@ -13,7 +18,6 @@
 @openzeppelin-4/=node_modules/@openzeppelin/contracts
 @openzeppelin-upgradable-4/=node_modules/@openzeppelin/contracts-upgradeable
 
-@safe-contracts/=lib/safe-smart-account/contracts/
-@clones-with-immutable-args/=node_modules/clones-with-immutable-args
-@solady/=node_modules/solady/src/
-@solmate/=node_modules/solmate/src/
+
+forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src
+solidity-stringutils/=lib/openzeppelin-foundry-upgrades/lib/solidity-stringutils
