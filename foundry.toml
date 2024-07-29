@@ -24,6 +24,7 @@ extra_output = ["storageLayout"]
 
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
+    { access = 'write', path = './deployments/31337/' },
     { access = 'read', path = './deploy-config/' },
     { access = 'read', path = './broadcast/' },
     { access = 'read', path = './forge-artifacts/' },
