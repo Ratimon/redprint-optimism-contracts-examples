@@ -19,7 +19,7 @@ contract ShowPrecomputedAddress is Script {
         return address(uint160(uint256(keccak256(abi.encode("optimism.deploy")))));
     }
 
-    function run() public {
+    function run() public view {
         console.logAddress(getAddress());
 
         address addr = address(uint160(uint256(keccak256(abi.encode("optimism.deploy")))));
@@ -27,7 +27,6 @@ contract ShowPrecomputedAddress is Script {
         bytes memory code = vm.getDeployedCode("Deployer.sol:GlobalDeployer");
 
         console.logBytes(code);
-
         
     }
 }

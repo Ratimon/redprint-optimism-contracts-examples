@@ -6,6 +6,8 @@ import {console2 as console} from "@forge-std/console2.sol";
 import {IDeployer} from "@script/deployer/Deployer.sol";
 import {DefaultDeployerFunction, DeployOptions} from "@script/deployer/DefaultDeployerFunction.sol";
 
+import { EIP1967Helper } from "src/universal/EIP1967Helper.sol";
+
 import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
 import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import {Safe} from "@safe-contracts/Safe.sol";
@@ -15,14 +17,15 @@ import {Safe} from "@safe-contracts/Safe.sol";
 import {AddressManager} from "src/legacy/AddressManager.sol";
 import {ProxyAdmin} from "src/universal/ProxyAdmin.sol";
 
+import {Proxy} from "src/universal/Proxy.sol";
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
 string constant Artifact_Safe = "Safe.sol:Safe";
 
 string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
+string constant Artifact_Proxy = "Proxy.sol:Proxy";
 
-// string constant Artifact_MyGovernor = "MyGovernor.sol:MyGovernor";
 
 library DeployerFunctions {
     function deploy_SafeProxyFactory(IDeployer deployer, string memory name) internal returns (SafeProxyFactory) {
@@ -99,25 +102,29 @@ library DeployerFunctions {
         return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args, options));
     }
 
-    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock)
-    //     internal
-    //     returns (MyGovernor)
-    // {
-    //     console.log("Deploying Governer");
-    //     bytes memory args = abi.encode(address(_token), address(_timelock));
+    /// @notice Deploys an ERC1967Proxy contract with a specified owner.
+    function deploy_ERC1967Proxy(IDeployer deployer, string memory name, address _proxyOwner)
+        internal
+        returns (Proxy)
+    {
+        bytes memory args = abi.encode(_proxyOwner);
+        Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
 
-    //     return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args));
-    // }
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "owner");
 
-    // function deploy_Governer(IDeployer deployer, string memory name, IVotes _token, TimelockController _timelock, DeployOptions memory options)
-    //     internal
-    //     returns (MyGovernor)
-    // {
-    //     console.log("Deploying Governer");
-    //     bytes memory args = abi.encode(address(_token), address(_timelock));
+        return proxy;
+    }
 
-    //     return MyGovernor(DefaultDeployerFunction.deploy(deployer, name, Artifact_MyGovernor, args, options));
-    // }
+    function deploy_ERC1967Proxy(IDeployer deployer, string memory name, address _proxyOwner, DeployOptions memory options)
+        internal
+        returns (Proxy)
+    {
+        bytes memory args = abi.encode(_proxyOwner);
+        Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "owner");
+
+        return proxy;
+    }
 
 }
