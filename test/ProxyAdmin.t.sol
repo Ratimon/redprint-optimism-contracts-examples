@@ -4,17 +4,21 @@ pragma solidity ^0.8.15;
 import {console} from "@forge-std/console.sol";
 
 import {Test} from "@forge-std/Test.sol";
-import {Proxy} from "@main/universal/Proxy.sol";
+
+import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
+import {AddressManager} from "@main/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
+
+import {Proxy} from "@main/universal/Proxy.sol";
 import {SimpleStorage} from "./Proxy.t.sol";
 import {L1ChugSplashProxy} from "@main/legacy/L1ChugSplashProxy.sol";
 import {ResolvedDelegateProxy} from "@main/legacy/ResolvedDelegateProxy.sol";
-import {AddressManager} from "@main/legacy/AddressManager.sol";
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeployAndSetupProxyAdminScript} from "@script/202_DeployAndSetupProxyAdmin.s.sol";
+import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@script/202_DeployAndSetupProxyAdmin.s.sol";
 
 contract ProxyAdmin_Test is Test {
     string mnemonic = vm.envString("MNEMONIC");
@@ -23,33 +27,35 @@ contract ProxyAdmin_Test is Test {
 
     IDeployer deployerProcedue;
 
-    Proxy proxy;
-    L1ChugSplashProxy chugsplash;
-    ResolvedDelegateProxy resolved;
+    SafeProxy safeProxy;
     AddressManager addressManager;
     ProxyAdmin admin;
+
+    Proxy proxy;
     SimpleStorage implementation;
+    L1ChugSplashProxy chugsplash;
+    ResolvedDelegateProxy resolved;
 
     function setUp() external {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoBroadcast(false);
 
+        DeploySafeScript safeDeployments = new DeploySafeScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
 
-
+        // Deploy Multisig
+        (,, safeProxy)= safeDeployments.deploy();
         // Deploy the legacy AddressManager
         addressManager = addressManagerDeployments.deploy();
         // Deploy the proxy admin
         admin = proxyAdminDeployments.deploy();
-
         
         // Deploy the standard proxy
         proxy = new Proxy(address(admin));
         // Deploy the legacy L1ChugSplashProxy with the admin as the owner
         chugsplash = new L1ChugSplashProxy(address(admin));
-
 
         deployerProcedue.deactivatePrank();
     }
@@ -68,6 +74,9 @@ contract ProxyAdmin_Test is Test {
         // can resolve the implementation address of legacy
         // ResolvedDelegateProxy based proxies.
 
+        vm.stopPrank();
+        vm.startPrank(address(safeProxy));
+
         // Set the reverse lookup of the ResolvedDelegateProxy
         // proxy
         admin.setImplementationName(address(resolved), "a");
@@ -84,7 +93,7 @@ contract ProxyAdmin_Test is Test {
 
     function test_setImplementationName_succeeds() external beforeEach {
         // deployer.activatePrank(vm.envAddress("DEPLOYER"));
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.setImplementationName(address(1), "foo");
         assertEq(admin.implementationName(address(1)), "foo");
     }
@@ -110,13 +119,10 @@ contract ProxyAdmin_Test is Test {
     }
 
     function test_owner_succeeds() external beforeEach {
-        address deployer = vm.envAddress("DEPLOYER");
-
-        assertEq(admin.owner(), deployer);
+        assertEq(admin.owner(), address(safeProxy));
     }
 
     function test_proxyType_succeeds() external beforeEach {
-        // vm.prank(owner);
         assertEq(uint256(admin.proxyType(address(proxy))), uint256(ProxyAdmin.ProxyType.ERC1967));
         assertEq(uint256(admin.proxyType(address(chugsplash))), uint256(ProxyAdmin.ProxyType.CHUGSPLASH));
         assertEq(uint256(admin.proxyType(address(resolved))), uint256(ProxyAdmin.ProxyType.RESOLVED));
@@ -139,7 +145,7 @@ contract ProxyAdmin_Test is Test {
             address impl = admin.getProxyImplementation(_proxy);
             assertEq(impl, address(0));
         }
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.upgrade(_proxy, address(implementation));
 
         {
@@ -180,7 +186,7 @@ contract ProxyAdmin_Test is Test {
     function changeProxyAdmin(address payable _proxy) internal {
         ProxyAdmin.ProxyType proxyType = admin.proxyType(address(_proxy));
 
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.changeProxyAdmin(_proxy, address(128));
 
         // The proxy is no longer the admin and can
@@ -227,7 +233,7 @@ contract ProxyAdmin_Test is Test {
     }
 
     function upgrade(address payable _proxy) internal {
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.upgrade(_proxy, address(implementation));
 
         address impl = admin.getProxyImplementation(_proxy);
@@ -247,7 +253,7 @@ contract ProxyAdmin_Test is Test {
     }
 
     function upgradeAndCall(address payable _proxy) internal {
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.upgradeAndCall(_proxy, address(implementation), abi.encodeWithSelector(SimpleStorage.set.selector, 1, 1));
 
         address impl = admin.getProxyImplementation(_proxy);
@@ -271,7 +277,7 @@ contract ProxyAdmin_Test is Test {
     function test_isUpgrading_succeeds() external beforeEach {
         assertEq(false, admin.isUpgrading());
 
-        vm.prank(owner);
+        vm.prank(address(safeProxy));
         admin.setUpgrading(true);
         assertEq(true, admin.isUpgrading());
     }

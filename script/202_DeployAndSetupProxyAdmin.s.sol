@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import {console2 as console} from "@forge-std/console2.sol";
 import {VmSafe} from "@forge-std/Vm.sol";
 
-
 import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
 import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
 
@@ -29,7 +28,6 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
 
         if (proxyAdmin.addressManager() != addressManager) {
-
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 vm.prank(owner);
              } else {
@@ -37,6 +35,20 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
              }
 
             proxyAdmin.setAddressManager(addressManager);
+            console.log("AddressManager setted to : %s", address(addressManager));
+        }
+
+        address safe = deployer.mustGetAddress("SystemOwnerSafe");
+
+        if (proxyAdmin.owner() != safe) {
+            if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
+                vm.prank(owner);
+             } else {
+                console.log("Broadcasting ...");
+             }
+
+            proxyAdmin.transferOwnership(safe);
+            console.log("ProxyAdmin ownership transferred to Safe at: %s", safe);
         }
 
         return proxyAdmin;
