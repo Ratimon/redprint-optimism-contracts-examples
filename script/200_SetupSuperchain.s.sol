@@ -9,7 +9,7 @@ import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
-import {DeployProxyAdminScript} from "@script/202_DeployProxyAdmin.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@script/202_DeployAndSetupProxyAdmin.s.sol";
 
 contract SetupSuperchainScript is Script {
     IDeployer deployerProcedue;
@@ -19,7 +19,7 @@ contract SetupSuperchainScript is Script {
         deployerProcedue.setAutoSave(true);
 
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
-        DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
+        DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
 
         addressManagerDeployments.deploy();
         proxyAdminDeployments.deploy();

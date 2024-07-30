@@ -69,7 +69,7 @@ On the one hand, the first one is a set of deployment scripts written in [/scrip
 │   ├── 100_DeploySafe.s.sol
 │   ├── 200_SetupSuperchain.s.sol
 │   ├── 201_DeployAddressManager.s.sol
-│   ├── 202_DeployProxyAdmin.s.sol
+│   ├── 202_DeployAndSetupProxyAdmin.s.sol
 ```
 
 I highlight that developers are able to abstract and aggregate all scripts into just single one like in [/script](./script/000_DeployAll.s.sol):

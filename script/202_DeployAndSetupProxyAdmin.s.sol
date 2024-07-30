@@ -11,7 +11,7 @@ import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 
-contract DeployProxyAdminScript is DeployScript {
+contract DeployAndSetupProxyAdminScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
     address owner;

@@ -13,7 +13,7 @@ import {AddressManager} from "@main/legacy/AddressManager.sol";
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeployProxyAdminScript} from "@script/202_DeployProxyAdmin.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@script/202_DeployAndSetupProxyAdmin.s.sol";
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
 
 contract ProxyAdmin_Test is Test {
@@ -35,7 +35,7 @@ contract ProxyAdmin_Test is Test {
         deployerProcedue.setAutoBroadcast(false);
 
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
-        DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
+        DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
 
 
