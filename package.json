@@ -23,7 +23,7 @@
     "deploy_100_safe": "DEPLOYMENT_CONTEXT=localhost DEPLOYMENT_OUTFILE=deployments/31337/.save_safe.json ldenv -m localhost forge script script/100_DeploySafe.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast",
     "setup_200_superchain": "DEPLOYMENT_CONTEXT=localhost DEPLOYMENT_OUTFILE=deployments/31337/.save_superchain.json ldenv -m localhost forge script script/200_SetupSuperchain.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast",
     "deploy_201_address_manager": "DEPLOYMENT_CONTEXT=localhost DEPLOYMENT_OUTFILE=deployments/31337/.save_address_manager.json ldenv -m localhost forge script script/201_DeployAddressManager.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast",
-    "deploy_202_proxy_admin": "DEPLOYMENT_CONTEXT=localhost DEPLOYMENT_OUTFILE=deployments/31337/.save_proxy_admin.json ldenv -m localhost forge script script/202_DeployPloxyAdmin.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast"
+    "deploy_202_proxy_admin": "DEPLOYMENT_CONTEXT=localhost DEPLOYMENT_OUTFILE=deployments/31337/.save_proxy_admin.json ldenv -m localhost forge script script/202_DeployProxyAdmin.s.sol -vvvv --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_:DEPLOYMENT_CONTEXT,RPC_URL --broadcast"
   },
   "keywords": [],
   "author": "",

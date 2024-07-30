@@ -26,25 +26,8 @@ contract DeployProxyAdminScript is DeployScript {
 
         AddressManager addressManager = AddressManager(deployer.mustGetAddress("AddressManager"));
 
-        // console.log("msg.sender: script");
-        // console.log(msg.sender);
-
-        // console.log("proxyAdmin.owner(): script");
-        // console.log(proxyAdmin.owner());
-
-        // console.log("addressManager.owner(): script");
-        // console.log(addressManager.owner());
-
-
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
 
-        // console.log('msgSender');
-        // console.log(msgSender);
-
-        // if(mode != VmSafe.CallerMode.Broadcast) {
-        //     vm.prank(owner);
-        // }
-        
         if (proxyAdmin.addressManager() != addressManager) {
 
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-// import { console2 as console } from "forge-std/console2.sol";
 
 import {Ownable} from "@openzeppelin-4/access/Ownable.sol";
 import {Proxy} from "@main/universal/Proxy.sol";
@@ -80,8 +79,6 @@ contract ProxyAdmin is Ownable {
     ///         ResolvedDelegateProxy type proxy contracts.
     /// @param _address Address of the AddressManager.
     function setAddressManager(AddressManager _address) external onlyOwner {
-        // console.log('msg.sender');
-        // console.log(msg.sender);
         addressManager = _address;
     }
 

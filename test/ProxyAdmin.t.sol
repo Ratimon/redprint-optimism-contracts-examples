@@ -11,10 +11,9 @@ import {L1ChugSplashProxy} from "@main/legacy/L1ChugSplashProxy.sol";
 import {ResolvedDelegateProxy} from "@main/legacy/ResolvedDelegateProxy.sol";
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 
-// import {Deployer, getDeployer} from "forge-deploy/Deployer.sol";
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeployProxyAdminScript} from "@script/202_DeployPloxyAdmin.s.sol";
+import {DeployProxyAdminScript} from "@script/202_DeployProxyAdmin.s.sol";
 import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
 
 contract ProxyAdmin_Test is Test {
@@ -37,21 +36,11 @@ contract ProxyAdmin_Test is Test {
 
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
-
-        // vm.startPrank(owner);
-        // vm.startPrank(owner, owner);
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
 
-        // console.log('msg.sender', msg.sender);
 
         // Deploy the legacy AddressManager
         addressManager = addressManagerDeployments.deploy();
-
-        // console.log('addressManager.owner()', addressManager.owner());
-        // console.log('msg.sender',msg.sender);
-
-        // vm.startPrank(owner, owner);
-
         // Deploy the proxy admin
         admin = proxyAdminDeployments.deploy();
 
@@ -62,9 +51,7 @@ contract ProxyAdmin_Test is Test {
         chugsplash = new L1ChugSplashProxy(address(admin));
 
 
-       
-        // vm.stopPrank();
-         deployerProcedue.deactivatePrank();
+        deployerProcedue.deactivatePrank();
     }
 
     modifier beforeEach() {
@@ -80,9 +67,6 @@ contract ProxyAdmin_Test is Test {
         // Set the address of the address manager in the admin so that it
         // can resolve the implementation address of legacy
         // ResolvedDelegateProxy based proxies.
-
-        // to do : it is not needed as we set in deploy script
-        admin.setAddressManager(addressManager);
 
         // Set the reverse lookup of the ResolvedDelegateProxy
         // proxy
@@ -139,14 +123,10 @@ contract ProxyAdmin_Test is Test {
     }
 
     function test_erc1967GetProxyImplementation_succeeds() external beforeEach {
-        // vm.prank(owner, owner);
-
         getProxyImplementation(payable(proxy));
     }
 
     function test_chugsplashGetProxyImplementation_succeeds() external beforeEach {
-        //  deployer.activatePrank(vm.envAddress("DEPLOYER"));
-        // vm.prank(owner, owner);
         getProxyImplementation(payable(chugsplash));
     }
 
