@@ -13,7 +13,7 @@
     "start": "zellij --layout zellij.kdl a template-redprint || zellij --layout zellij.kdl -s template-redprint",
     "stop": "zellij kill-session template-redprint",
     "start:wezterm": "wezterm --config-file wezterm.lua",
-    "test": "forge test",
+    "test": "DEPLOYMENT_OUTFILE=deployments/31337/test/.test_all.json forge test -vvv --match-path test/ProxyAdmin.t.sol",
     "show_address": "forge script ShowPrecomputedAddress",
     "watch_test": "as-soon -w script -w src -w test pnpm test",
     "local_node": "rm -Rf deployments/localhost && anvil",

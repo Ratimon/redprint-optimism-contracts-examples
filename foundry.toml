@@ -4,8 +4,18 @@ out = "out"
 script = 'script'
 test = 'test'
 libs = ["node_modules", "lib"]
-# solc_version = '0.8.15'
+solc_version = '0.8.15'
 auto_detect_solc = true
+fs_permissions = [
+    { access = 'read-write', path = './deployments/' },
+    { access = 'write', path = './deployments/31337/' },
+    { access = 'read', path = './deploy-config/' },
+    { access = 'read', path = './broadcast/' },
+    { access = 'read', path = './forge-artifacts/' },
+    { access = 'read', path = './out' },
+    { access = 'read', path = './script/deploy/' },
+    { access = 'read-write', path = './' },
+]
 
 [profile.oz_5_0_2]
 src = "src-oz_5_0_2"
@@ -19,9 +29,6 @@ ffi = true
 ast = true
 build_info = true
 extra_output = ["storageLayout"]
-
-# Test / Script Runner Settings
-
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
     { access = 'write', path = './deployments/31337/' },
@@ -32,7 +39,5 @@ fs_permissions = [
     { access = 'read', path = './script/deploy/' },
     { access = 'read-write', path = './' },
 ]
-
-
 [fmt]
 ignore = ['generated/**/*.sol', "lib/**/*.sol"]

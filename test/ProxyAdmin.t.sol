@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-// import {console} from "@forge-std/console.sol";
+import {console} from "@forge-std/console.sol";
 
 import {Test} from "@forge-std/Test.sol";
 import {Proxy} from "@main/universal/Proxy.sol";
@@ -35,23 +35,36 @@ contract ProxyAdmin_Test is Test {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoBroadcast(false);
 
-        DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
+        DeployProxyAdminScript proxyAdminDeployments = new DeployProxyAdminScript();
 
         // vm.startPrank(owner);
+        // vm.startPrank(owner, owner);
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
+
+        // console.log('msg.sender', msg.sender);
+
+        // Deploy the legacy AddressManager
+        addressManager = addressManagerDeployments.deploy();
+
+        // console.log('addressManager.owner()', addressManager.owner());
+        // console.log('msg.sender',msg.sender);
+
+        // vm.startPrank(owner, owner);
 
         // Deploy the proxy admin
         admin = proxyAdminDeployments.deploy();
-        // // Deploy the standard proxy
-        proxy = new Proxy(address(admin));
 
+        
+        // Deploy the standard proxy
+        proxy = new Proxy(address(admin));
         // Deploy the legacy L1ChugSplashProxy with the admin as the owner
         chugsplash = new L1ChugSplashProxy(address(admin));
 
-        // // Deploy the legacy AddressManager
-        addressManager = addressManagerDeployments.deploy();
-        deployerProcedue.deactivatePrank();
+
+       
+        // vm.stopPrank();
+         deployerProcedue.deactivatePrank();
     }
 
     modifier beforeEach() {
@@ -67,7 +80,10 @@ contract ProxyAdmin_Test is Test {
         // Set the address of the address manager in the admin so that it
         // can resolve the implementation address of legacy
         // ResolvedDelegateProxy based proxies.
+
+        // to do : it is not needed as we set in deploy script
         admin.setAddressManager(addressManager);
+
         // Set the reverse lookup of the ResolvedDelegateProxy
         // proxy
         admin.setImplementationName(address(resolved), "a");
@@ -90,21 +106,21 @@ contract ProxyAdmin_Test is Test {
     }
 
     function test_setAddressManager_notOwner_reverts() external beforeEach {
-        // vm.startPrank(address(0));
+        vm.startPrank(address(0));
         vm.expectRevert("Ownable: caller is not the owner");
         admin.setAddressManager(AddressManager((address(0))));
-        // vm.stopPrank();
+        vm.stopPrank();
     }
 
     function test_setImplementationName_notOwner_reverts() external beforeEach {
-        // vm.startPrank(address(0));
+        vm.startPrank(address(0));
         vm.expectRevert("Ownable: caller is not the owner");
         admin.setImplementationName(address(0), "foo");
-        // vm.stopPrank();
+        vm.stopPrank();
     }
 
     function test_setProxyType_notOwner_reverts() external beforeEach {
-        // vm.prank(address(0));
+        vm.prank(address(0));
         vm.expectRevert("Ownable: caller is not the owner");
         admin.setProxyType(address(0), ProxyAdmin.ProxyType.CHUGSPLASH);
     }
@@ -143,7 +159,7 @@ contract ProxyAdmin_Test is Test {
             address impl = admin.getProxyImplementation(_proxy);
             assertEq(impl, address(0));
         }
-        vm.prank(owner, owner);
+        vm.prank(owner);
         admin.upgrade(_proxy, address(implementation));
 
         {
