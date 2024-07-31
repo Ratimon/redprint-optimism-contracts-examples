@@ -8,7 +8,6 @@ import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
 import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
 
 import {Proxy} from "@main/universal/ProxyAdmin.sol";
-import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
 
 contract DeploySuperchainConfigProxyScript is DeployScript {
     using DeployerFunctions for IDeployer;

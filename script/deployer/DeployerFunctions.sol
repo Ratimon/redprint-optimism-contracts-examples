@@ -2,11 +2,12 @@
 pragma solidity ^0.8.0;
 
 import {console2 as console} from "@forge-std/console2.sol";
+import { Vm } from "@forge-std/Vm.sol";
 
 import {IDeployer} from "@script/deployer/Deployer.sol";
 import {DefaultDeployerFunction, DeployOptions} from "@script/deployer/DefaultDeployerFunction.sol";
 
-import { EIP1967Helper } from "src/universal/EIP1967Helper.sol";
+import { EIP1967Helper } from "@main/universal/EIP1967Helper.sol";
 
 import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
 import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
@@ -14,10 +15,13 @@ import {Safe} from "@safe-contracts/Safe.sol";
 
 // import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
 // import { ICompoundTimelock} from"@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
-import {AddressManager} from "src/legacy/AddressManager.sol";
-import {ProxyAdmin} from "src/universal/ProxyAdmin.sol";
+import {AddressManager} from "@main/legacy/AddressManager.sol";
+import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 
-import {Proxy} from "src/universal/Proxy.sol";
+import {Proxy} from "@main/universal/Proxy.sol";
+
+import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
+
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
 string constant Artifact_Safe = "Safe.sol:Safe";
@@ -26,8 +30,13 @@ string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 string constant Artifact_Proxy = "Proxy.sol:Proxy";
 
+string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConfig";
+
 
 library DeployerFunctions {
+        /// @notice Foundry cheatcode VM.
+    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+
     function deploy_SafeProxyFactory(IDeployer deployer, string memory name) internal returns (SafeProxyFactory) {
         console.log("Deploying SafeProxyFactory");
         bytes memory args = abi.encode();
@@ -85,11 +94,13 @@ library DeployerFunctions {
     }
 
     function deploy_AddressManager(IDeployer deployer, string memory name) internal returns (AddressManager) {
+        console.log("Deploying AddressManager");
         bytes memory args = abi.encode();
         return AddressManager(DefaultDeployerFunction.deploy(deployer, name, Artifact_AddressManager, args));
     }
 
     function deploy_ProxyAdmin(IDeployer deployer, string memory name, address _owner) internal returns (ProxyAdmin) {
+        console.log("Deploying ProxyAdmin");
         bytes memory args = abi.encode(_owner);
         return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args));
     }
@@ -98,6 +109,7 @@ library DeployerFunctions {
         internal
         returns (ProxyAdmin)
     {
+        console.log("Deploying ProxyAdmin");
         bytes memory args = abi.encode(_owner);
         return ProxyAdmin(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProxyAdmin, args, options));
     }
@@ -107,6 +119,7 @@ library DeployerFunctions {
         internal
         returns (Proxy)
     {
+        console.log("Deploying ERC1967Proxy");
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
 
@@ -119,12 +132,44 @@ library DeployerFunctions {
         internal
         returns (Proxy)
     {
+        console.log("Deploying ERC1967Proxy");
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 
-        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "owner");
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "adming must equal owner");
 
         return proxy;
     }
+
+    function deploy_SuperchainConfig(IDeployer deployer, string memory name)
+        internal
+        returns (SuperchainConfig)
+    {
+        console.log("Deploying SuperchainConfig");
+        bytes memory args = abi.encode();
+        SuperchainConfig config = SuperchainConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SuperchainConfig, args));
+
+        require(config.guardian() == address(0), "deploy_SuperchainConfig error 1" );
+        bytes32 initialized = vm.load(address(config), bytes32(0));
+        require(initialized != 0, "deploy_SuperchainConfig error 2" );
+
+        return config;
+    }
+
+    function deploy_SuperchainConfig(IDeployer deployer, string memory name,  DeployOptions memory options)
+        internal
+        returns (SuperchainConfig)
+    {
+        console.log("Deploying SuperchainConfig");
+        bytes memory args = abi.encode();
+        SuperchainConfig config = SuperchainConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SuperchainConfig, args, options));
+
+        require(config.guardian() == address(0), "deploy_SuperchainConfig error 1" );
+        bytes32 initialized = vm.load(address(config), bytes32(0));
+        require(initialized != 0, "deploy_SuperchainConfig error 2" );
+
+        return config;
+    }
+
 
 }
