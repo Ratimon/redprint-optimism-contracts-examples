@@ -13,8 +13,6 @@ import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
 import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
 import {Safe} from "@safe-contracts/Safe.sol";
 
-// import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
-// import { ICompoundTimelock} from"@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 
@@ -123,8 +121,7 @@ library DeployerFunctions {
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
 
-        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "owner");
-
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "Admin address must equal the owner param");
         return proxy;
     }
 
@@ -136,8 +133,7 @@ library DeployerFunctions {
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 
-        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "adming must equal owner");
-
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "admin must equal owner");
         return proxy;
     }
 
@@ -149,10 +145,9 @@ library DeployerFunctions {
         bytes memory args = abi.encode();
         SuperchainConfig config = SuperchainConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SuperchainConfig, args));
 
-        require(config.guardian() == address(0), "deploy_SuperchainConfig error 1" );
+        require(config.guardian() == address(0), "Guardian must be still empty" );
         bytes32 initialized = vm.load(address(config), bytes32(0));
-        require(initialized != 0, "deploy_SuperchainConfig error 2" );
-
+        require(initialized != 0, "Must be initialized" );
         return config;
     }
 
@@ -164,12 +159,10 @@ library DeployerFunctions {
         bytes memory args = abi.encode();
         SuperchainConfig config = SuperchainConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SuperchainConfig, args, options));
 
-        require(config.guardian() == address(0), "deploy_SuperchainConfig error 1" );
+        require(config.guardian() == address(0), "Guardian must be still empty" );
         bytes32 initialized = vm.load(address(config), bytes32(0));
-        require(initialized != 0, "deploy_SuperchainConfig error 2" );
-
+        require(initialized != 0, "Must be initialized" );
         return config;
     }
-
 
 }
