@@ -11,7 +11,7 @@ import { Config } from "@script/deployer/Config.sol";
 
 import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
 
-contract DeploySuperchainConfigScript is DeployScript {
+contract DeployAndInitializeSuperchainConfig is DeployScript {
     using DeployerFunctions for IDeployer;
 
 
