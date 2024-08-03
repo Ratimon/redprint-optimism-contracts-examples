@@ -30,6 +30,7 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
         if (proxyAdmin.addressManager() != addressManager) {
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 vm.prank(owner);
+                console.log("Pranking ower ...");
              } else {
                 console.log("Broadcasting ...");
              }
@@ -43,6 +44,7 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
         if (proxyAdmin.owner() != safe) {
             if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 vm.prank(owner);
+                console.log("Pranking ower ...");
              } else {
                 console.log("Broadcasting ...");
              }
@@ -53,4 +55,6 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
 
         return proxyAdmin;
     }
+
+    // to do : abstract inner setup functions
 }

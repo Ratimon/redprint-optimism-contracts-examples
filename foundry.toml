@@ -4,8 +4,7 @@ out = "out"
 script = 'script'
 test = 'test'
 libs = ["node_modules", "lib"]
-# solc_version = '0.8.15'
-evm_version = "cancun"
+# solc_version = '0.8.20'
 auto_detect_solc = true
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },
@@ -25,7 +24,6 @@ script = 'script-oz_5_0_2'
 test = 'test-oz_5_0_2'
 libs = ['lib-5_0_2']
 solc_version = '0.8.25'
-evm_version = "cancun"
 ffi = true
 ast = true
 build_info = true

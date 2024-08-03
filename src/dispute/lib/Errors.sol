@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "@main/libraries/DisputeTypes.sol";
+import "src/dispute/lib/LibUDT.sol";
 
 ////////////////////////////////////////////////////////////////
 //                `DisputeGameFactory` Errors                 //
@@ -27,14 +27,17 @@ error UnexpectedRootClaim(Claim rootClaim);
 /// @notice Thrown when a dispute game has already been initialized.
 error AlreadyInitialized();
 
-/// @notice Thrown when a supplied bond is too low to cover the cost of the interaction.
-error InsufficientBond();
+/// @notice Thrown when a supplied bond is not equal to the required bond amount to cover the cost of the interaction.
+error IncorrectBondAmount();
+
+/// @notice Thrown when a credit claim is attempted for a value of 0.
+error NoCreditToClaim();
 
 /// @notice Thrown when the transfer of credit to a recipient account reverts.
 error BondTransferFailed();
 
-/// @notice Thrown when the `extraData` passed to the CWIA proxy is too long for the `FaultDisputeGame`.
-error ExtraDataTooLong();
+/// @notice Thrown when the `extraData` passed to the CWIA proxy is of improper length, or contains invalid information.
+error BadExtraData();
 
 /// @notice Thrown when a defense against the root claim is attempted.
 error CannotDefendRootClaim();
@@ -42,8 +45,8 @@ error CannotDefendRootClaim();
 /// @notice Thrown when a claim is attempting to be made that already exists.
 error ClaimAlreadyExists();
 
-/// @notice Thrown when a given claim is invalid (0).
-error InvalidClaim();
+/// @notice Thrown when a disputed claim does not match its index in the game.
+error InvalidDisputedClaimIndex();
 
 /// @notice Thrown when an action that requires the game to be `IN_PROGRESS` is invoked when
 ///         the game is not in progress.
@@ -88,9 +91,31 @@ error ClaimAboveSplit();
 ///         depth of the game.
 error InvalidSplitDepth();
 
+/// @notice Thrown on deployment if the max clock duration is less than or equal to the clock extension.
+error InvalidClockExtension();
+
+/// @notice Thrown on deployment if the max depth is greater than `LibPosition.`
+error MaxDepthTooLarge();
+
 /// @notice Thrown when trying to step against a claim for a second time, after it has already been countered with
 ///         an instruction step.
 error DuplicateStep();
+
+/// @notice Thrown when an anchor root is not found for a given game type.
+error AnchorRootNotFound();
+
+/// @notice Thrown when an output root proof is invalid.
+error InvalidOutputRootProof();
+
+/// @notice Thrown when header RLP is invalid with respect to the block hash in an output root proof.
+error InvalidHeaderRLP();
+
+/// @notice Thrown when there is a match between the block number in the output root proof and the block number
+///         claimed in the dispute game.
+error BlockNumberMatches();
+
+/// @notice Thrown when the L2 block number claim has already been challenged.
+error L2BlockNumberChallenged();
 
 ////////////////////////////////////////////////////////////////
 //              `PermissionedDisputeGame` Errors              //

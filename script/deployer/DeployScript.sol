@@ -5,6 +5,8 @@ import {Script} from "@forge-std/Script.sol";
 import {Vm} from "@forge-std/Vm.sol";
 import {Deployment, Deployment, IDeployer, getDeployer} from "@script/deployer/Deployer.sol";
 
+import { Config } from "@script/deployer/Config.sol";
+
 abstract contract DeployScript is Script {
     IDeployer internal deployer = getDeployer();
 
@@ -37,5 +39,12 @@ abstract contract DeployScript is Script {
                 revert("FAILED_TO_CALL: deploy()");
             }
         }
+    }
+
+    /// @notice The create2 salt used for deployment of the contract implementations.
+    ///         Using this helps to reduce config across networks as the implementation
+    ///         addresses will be the same across networks when deployed with create2.
+    function implSalt() public view returns (bytes32) {
+        return keccak256(bytes(Config.implSalt()));
     }
 }

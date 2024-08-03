@@ -61,9 +61,12 @@ library DeployerFunctions {
         string memory name,
         string memory safeProxyFactoryName,
         string memory safeSingletonyName,
-        address owner
+        address owner,
+        bytes32 implSalt
     ) internal returns (SafeProxy) {
         console.log("Deploying SystemOwnerSafe");
+        bytes32 salt = keccak256(abi.encode(name, implSalt));
+
         SafeProxyFactory safeProxyFactory = SafeProxyFactory(deployer.mustGetAddress(safeProxyFactoryName));
         Safe safeSingleton = Safe(deployer.mustGetAddress(safeSingletonyName));
 
@@ -74,7 +77,7 @@ library DeployerFunctions {
             Safe.setup.selector, signers, 1, address(0), hex"", address(0), address(0), 0, address(0)
         );
 
-        SafeProxy safeProxy = safeProxyFactory.createProxyWithNonce(address(safeSingleton), initData, block.timestamp);
+        SafeProxy safeProxy = safeProxyFactory.createProxyWithNonce(address(safeSingleton), initData, uint256(salt));
         deployer.save(name, address(safeProxy));
         console.log("New SystemOwnerSafe deployed at %s", address(safeProxy));
 

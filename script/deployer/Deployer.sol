@@ -9,6 +9,10 @@ import {Predeploys} from "@main/libraries/Predeploys.sol";
 import {Config} from "@script/deployer/Config.sol";
 import {ForgeArtifacts} from "@script/deployer/ForgeArtifacts.sol";
 
+import { DeployConfig } from "@script/deployer/DeployConfig.s.sol";
+import { Types } from "@script/optimism/Types.sol";
+
+
 /// @notice represent a deployment
 struct Deployment {
     string name;
@@ -21,6 +25,12 @@ struct Prank {
 }
 
 interface IDeployer {
+
+    function getConfig() external pure returns (DeployConfig);
+
+    function getProxiesUnstrict() external view returns (Types.ContractSet memory);
+
+
     /// @notice function that return whether deployments will be broadcasted
     function autoBroadcasting() external returns (bool);
 
@@ -79,6 +89,9 @@ contract GlobalDeployer is IDeployer {
     // --------------------------------------------------------------------------------------------
     Vm constant vm = Vm(address(bytes20(uint160(uint256(keccak256("hevm cheat code"))))));
 
+    DeployConfig public constant cfg =
+        DeployConfig(address(uint160(uint256(keccak256(abi.encode("optimism.deployconfig"))))));
+
     error DeploymentDoesNotExist(string);
     /// @notice Error for when trying to save an invalid deployment
     error InvalidDeployment(string);
@@ -102,6 +115,15 @@ contract GlobalDeployer is IDeployer {
     /// but if the DEPLOYMENT_CONTEXT env variable is set, the context take that value
     /// The context allow you to organise deployments in a set as well as make specific configurations
     function init() external {
+
+
+        // to do : refactor to internal
+        vm.etch(address(cfg), vm.getDeployedCode("DeployConfig.s.sol:DeployConfig"));
+        vm.label(address(cfg), "DeployConfig");
+        vm.allowCheatcodes(address(cfg));
+        cfg.read(Config.deployConfigPath());
+
+
         // needed as we etch the deployed code and so the initialization in the declaration above is not taken in consideration
         _autoBroadcast = true;
         _autoSave = false;
@@ -135,6 +157,10 @@ contract GlobalDeployer is IDeployer {
     // --------------------------------------------------------------------------------------------
     // Public Interface
     // --------------------------------------------------------------------------------------------
+
+    function getConfig() external pure returns (DeployConfig) {
+        return cfg;
+    }
 
     function autoBroadcasting() external view returns (bool) {
         return _autoBroadcast;
@@ -203,6 +229,25 @@ contract GlobalDeployer is IDeployer {
             return existing.addr;
         }
         return payable(address(0));
+    }
+
+    /// @notice Returns the proxy addresses, not reverting if any are unset.
+    function getProxiesUnstrict() external view returns (Types.ContractSet memory proxies_) {
+        proxies_ = Types.ContractSet({
+            L1CrossDomainMessenger: getAddress("L1CrossDomainMessengerProxy"),
+            L1StandardBridge: getAddress("L1StandardBridgeProxy"),
+            L2OutputOracle: getAddress("L2OutputOracleProxy"),
+            DisputeGameFactory: getAddress("DisputeGameFactoryProxy"),
+            DelayedWETH: getAddress("DelayedWETHProxy"),
+            AnchorStateRegistry: getAddress("AnchorStateRegistryProxy"),
+            OptimismMintableERC20Factory: getAddress("OptimismMintableERC20FactoryProxy"),
+            OptimismPortal: getAddress("OptimismPortalProxy"),
+            OptimismPortal2: getAddress("OptimismPortalProxy"),
+            SystemConfig: getAddress("SystemConfigProxy"),
+            L1ERC721Bridge: getAddress("L1ERC721BridgeProxy"),
+            ProtocolVersions: getAddress("ProtocolVersionsProxy"),
+            SuperchainConfig: getAddress("SuperchainConfigProxy")
+        });
     }
 
     function getL2Address(string memory _name) public pure returns (address payable) {
@@ -318,5 +363,6 @@ function getDeployer() returns (IDeployer) {
     vm.allowCheatcodes(addr);
     GlobalDeployer deployer = GlobalDeployer(addr);
     deployer.init();
+
     return deployer;
 }
