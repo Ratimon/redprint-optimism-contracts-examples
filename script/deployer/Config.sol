@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { Vm, VmSafe } from "@forge-std/Vm.sol";
+import {Chains} from "@script/deployer/Chains.sol";
 
 /// @notice Enum representing different ways of outputting genesis allocs.
 /// @custom:value NONE    No output, used in internal tests.
@@ -69,12 +70,44 @@ library Config {
         );
     }
 
-    // /// @notice Returns the path on the local filesystem where the deploy config is
-    // function deployConfigPath() internal view returns (string memory _env) {
-    //     _env = vm.envOr(
-    //         "DEPLOY_CONFIG_PATH", string.concat(vm.projectRoot(), "/deploy-config/", _getDeploymentContext(), ".json")
-    //     );
-    // }
+
+    /// @notice Returns the deployment context which was only useful in the hardhat deploy style
+    ///         of deployments. It is now DEPRECATED and will be removed in the future.
+    function deploymentContext() internal view returns (string memory _env) {
+        _env = vm.envOr("DEPLOYMENT_CONTEXT", string(""));
+    }
+
+    // to do : remove?
+    /// @notice The context of the deployment is used to namespace the artifacts.
+    ///         An unknown context will use the chainid as the context name.
+    ///         This is legacy code and should be removed in the future.
+    function _getDeploymentContext() private view returns (string memory) {
+        string memory context = deploymentContext();
+        if (bytes(context).length > 0) {
+            return context;
+        }
+
+        uint256 chainid = Config.chainID();
+        if (chainid == Chains.Mainnet) {
+            return "mainnet";
+        } else if (chainid == Chains.Goerli) {
+            return "goerli";
+        } else if (chainid == Chains.OPGoerli) {
+            return "optimism-goerli";
+        } else if (chainid == Chains.OPMainnet) {
+            return "optimism-mainnet";
+        } else if (chainid == Chains.LocalDevnet || chainid == Chains.GethDevnet) {
+            return "devnetL1";
+        } else if (chainid == Chains.Hardhat) {
+            return "hardhat";
+        } else if (chainid == Chains.Sepolia) {
+            return "sepolia";
+        } else if (chainid == Chains.OPSepolia) {
+            return "optimism-sepolia";
+        } else {
+            return vm.toString(chainid);
+        }
+    }
 
 
     /// @notice Returns the path on the local filesystem where the deploy config is

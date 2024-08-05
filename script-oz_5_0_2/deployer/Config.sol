@@ -77,6 +77,7 @@ library Config {
         _env = vm.envUint("DRIPPIE_OWNER_PRIVATE_KEY");
     }
 
+    // to do : remove?
     /// @notice The context of the deployment is used to namespace the artifacts.
     ///         An unknown context will use the chainid as the context name.
     ///         This is legacy code and should be removed in the future.
