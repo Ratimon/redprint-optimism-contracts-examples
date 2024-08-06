@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "forge install --no-git openzeppelin/openzeppelin-contracts@v4.9.4 foundry-rs/forge-std@v1.9.2 safe-global/safe-smart-account@v1.4.1 || echo '' "
   },
   "keywords": [],
   "author": "",
