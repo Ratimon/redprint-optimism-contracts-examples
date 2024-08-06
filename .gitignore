@@ -32,7 +32,6 @@ docs/
 # delete that line and execute `just reinstall git`
 
 /lib
-
 # npm
 node_modules/
 
