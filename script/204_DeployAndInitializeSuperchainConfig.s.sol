@@ -20,6 +20,7 @@ import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
 contract DeployAndInitializeSuperchainConfig is DeployScript {
     using DeployerFunctions for IDeployer;
 
+    address owner;
     // DeployConfig public constant cfg =
     SuperchainConfig config;
 
@@ -30,10 +31,23 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
 
         config = deployer.deploy_SuperchainConfig("SuperchainConfig", options);
 
-        // initializeSuperchainConfig();
-
+        
         return config;
     }
+
+    function initialize() external  {
+        string memory mnemonic = vm.envString("MNEMONIC");
+        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+        owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
+
+        console.log("Broadcasting ...");
+        vm.startBroadcast(owner);
+        initializeSuperchainConfig();
+        vm.stopBroadcast();
+    }
+        
+
+    
 
     /// @notice Initialize the SuperchainConfig
     function initializeSuperchainConfig() public {
@@ -44,8 +58,6 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
             _implementation:  address(config),
             _innerCallData: abi.encodeCall(SuperchainConfig.initialize, ( deployer.getConfig().superchainConfigGuardian(), false))
         });
-
-
 
         ChainAssertions.checkSuperchainConfig({ _contracts: deployer.getProxiesUnstrict(), _cfg: deployer.getConfig(), _isPaused: false });
     }
@@ -69,7 +81,7 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
 
         ProxyAdmin proxyAdmin = ProxyAdmin(deployer.mustGetAddress("ProxyAdmin"));
 
-        console.log(' proxyAdmin.owner()');
+        console.log('proxyAdmin.owner()');
         console.log(proxyAdmin.owner());
 
         string memory mnemonic = vm.envString("MNEMONIC");
@@ -92,7 +104,32 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
             refundReceiver: payable(address(0)),
             signatures: signature
         });
+
     }
+
+    // function _serializeJson(
+    //     uint256 chainId,
+    //     address safe,
+    //     address to,
+    //     uint256 value,
+    //     bytes memory data,
+    //     Enum.Operation operation,
+    //     bytes memory additionalData
+    // ) internal {
+    //     string memory json = "";
+    //     vm.serializeUint(json, "chainId", chainId);
+    //     vm.serializeAddress(json, "safe", safe);
+    //     vm.serializeAddress(json, "to", to);
+    //     vm.serializeUint(json, "value", value);
+    //     vm.serializeUint(json, "operation", uint256(operation));
+    //     vm.serializeBytes(json, "additionalData", additionalData);
+    //     string memory finalJson = vm.serializeBytes(json, "data", data);
+
+    //     console.log(finalJson);
+    //     //  to do : make it dynamic
+    //     vm.writeJson(finalJson, "./scripts/artifact/transaction.json");
+    // }
+
 
     // to do : abstract inner setup functions
 

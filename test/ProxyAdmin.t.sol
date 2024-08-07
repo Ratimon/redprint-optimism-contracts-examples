@@ -51,6 +51,10 @@ contract ProxyAdmin_Test is Test {
         addressManager = addressManagerDeployments.deploy();
         // Deploy the proxy admin
         admin = proxyAdminDeployments.deploy();
+
+        deployerProcedue.deactivatePrank();
+        proxyAdminDeployments.initialize();
+        deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
         
         // Deploy the standard proxy
         proxy = new Proxy(address(admin));
@@ -58,6 +62,8 @@ contract ProxyAdmin_Test is Test {
         chugsplash = new L1ChugSplashProxy(address(admin));
 
         deployerProcedue.deactivatePrank();
+
+
     }
 
     modifier beforeEach() {

@@ -3,5 +3,7 @@ src = "src"
 out = "out"
 libs = ["node_modules", "lib"]
 remappings = ["hardhat/=node_modules/hardhat/"]
+fs_permissions = [{ access = "read-write", path = "./scripts/artifact/" }]
+
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

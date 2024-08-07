@@ -29,7 +29,8 @@ contract Utils is Script {
         string memory finalJson = vm.serializeBytes(json, "data", data);
 
         console.log(finalJson);
-        vm.writeJson(finalJson, "./scripts/foundry/transaction.json");
+        //  to do : make it dynamic
+        vm.writeJson(finalJson, "./scripts/artifact/transaction.json");
     }
 
     function _chainToMultiSend(uint256 chain) internal pure returns (MultiSend) {
