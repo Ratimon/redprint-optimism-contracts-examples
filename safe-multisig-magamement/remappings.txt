@@ -1,4 +1,7 @@
+@main-multisig/=src/
+@script-multisig/=script/
+
 @forge-std/=lib/forge-std/src/
 @openzeppelin/=lib/openzeppelin-contracts/contracts
-@safe-contract/=lib/safe-contracts/contracts/
+@safe-contracts/=lib/safe-smart-account/contracts/
 @test/=test/
