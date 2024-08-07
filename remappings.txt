@@ -5,8 +5,6 @@
 @test/=test/
 @forge-std/=lib/forge-std/src/
 
-@script-multisig/=safe-multisig-magamement/script/
-
 @safe-contracts/=lib/safe-smart-account/contracts/
 @clones-with-immutable-args/=node_modules/clones-with-immutable-args
 @solady/=node_modules/solady/src/

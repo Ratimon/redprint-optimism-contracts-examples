@@ -37,8 +37,6 @@ contract DeploySafeScript is DeployScript {
         uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
         owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
-        // to do : add delegate
-
         safeProxy_ = SafeProxy(
             deployer.deploy_SystemOwnerSafe("SystemOwnerSafe", "SafeProxyFactory", "SafeSingleton", address(owner), DeployScript.implSalt())
         );

@@ -30,8 +30,6 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
         DeployOptions memory options = DeployOptions({salt:_salt});
 
         config = deployer.deploy_SuperchainConfig("SuperchainConfig", options);
-
-        
         return config;
     }
 
@@ -45,8 +43,6 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
         initializeSuperchainConfig();
         vm.stopBroadcast();
     }
-        
-
     
 
     /// @notice Initialize the SuperchainConfig
@@ -106,30 +102,6 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
         });
 
     }
-
-    // function _serializeJson(
-    //     uint256 chainId,
-    //     address safe,
-    //     address to,
-    //     uint256 value,
-    //     bytes memory data,
-    //     Enum.Operation operation,
-    //     bytes memory additionalData
-    // ) internal {
-    //     string memory json = "";
-    //     vm.serializeUint(json, "chainId", chainId);
-    //     vm.serializeAddress(json, "safe", safe);
-    //     vm.serializeAddress(json, "to", to);
-    //     vm.serializeUint(json, "value", value);
-    //     vm.serializeUint(json, "operation", uint256(operation));
-    //     vm.serializeBytes(json, "additionalData", additionalData);
-    //     string memory finalJson = vm.serializeBytes(json, "data", data);
-
-    //     console.log(finalJson);
-    //     //  to do : make it dynamic
-    //     vm.writeJson(finalJson, "./scripts/artifact/transaction.json");
-    // }
-
 
     // to do : abstract inner setup functions
 

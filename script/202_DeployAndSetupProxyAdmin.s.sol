@@ -25,37 +25,6 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
         proxyAdmin = deployer.deploy_ProxyAdmin("ProxyAdmin", address(owner));
         require(proxyAdmin.owner() == address(owner));
 
-        // AddressManager addressManager = AddressManager(deployer.mustGetAddress("AddressManager"));
-
-        // (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
-
-        // if (proxyAdmin.addressManager() != addressManager) {
-        //      if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
-        //         vm.prank(owner);
-        //         console.log("Pranking ower ...");
-        //      }
-
-        //     console.log("Broadcasting ...");
-        //     vm.broadcast(owner);
-        //     proxyAdmin.setAddressManager(addressManager);
-        //     console.log("AddressManager setted to : %s", address(addressManager));
-        // }
-
-        // address safe = deployer.mustGetAddress("SystemOwnerSafe");
-
-        // if (proxyAdmin.owner() != safe) {
-        //     if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
-        //         vm.prank(owner);
-        //         console.log("Pranking ower ...");
-        //      } else {
-        //      }
-
-        //     console.log("Broadcasting ...");
-        //     vm.broadcast(owner);
-        //     proxyAdmin.transferOwnership(safe);
-        //     console.log("ProxyAdmin ownership transferred to Safe at: %s", safe);
-        // }
-
         return proxyAdmin;
     }
 
