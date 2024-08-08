@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import {console2 as console} from "@forge-std/console2.sol";
 
-
 import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
 import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
 
@@ -14,7 +13,8 @@ import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
 contract DeploySafeScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
-    address owner;
+    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
     function deploy()
         external
@@ -32,10 +32,6 @@ contract DeploySafeScript is DeployScript {
         safeSingleton.code.length == 0
             ? safeSingleton_ = Safe(deployer.deploy_Safe("SafeSingleton"))
             : safeSingleton_ = Safe(payable(safeSingleton));
-
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
         safeProxy_ = SafeProxy(
             deployer.deploy_SystemOwnerSafe("SystemOwnerSafe", "SafeProxyFactory", "SafeSingleton", address(owner), DeployScript.implSalt())

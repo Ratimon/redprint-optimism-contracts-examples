@@ -122,6 +122,10 @@ library DeployerFunctions {
         returns (Proxy)
     {
         console.log("Deploying ERC1967Proxy");
+
+        // Proxy proxy = new Proxy({ _admin: _proxyOwner });
+        // deployer.save(name, address(proxy));
+
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
 
@@ -134,6 +138,10 @@ library DeployerFunctions {
         returns (Proxy)
     {
         console.log("Deploying ERC1967Proxy");
+
+        // Proxy proxy = new Proxy({ _admin: _proxyOwner });
+        // deployer.save(name, address(proxy));
+
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 

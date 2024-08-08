@@ -20,7 +20,9 @@ import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
 contract DeployAndInitializeSuperchainConfig is DeployScript {
     using DeployerFunctions for IDeployer;
 
-    address owner;
+    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
+
     // DeployConfig public constant cfg =
     SuperchainConfig config;
 
@@ -34,21 +36,34 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
     }
 
     function initialize() external  {
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
+       
+        (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
+        if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
+            console.log("Pranking owner ...");
+            // vm.prank(owner);
+            //  to do : doc this + how to write script
+            //  startPrank due to delegate call
+            vm.startPrank(owner);
+            initializeSuperchainConfig();
+            vm.stopPrank();
+        } else {
+            console.log("Broadcasting ...");
+            vm.startBroadcast(owner);
 
-        console.log("Broadcasting ...");
-        vm.startBroadcast(owner);
-        initializeSuperchainConfig();
-        vm.stopBroadcast();
+            initializeSuperchainConfig();
+            console.log("SuperchainConfig setted to : %s", address(config));
+
+            vm.stopBroadcast();
+        }
+
+
+
     }
     
 
     /// @notice Initialize the SuperchainConfig
     function initializeSuperchainConfig() public {
         address payable superchainConfigProxy = deployer.mustGetAddress("SuperchainConfigProxy");
-        // address payable superchainConfig = deployer.mustGetAddress("SuperchainConfig");
         _upgradeAndCallViaSafe({
             _proxy: superchainConfigProxy,
             _implementation:  address(config),
@@ -72,20 +87,8 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
     /// @notice Make a call from the Safe contract to an arbitrary address with arbitrary data
     function _callViaSafe(Safe _safe, address _target, bytes memory _data) internal {
 
-        console.log('msg.sender');
-        console.log(msg.sender);
-
         ProxyAdmin proxyAdmin = ProxyAdmin(deployer.mustGetAddress("ProxyAdmin"));
-
-        console.log('proxyAdmin.owner()');
-        console.log(proxyAdmin.owner());
-
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
-
         // This is the signature format used the caller is also the signer.
-        // address(this) = caller is deploy script
         bytes memory signature = abi.encodePacked(uint256(uint160(owner)), bytes32(0), uint8(1));
 
         _safe.execTransaction({

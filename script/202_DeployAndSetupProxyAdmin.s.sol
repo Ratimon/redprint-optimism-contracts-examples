@@ -13,14 +13,12 @@ import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 contract DeployAndSetupProxyAdminScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
-    address owner;
+    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
     ProxyAdmin proxyAdmin;
 
     function deploy() external returns (ProxyAdmin) {
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
         proxyAdmin = deployer.deploy_ProxyAdmin("ProxyAdmin", address(owner));
         require(proxyAdmin.owner() == address(owner));
@@ -30,15 +28,9 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
 
     function initialize() external  {
 
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
-
-
         AddressManager addressManager = AddressManager(deployer.mustGetAddress("AddressManager"));
 
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
-
         if (proxyAdmin.addressManager() != addressManager) {
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 console.log("Pranking ower ...");
@@ -47,7 +39,6 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
                 console.log("Broadcasting ...");
                 vm.broadcast(owner);
              }
-
 
             proxyAdmin.setAddressManager(addressManager);
             console.log("AddressManager setted to : %s", address(addressManager));

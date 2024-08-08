@@ -12,12 +12,9 @@ import {Proxy} from "@main/universal/ProxyAdmin.sol";
 contract DeploySuperchainConfigProxyScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
-    address proxyOwner;
-
     function deploy() external returns (Proxy) {
-        string memory mnemonic = vm.envString("MNEMONIC");
-        uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        proxyOwner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
+
+        address proxyOwner = deployer.mustGetAddress("ProxyAdmin");
 
         return Proxy(deployer.deploy_ERC1967Proxy("SuperchainConfigProxy", address(proxyOwner)));
     }

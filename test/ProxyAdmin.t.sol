@@ -53,6 +53,7 @@ contract ProxyAdmin_Test is Test {
         admin = proxyAdminDeployments.deploy();
 
         deployerProcedue.deactivatePrank();
+        // initialize
         proxyAdminDeployments.initialize();
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
         
