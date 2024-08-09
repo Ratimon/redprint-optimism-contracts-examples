@@ -8,8 +8,6 @@ import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
 import {DeployerFunctions, DeployOptions} from "@script/deployer/DeployerFunctions.sol";
 import { ChainAssertions } from "@script/optimism/ChainAssertions.sol";
 
-// import { Config } from "@script/deployer/Config.sol";
-
 import { Safe } from "@safe-contracts/Safe.sol";
 import { Enum as SafeOps } from "@safe-contracts/common/Enum.sol";
 
@@ -24,19 +22,18 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
     address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
 
     // DeployConfig public constant cfg =
-    SuperchainConfig config;
+    SuperchainConfig superchainConfig;
 
     function deploy() external returns (SuperchainConfig) {
         bytes32 _salt = DeployScript.implSalt();
 
         DeployOptions memory options = DeployOptions({salt:_salt});
 
-        config = deployer.deploy_SuperchainConfig("SuperchainConfig", options);
-        return config;
+        superchainConfig = deployer.deploy_SuperchainConfig("SuperchainConfig", options);
+        return superchainConfig;
     }
 
     function initialize() external  {
-       
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
         if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
             console.log("Pranking owner ...");
@@ -51,22 +48,21 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
             vm.startBroadcast(owner);
 
             initializeSuperchainConfig();
-            console.log("SuperchainConfig setted to : %s", address(config));
+            console.log("SuperchainConfig setted to : %s", address(superchainConfig));
 
             vm.stopBroadcast();
         }
-
-
 
     }
     
 
     /// @notice Initialize the SuperchainConfig
     function initializeSuperchainConfig() public {
+        console.log("Upgrading and initializing SuperchainConfig");
         address payable superchainConfigProxy = deployer.mustGetAddress("SuperchainConfigProxy");
         _upgradeAndCallViaSafe({
             _proxy: superchainConfigProxy,
-            _implementation:  address(config),
+            _implementation:  address(superchainConfig),
             _innerCallData: abi.encodeCall(SuperchainConfig.initialize, ( deployer.getConfig().superchainConfigGuardian(), false))
         });
 
@@ -87,7 +83,7 @@ contract DeployAndInitializeSuperchainConfig is DeployScript {
     /// @notice Make a call from the Safe contract to an arbitrary address with arbitrary data
     function _callViaSafe(Safe _safe, address _target, bytes memory _data) internal {
 
-        ProxyAdmin proxyAdmin = ProxyAdmin(deployer.mustGetAddress("ProxyAdmin"));
+        // ProxyAdmin proxyAdmin = ProxyAdmin(deployer.mustGetAddress("ProxyAdmin"));
         // This is the signature format used the caller is also the signer.
         bytes memory signature = abi.encodePacked(uint256(uint160(owner)), bytes32(0), uint8(1));
 

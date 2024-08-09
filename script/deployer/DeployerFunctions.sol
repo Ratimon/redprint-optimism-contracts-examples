@@ -19,6 +19,7 @@ import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
 import {Proxy} from "@main/universal/Proxy.sol";
 
 import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
+import { ProtocolVersions } from "@main/L1/ProtocolVersions.sol";
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -29,6 +30,7 @@ string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 string constant Artifact_Proxy = "Proxy.sol:Proxy";
 
 string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConfig";
+string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersions";
 
 
 library DeployerFunctions {
@@ -175,6 +177,24 @@ library DeployerFunctions {
         bytes32 initialized = vm.load(address(config), bytes32(0));
         require(initialized != 0, "Must be initialized" );
         return config;
+    }
+
+    function deploy_ProtocolVersions(IDeployer deployer, string memory name)
+        internal
+        returns (ProtocolVersions)
+    {
+        console.log("Deploying ProtocolVersions");
+        bytes memory args = abi.encode();
+        return ProtocolVersions(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProtocolVersions, args));
+    }
+
+    function deploy_ProtocolVersions(IDeployer deployer, string memory name, DeployOptions memory options)
+        internal
+        returns (ProtocolVersions)
+    {
+        console.log("Deploying ProtocolVersions");
+        bytes memory args = abi.encode();
+        return ProtocolVersions(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProtocolVersions, args, options));
     }
 
 }
