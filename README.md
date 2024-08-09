@@ -68,8 +68,10 @@ On the one hand, the first one is a set of deployment scripts written in [/scrip
 │   ├── 000_DeployAll.s.sol
 │   ├── 100_DeploySafe.s.sol
 │   ├── 200_SetupSuperchain.s.sol
-│   ├── 201_DeployAddressManager.s.sol
-│   ├── 202_DeployAndSetupProxyAdmin.s.sol
+│   ├── 201A_DeployAddressManager.s.sol
+│   ├── 201B_DeployAndSetupProxyAdmin.s.sol
+│   ├── 202A_DeploySuperchainConfigProxy.s.sol
+│   ├── 202B_DeployAndInitializeSuperchainConfig.s.sol
 ```
 
 I highlight that developers are able to abstract and aggregate all scripts into just single one like in [/script](./script/000_DeployAll.s.sol):
@@ -245,11 +247,11 @@ pnpm deploy_100_safe
 ```
 
 ```bash
-pnpm deploy_201_address_manager
+pnpm deploy_201A_address_manager
 ```
 
 ```bash
-pnpm deploy_202_proxy_admin
+pnpm deploy_201B_proxy_admin
 ```
 
 - Alternatively, Deploy each set of contracts :

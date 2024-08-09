@@ -16,10 +16,6 @@ import {ResolvedDelegateProxy} from "@main/legacy/ResolvedDelegateProxy.sol";
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
-import {DeployAddressManagerScript} from "@script/201_DeployAddressManager.s.sol";
-import {DeployAndSetupProxyAdminScript} from "@script/202_DeployAndSetupProxyAdmin.s.sol";
-
 import {DeployAllScript} from "@script/000_DeployAll.s.sol";
 
 
