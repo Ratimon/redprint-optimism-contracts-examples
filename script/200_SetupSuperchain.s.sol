@@ -10,6 +10,8 @@ import {DeployAddressManagerScript} from "@script/201A_DeployAddressManager.s.so
 import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdmin.s.sol";
 import {DeploySuperchainConfigProxyScript} from "@script/202A_DeploySuperchainConfigProxy.s.sol";
 import {DeployAndInitializeSuperchainConfig} from "@script/202B_DeployAndInitializeSuperchainConfig.s.sol";
+import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxy.s.sol";
+
 
 import {AddressManager} from "@main/legacy/AddressManager.sol";
 
@@ -26,6 +28,8 @@ contract SetupSuperchainScript is Script {
         DeploySuperchainConfigProxyScript superchainConfigProxyDeployments = new DeploySuperchainConfigProxyScript();
         DeployAndInitializeSuperchainConfig superchainConfigDeployments = new DeployAndInitializeSuperchainConfig();
 
+        DeployProtocolVersionsProxyScript protocolVersionsProxyDeployments = new DeployProtocolVersionsProxyScript();
+
         // Deploy a new ProxyAdmin and AddressManager
         addressManagerDeployments.deploy();
         proxyAdminDeployments.deploy();
@@ -37,10 +41,13 @@ contract SetupSuperchainScript is Script {
         superchainConfigDeployments.initialize();
 
         // Deploy the ProtocolVersionsProxy
+        protocolVersionsProxyDeployments.deploy();
+
 
         console.log("AddressManager at: ", deployerProcedue.getAddress("AddressManager"));
         console.log("ProxyAdmin at: ", deployerProcedue.getAddress("ProxyAdmin"));
         console.log("SuperchainConfigProxy at: ", deployerProcedue.getAddress("SuperchainConfigProxy"));
         console.log("SuperchainConfig at: ", deployerProcedue.getAddress("SuperchainConfig"));
+        console.log("ProtocolVersionsProxy at: ", deployerProcedue.getAddress("ProtocolVersionsProxy"));
     }
 }
