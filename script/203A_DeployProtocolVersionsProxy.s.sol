@@ -13,7 +13,6 @@ contract DeployProtocolVersionsProxyScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
     function deploy() external returns (Proxy) {
-
         address proxyOwner = deployer.mustGetAddress("ProxyAdmin");
 
         return Proxy(deployer.deploy_ERC1967Proxy("ProtocolVersionsProxy", address(proxyOwner)));
