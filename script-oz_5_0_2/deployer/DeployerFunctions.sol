@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {console2 as console} from "@forge-std/console2.sol";
+import {console2 as console} from "@redprint-forge-std/console2.sol";
 
 import {IDeployer} from "@script/deployer/Deployer.sol";
 import {DefaultDeployerFunction, DeployOptions} from "@script/deployer/DefaultDeployerFunction.sol";
 
-import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
-import {SafeProxyFactory} from "@safe-contracts/proxies/SafeProxyFactory.sol";
-import {Safe} from "@safe-contracts/Safe.sol";
+import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
+import {SafeProxyFactory} from "@redprint-safe-contracts/proxies/SafeProxyFactory.sol";
+import {Safe} from "@redprint-safe-contracts/Safe.sol";
 
 import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
-import { ICompoundTimelock} from"@openzeppelin-4_9_4/governance/extensions/GovernorTimelockCompound.sol";
+import { ICompoundTimelock} from"@redprint-openzeppelin/governance/extensions/GovernorTimelockCompound.sol";
 import {AddressManager} from "src/legacy/AddressManager.sol";
 import {ProxyAdmin} from "src/universal/ProxyAdmin.sol";
 

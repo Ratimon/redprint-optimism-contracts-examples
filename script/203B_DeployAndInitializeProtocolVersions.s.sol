@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {console2 as console} from "@forge-std/console2.sol";
-import {Vm,VmSafe} from "@forge-std/Vm.sol";
+import {console2 as console} from "@redprint-forge-std/console2.sol";
+import {Vm,VmSafe} from "@redprint-forge-std/Vm.sol";
 
-import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
-import {DeployerFunctions, DeployOptions} from "@script/deployer/DeployerFunctions.sol";
+import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
+import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
 
-import { Types } from "@script/optimism/Types.sol";
-import { ChainAssertions } from "@script/optimism/ChainAssertions.sol";
+import { Types } from "@redprint-deploy/optimism/Types.sol";
+import { ChainAssertions } from "@redprint-deploy/optimism/ChainAssertions.sol";
 
-import { SafeScript} from "@script/safe-management/SafeScript.sol";
+import { SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
 
-import {Proxy} from "@main/universal/ProxyAdmin.sol";
+import {Proxy} from "@redprint-core/universal/ProxyAdmin.sol";
 
-import { ProtocolVersions, ProtocolVersion } from "@main/L1/ProtocolVersions.sol";
+import { ProtocolVersions, ProtocolVersion } from "@redprint-core/L1/ProtocolVersions.sol";
 
 contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
     using DeployerFunctions for IDeployer;

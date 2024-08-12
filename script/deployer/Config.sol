@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Vm, VmSafe } from "@forge-std/Vm.sol";
+import { Vm, VmSafe } from "@redprint-forge-std/Vm.sol";
 import {Chains} from "@script/deployer/Chains.sol";
 
 /// @notice Enum representing different ways of outputting genesis allocs.

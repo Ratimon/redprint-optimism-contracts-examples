@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {console} from "@forge-std/console.sol";
+import {console} from "@redprint-forge-std/console.sol";
 
-import {Script} from "@forge-std/Script.sol";
+import {Script} from "@redprint-forge-std/Script.sol";
 
-import { Config } from "@script/deployer/Config.sol";
-import { ForgeArtifacts } from "@script/deployer/ForgeArtifacts.sol";
+import { Config } from "@redprint-deploy/deployer/Config.sol";
+import { ForgeArtifacts } from "@redprint-deploy/deployer/ForgeArtifacts.sol";
 
 import {Vm} from "forge-std/Vm.sol";
-import { Deployment, IDeployer, getDeployer } from "@script/deployer/Deployer.sol";
+import { Deployment, IDeployer, getDeployer } from "@redprint-deploy/deployer/Deployer.sol";
 
 contract ShowPrecomputedAddress is Script {
 

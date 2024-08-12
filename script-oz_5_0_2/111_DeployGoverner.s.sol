@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Script} from "@forge-std/Script.sol";
+import {Script} from "@redprint-forge-std/Script.sol";
 import {MyGovernor, IVotes, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
 
 contract DeployGovernerScript is Script {

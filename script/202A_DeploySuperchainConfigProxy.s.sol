@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {console2 as console} from "@forge-std/console2.sol";
-import {VmSafe} from "@forge-std/Vm.sol";
+import {console2 as console} from "@redprint-forge-std/console2.sol";
+import {VmSafe} from "@redprint-forge-std/Vm.sol";
 
-import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
-import {DeployerFunctions} from "@script/deployer/DeployerFunctions.sol";
+import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
+import {DeployerFunctions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
 
-import {Proxy} from "@main/universal/Proxy.sol";
+import {Proxy} from "@redprint-core/universal/Proxy.sol";
 
 contract DeploySuperchainConfigProxyScript is DeployScript {
     using DeployerFunctions for IDeployer;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Script} from "@forge-std/Script.sol";
+import {Script} from "@redprint-forge-std/Script.sol";
 import {Upgrades} from "@openzeppelin-foundry-upgrades/Upgrades.sol";
 import {MyGoverner3Upgradable, IVotes, TimelockControllerUpgradeable} from "@main-5_0_2/governer/MyGoverner3Upgradable.sol";
 

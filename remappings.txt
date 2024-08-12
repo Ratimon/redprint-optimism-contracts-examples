@@ -1,14 +1,15 @@
 @redprint-core/=src/
-@redprint-deploy/=script/
-
-@main/=src/
 @main-5_0_2/=src-oz_5_0_2/
-@script/=script/
+@redprint-deploy/=script/
+@script/=script
 @script-5_0_2/=script-oz_5_0_2/
 @test/=test/
-@forge-std/=lib/forge-std/src/
 
-@safe-contracts/=lib/safe-smart-account/contracts/
+@redprint-forge-std/=lib/forge-std/src/
+@redprint-openzeppelin/=lib/openzeppelin-4_9_4/contracts
+@redprint-openzeppelin-upgradable/=lib/openzeppelin-upgradeable-4_9_4/contracts
+@redprint-safe-contracts/=lib/safe-smart-account/contracts/
+
 @solady/=node_modules/solady/src/
 @solmate/=node_modules/solmate/src/
 
@@ -18,7 +19,6 @@
 
 @openzeppelin-4_9_4/=lib/openzeppelin-4_9_4/contracts
 @openzeppelin-upgradable-4_9_4/=lib/openzeppelin-upgradeable-4_9_4/contracts
-
 
 forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src
 solidity-stringutils/=lib/openzeppelin-foundry-upgrades/lib/solidity-stringutils

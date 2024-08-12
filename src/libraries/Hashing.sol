@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Types } from "@main/libraries/Types.sol";
-import { Encoding } from "@main/libraries/Encoding.sol";
+import { Types } from "@redprint-core/libraries/Types.sol";
+import { Encoding } from "@redprint-core/libraries/Encoding.sol";
 
 /// @title Hashing
 /// @notice Hashing handles Optimism's various different hashing schemes.
@@ -27,7 +27,7 @@ library Hashing {
         return keccak256(abi.encode(bytes32(0), depositId));
     }
 
-    /// @notice Hashes the cross domain message based on the version that is encoded into the
+    /// @notice Hashes the cross do@redprint-core message based on the version that is encoded into the
     ///         message nonce.
     /// @param _nonce    Message nonce with version encoded into the first two bytes.
     /// @param _sender   Address of the sender of the message.

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Script} from "@forge-std/Script.sol";
-import {console2 as console} from "@forge-std/console2.sol";
+import {Script} from "@redprint-forge-std/Script.sol";
+import {console2 as console} from "@redprint-forge-std/console2.sol";
 
-import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 
 import {DeployAddressManagerScript} from "@script/201A_DeployAddressManager.s.sol";
 import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdmin.s.sol";
@@ -13,8 +13,7 @@ import {DeployAndInitializeSuperchainConfig} from "@script/202B_DeployAndInitial
 import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxy.s.sol";
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersions.s.sol";
 
-
-import {AddressManager} from "@main/legacy/AddressManager.sol";
+import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 
 contract SetupSuperchainScript is Script {
     IDeployer deployerProcedue;

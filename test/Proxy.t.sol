@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {Test} from "@forge-std/Test.sol";
-import {Proxy} from "@main/universal/Proxy.sol";
+import {Test} from "@redprint-forge-std/Test.sol";
+import {Proxy} from "@redprint-core/universal/Proxy.sol";
 import {Bytes32AddressLib} from "@solmate/utils/Bytes32AddressLib.sol";
 
 contract SimpleStorage {

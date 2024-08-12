@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {console} from "@forge-std/console.sol";
+import {console} from "@redprint-forge-std/console.sol";
 
-import {Test} from "@forge-std/Test.sol";
+import {Test} from "@redprint-forge-std/Test.sol";
 
-import {SafeProxy} from "@safe-contracts/proxies/SafeProxy.sol";
-import {AddressManager} from "@main/legacy/AddressManager.sol";
-import {ProxyAdmin} from "@main/universal/ProxyAdmin.sol";
+import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
+import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
+import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
-import {Proxy} from "@main/universal/Proxy.sol";
+import {Proxy} from "@redprint-core/universal/Proxy.sol";
 import {SimpleStorage} from "./Proxy.t.sol";
-import {L1ChugSplashProxy} from "@main/legacy/L1ChugSplashProxy.sol";
-import {ResolvedDelegateProxy} from "@main/legacy/ResolvedDelegateProxy.sol";
+import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
+import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 

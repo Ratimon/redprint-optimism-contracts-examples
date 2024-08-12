@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {DeployScript, IDeployer} from "@script/deployer/DeployScript.sol";
+import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployerFunctions} from "@script-5_0_2/deployer/DeployerFunctions.sol";
 
 // import "@openzeppelin-5_0_2/governance/extensions/GovernorVotes.sol";

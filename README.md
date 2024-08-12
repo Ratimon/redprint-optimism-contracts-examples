@@ -81,7 +81,7 @@ I highlight that developers are able to abstract and aggregate all scripts into 
 /** ... */
 
 // `redprint-forge` 's core engine
-import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 
 /** ... */
 
@@ -118,11 +118,11 @@ contract DeployAllScript is Script {
 
 > **Note**💡
 
-The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201` or `deploy_201_address_manager`).
+The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201A` or `deploy_201A_address_manager`).
 
 > **Note**💡
 
-You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/efa1d92424989f0b7c313f9a1d1592b64ea1aadd/script/deployer/Deployer.sol)
+You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](./script/deployer/Deployer.sol)
 
 On the other hand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
