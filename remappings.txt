@@ -1,3 +1,6 @@
+@redprint-core/=src/
+@redprint-deploy/=script/
+
 @main/=src/
 @main-5_0_2/=src-oz_5_0_2/
 @script/=script/
@@ -6,7 +9,6 @@
 @forge-std/=lib/forge-std/src/
 
 @safe-contracts/=lib/safe-smart-account/contracts/
-@clones-with-immutable-args/=node_modules/clones-with-immutable-args
 @solady/=node_modules/solady/src/
 @solmate/=node_modules/solmate/src/
 
@@ -14,8 +16,8 @@
 @openzeppelin-upgradable/=lib/openzeppelin-contracts-upgradeable/contracts
 @openzeppelin-foundry-upgrades/=lib/openzeppelin-foundry-upgrades/src
 
-@openzeppelin-4/=node_modules/@openzeppelin/contracts
-@openzeppelin-upgradable-4/=node_modules/@openzeppelin/contracts-upgradeable
+@openzeppelin-4_9_4/=lib/openzeppelin-4_9_4/contracts
+@openzeppelin-upgradable-4_9_4/=lib/openzeppelin-upgradeable-4_9_4/contracts
 
 
 forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src

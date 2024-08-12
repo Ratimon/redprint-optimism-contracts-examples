@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import { CrossDomainMessenger } from "@main/universal/CrossDomainMessenger.sol";
 import { SuperchainConfig } from "@main/L1/SuperchainConfig.sol";
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import { Address } from "@openzeppelin-4_9_4/utils/Address.sol";
+import { Initializable } from "@openzeppelin-4_9_4/proxy/utils/Initializable.sol";
 
 /// @title ERC721Bridge
 /// @notice ERC721Bridge is a base contract for the L1 and L2 ERC721 bridges.

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { OwnableUpgradeable } from "@openzeppelin-upgradable/access/OwnableUpgradeable.sol";
+import { OwnableUpgradeable } from "@openzeppelin-upgradable-4_9_4/access/OwnableUpgradeable.sol";
 import { ISemver } from "@main/universal/ISemver.sol";
 import { ResourceMetering } from "@main/L1/ResourceMetering.sol";
 import { Storage } from "@main/libraries/Storage.sol";
 import { Constants } from "@main/libraries/Constants.sol";
 import { OptimismPortal } from "@main/L1/OptimismPortal.sol";
 import { GasPayingToken, IGasToken } from "@main/libraries/GasPayingToken.sol";
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ERC20 } from "@openzeppelin-4_9_4/token/ERC20/ERC20.sol";
 
 /// @title SystemConfig
 /// @notice The SystemConfig contract is used to manage configuration of an Optimism network.

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Initializable } from "@openzeppelin-upgradable/proxy/utils/Initializable.sol";
+import { Initializable } from "@openzeppelin-upgradable-4_9_4/proxy/utils/Initializable.sol";
 import { SafeCall } from "@main/libraries/SafeCall.sol";
 import { Hashing } from "@main/libraries/Hashing.sol";
 import { Encoding } from "@main/libraries/Encoding.sol";

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import { Initializable } from "@openzeppelin-4_9_4/proxy/utils/Initializable.sol";
 import { SafeCall } from "@main/libraries/SafeCall.sol";
 import { L2OutputOracle } from "@main/L1/L2OutputOracle.sol";
 import { SystemConfig } from "@main/L1/SystemConfig.sol";
@@ -13,8 +13,8 @@ import { SecureMerkleTrie } from "@main/libraries/trie/SecureMerkleTrie.sol";
 import { AddressAliasHelper } from "@main/vendor/AddressAliasHelper.sol";
 import { ResourceMetering } from "@main/L1/ResourceMetering.sol";
 import { ISemver } from "@main/universal/ISemver.sol";
-import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin-4_9_4/token/ERC20/utils/SafeERC20.sol";
+import { IERC20 } from "@openzeppelin-4_9_4/token/ERC20/IERC20.sol";
 import { L1Block } from "@main/L2/L1Block.sol";
 import { Predeploys } from "@main/libraries/Predeploys.sol";
 import "@main/libraries/PortalErrors.sol";

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { ERC721Bridge } from "@main/universal/ERC721Bridge.sol";
-import { IERC721 } from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import { IERC721 } from "@openzeppelin-4_9_4/token/ERC721/IERC721.sol";
 import { L2ERC721Bridge } from "@main/L2/L2ERC721Bridge.sol";
 import { ISemver } from "@main/universal/ISemver.sol";
 import { Predeploys } from "@main/libraries/Predeploys.sol";

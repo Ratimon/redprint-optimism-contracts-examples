@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { ERC721Bridge } from "@main/universal/ERC721Bridge.sol";
-import { ERC165Checker } from "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
+import { ERC165Checker } from "@openzeppelin-4_9_4/utils/introspection/ERC165Checker.sol";
 import { L1ERC721Bridge } from "@main/L1/L1ERC721Bridge.sol";
 import { IOptimismMintableERC721 } from "@main/universal/IOptimismMintableERC721.sol";
 import { CrossDomainMessenger } from "@main/universal/CrossDomainMessenger.sol";

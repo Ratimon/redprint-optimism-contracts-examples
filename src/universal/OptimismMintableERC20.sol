@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import { ERC20 } from "@openzeppelin-4_9_4/token/ERC20/ERC20.sol";
+import { IERC165 } from "@openzeppelin-4_9_4/utils/introspection/IERC165.sol";
 import { ILegacyMintableERC20, IOptimismMintableERC20 } from "@main/universal/IOptimismMintableERC20.sol";
 import { ISemver } from "@main/universal/ISemver.sol";
 
