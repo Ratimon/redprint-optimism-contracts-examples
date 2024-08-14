@@ -54,9 +54,14 @@ contract DeployAndInitializeSuperchainConfig is DeployScript, SafeScript {
     /// @notice Initialize the SuperchainConfig
     function initializeSuperchainConfig() public {
         console.log("Upgrading and initializing SuperchainConfig");
+
         address payable superchainConfigProxy = deployer.mustGetAddress("SuperchainConfigProxy");
+        address proxyAdmin = deployer.mustGetAddress("ProxyAdmin");
+        address safe = deployer.mustGetAddress("SystemOwnerSafe");
+
         _upgradeAndCallViaSafe({
-            _deployer: deployer,
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
             _owner: owner,
             _proxy: superchainConfigProxy,
             _implementation:  address(superchainConfig),

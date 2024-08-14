@@ -86,6 +86,9 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
     function initializeProtocolVersions() public {
         console.log("Upgrading and initializing ProtocolVersions proxy");
 
+        address proxyAdmin = deployer.mustGetAddress("ProxyAdmin");
+        address safe = deployer.mustGetAddress("SystemOwnerSafe");
+
         address protocolVersionsProxy = deployer.mustGetAddress("ProtocolVersionsProxy");
         address protocolVersions = deployer.mustGetAddress("ProtocolVersions");
 
@@ -94,7 +97,8 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
         uint256 recommendedProtocolVersion = deployer.getConfig().recommendedProtocolVersion();
 
         _upgradeAndCallViaSafe({
-            _deployer: deployer,
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
             _owner: owner,
             _proxy: payable(protocolVersionsProxy),
             _implementation: protocolVersions,

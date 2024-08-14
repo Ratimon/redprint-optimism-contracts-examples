@@ -17,8 +17,5 @@
 @openzeppelin-upgradable/=lib/openzeppelin-contracts-upgradeable/contracts
 @openzeppelin-foundry-upgrades/=lib/openzeppelin-foundry-upgrades/src
 
-@openzeppelin-4_9_4/=lib/openzeppelin-4_9_4/contracts
-@openzeppelin-upgradable-4_9_4/=lib/openzeppelin-upgradeable-4_9_4/contracts
-
 forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src
 solidity-stringutils/=lib/openzeppelin-foundry-upgrades/lib/solidity-stringutils
