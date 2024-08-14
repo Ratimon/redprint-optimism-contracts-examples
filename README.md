@@ -202,14 +202,12 @@ RPC_URL_localhost=http://localhost:8545
 MNEMONIC="test test test test test test test test test test test junk"
 DEPLOYER=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 # local network 's default private key so it is still not exposed
-DEPLOYER_PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+DEPLOYER_PRIVATE_KEY=59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
 
 # script/Config.sol
 DEPLOYMENT_OUTFILE=deployments/31337/.save.json
 DEPLOY_CONFIG_PATH=
 CHAIN_ID=
-CONTRACT_ADDRESSES_PATH=deployments/31337/.save.json
-DEPLOYMENT_CONTEXT=localhost
 IMPL_SALT=
 STATE_DUMP_PATH=
 SIG=
