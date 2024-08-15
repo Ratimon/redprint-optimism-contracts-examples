@@ -23,7 +23,7 @@ import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAd
 contract ProxyAdmin_Test is Test {
     string mnemonic = vm.envString("MNEMONIC");
     uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
+    address owner = vm.envOr("DEPLOYER_ADDRESS", vm.addr(ownerPrivateKey));
 
     IDeployer deployerProcedue;
 
@@ -43,7 +43,7 @@ contract ProxyAdmin_Test is Test {
         DeploySafeScript safeDeployments = new DeploySafeScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
-        deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
+        deployerProcedue.activatePrank(vm.envAddress("DEPLOYER_ADDRESS"));
 
         // Deploy Multisig
         (,, safeProxy)= safeDeployments.deploy();
@@ -55,7 +55,7 @@ contract ProxyAdmin_Test is Test {
         deployerProcedue.deactivatePrank();
         // initialize
         proxyAdminDeployments.initialize();
-        deployerProcedue.activatePrank(vm.envAddress("DEPLOYER"));
+        deployerProcedue.activatePrank(vm.envAddress("DEPLOYER_ADDRESS"));
         
         // Deploy the standard proxy
         proxy = new Proxy(address(admin));
@@ -99,7 +99,7 @@ contract ProxyAdmin_Test is Test {
     }
 
     function test_setImplementationName_succeeds() external beforeEach {
-        // deployer.activatePrank(vm.envAddress("DEPLOYER"));
+        // deployer.activatePrank(vm.envAddress("DEPLOYER_ADDRESS"));
         vm.prank(address(safeProxy));
         admin.setImplementationName(address(1), "foo");
         assertEq(admin.implementationName(address(1)), "foo");

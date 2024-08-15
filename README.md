@@ -182,11 +182,8 @@ pnpm i
 
 ## Quickstart
 
-1. Copy [`.env`](./.env) into `.env.<network>.local` and modify as required. For example, this is a file (`.env.optimism.local`)(https://github.com/Ratimon/optimism-contracts-foundry/.env.optimism.local) for optimism network:
+1. Copy [`.env`](./.env) into `.env.<network>.local` and modify as required.
 
-> **Note**💡
-
-More style and convention guide for environment variable management can be found here : [ldenv](https://github.com/wighawag/ldenv)
 
 ```sh
 # -------------------------------------------------------------------------------------------------
@@ -200,9 +197,9 @@ RPC_URL_localhost=http://localhost:8545
 
 #secret management
 MNEMONIC="test test test test test test test test test test test junk"
-DEPLOYER=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 # local network 's default private key so it is still not exposed
 DEPLOYER_PRIVATE_KEY=59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
+DEPLOYER_ADDRESS=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 
 # script/Config.sol
 DEPLOYMENT_OUTFILE=deployments/31337/.save.json
@@ -224,7 +221,8 @@ L1_RPC_URL=http://localhost:8545
 
 > **Note**💡
 
-`deployments/31337/.deploy` is case sensitive.
+More style and convention guide for environment variable management can be found here : [ldenv](https://github.com/wighawag/ldenv)
+
 
 2. Run multi-windows terminal:
 
