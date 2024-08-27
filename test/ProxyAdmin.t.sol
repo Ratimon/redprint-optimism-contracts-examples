@@ -16,7 +16,7 @@ import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
+import {DeploySafeScript} from "@script/101_DeploySafe.s.sol";
 import {DeployAddressManagerScript} from "@script/201A_DeployAddressManager.s.sol";
 import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdmin.s.sol";
 

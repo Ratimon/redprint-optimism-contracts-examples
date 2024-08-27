@@ -66,7 +66,7 @@ On the one hand, the first one is a set of deployment scripts written in [/scrip
 ```sh
 ├── script
 │   ├── 000_DeployAll.s.sol
-│   ├── 100_DeploySafe.s.sol
+│   ├── 101_DeploySafe.s.sol
 │   ├── 200_SetupSuperchain.s.sol
 │   ├── 201A_DeployAddressManager.s.sol
 │   ├── 201B_DeployAndSetupProxyAdmin.s.sol
@@ -86,7 +86,7 @@ import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol
 /** ... */
 
 // application-specific logic
-import {DeploySafeScript} from "@script/100_DeploySafe.s.sol";
+import {DeploySafeScript} from "@script/101_DeploySafe.s.sol";
 import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
 
 contract DeployAllScript is Script {
