@@ -16,6 +16,6 @@ contract DeploySuperchainConfigProxyScript is DeployScript {
 
         address proxyOwner = deployer.mustGetAddress("ProxyAdmin");
 
-        return Proxy(deployer.deploy_ERC1967Proxy("SuperchainConfigProxy", address(proxyOwner)));
+        return Proxy(deployer.deploy_ERC1967Proxy("SuperchainConfigProxy", proxyOwner));
     }
 }
