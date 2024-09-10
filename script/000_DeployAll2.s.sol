@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import {Script} from "@redprint-forge-std/Script.sol";
-import {console2 as console} from "@redprint-forge-std/console2.sol";
-
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-
+import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
 import {DeployAddressManagerScript} from "@script/201A_DeployAddressManagerScript.s.sol";
 import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdminScript.s.sol";
 import {DeploySuperchainConfigProxyScript} from "@script/202A_DeploySuperchainConfigProxyScript.s.sol";
@@ -13,15 +11,15 @@ import {DeployAndInitializeSuperchainConfigScript} from "@script/202B_DeployAndI
 import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxyScript.s.sol";
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 
-import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
-
-contract SetupSuperchainScript is Script {
+contract DeployAllScript is Script {
     IDeployer deployerProcedue;
 
     function run() public {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
-
+        DeploySafeProxyScript safeDeployments = new DeploySafeProxyScript();
+        //1) set up Safe Multisig
+        safeDeployments.deploy();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
 
@@ -45,12 +43,5 @@ contract SetupSuperchainScript is Script {
         protocolVersionsProxyDeployments.deploy();
         protocolVersionsDeployments.deploy();
         protocolVersionsDeployments.initialize();
-
-
-        console.log("AddressManager at: ", deployerProcedue.getAddress("AddressManager"));
-        console.log("ProxyAdmin at: ", deployerProcedue.getAddress("ProxyAdmin"));
-        console.log("SuperchainConfigProxy at: ", deployerProcedue.getAddress("SuperchainConfigProxy"));
-        console.log("SuperchainConfig at: ", deployerProcedue.getAddress("SuperchainConfig"));
-        console.log("ProtocolVersionsProxy at: ", deployerProcedue.getAddress("ProtocolVersionsProxy"));
     }
 }

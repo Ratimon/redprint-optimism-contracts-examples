@@ -10,7 +10,7 @@ import {SafeProxyFactory} from "@redprint-safe-contracts/proxies/SafeProxyFactor
 import {Safe} from "@redprint-safe-contracts/Safe.sol";
 import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
 
-contract DeploySafeScript is DeployScript {
+contract DeploySafeProxyScript is DeployScript {
     using DeployerFunctions for IDeployer;
 
     uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8

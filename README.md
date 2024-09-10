@@ -4,8 +4,7 @@ This repo shows how `Redprint` works. it includes a template experiment **OPstac
 
 Hence, this acts an educational place to study OPStack component at smart contract level.
 
-> **Note**💡
-
+>[!NOTE]
 > You can find our full code here for [`redprint-forge`](https://github.com/Ratimon/redprint-forge) and [`Redprint Wizard`](https://github.com/Ratimon/redprint-wizard). Everything is fully opensource from day one. 
 
 
@@ -20,9 +19,8 @@ Hence, this acts an educational place to study OPStack component at smart contra
 
 This **OP-Stack-oriented App-chain** building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain](https://docs.optimism.io/stack/explainer) Ecosystem.
 
-> **Note**💡
-
-**The OP Stack can be thought of as software components that either help define a specific layer of the Optimism ecosystem or fill a role as a module within an existing layer.**
+>[!NOTE]
+> **The OP Stack can be thought of as software components that either help define a specific layer of the Optimism ecosystem or fill a role as a module within an existing layer.**
 
 ![modular stack](./assets/modular_stack.png)
 
@@ -66,12 +64,12 @@ On the one hand, the first one is a set of deployment scripts written in [/scrip
 ```sh
 ├── script
 │   ├── 000_DeployAll.s.sol
-│   ├── 101_DeploySafe.s.sol
+│   ├── 101_DeploySafeProxyScript.s.sol
 │   ├── 200_SetupSuperchain.s.sol
-│   ├── 201A_DeployAddressManager.s.sol
-│   ├── 201B_DeployAndSetupProxyAdmin.s.sol
-│   ├── 202A_DeploySuperchainConfigProxy.s.sol
-│   ├── 202B_DeployAndInitializeSuperchainConfig.s.sol
+│   ├── 201A_DeployAddressManagerScript.s.sol
+│   ├── 201B_DeployAndSetupProxyAdminScript.s.sol
+│   ├── 202A_DeploySuperchainConfigProxyScript.s.sol
+│   ├── 202B_DeployAndInitializeSuperchainConfigScript.s.sol
 ```
 
 I highlight that developers are able to abstract and aggregate all scripts into just single one like in [/script](./script/000_DeployAll.s.sol):
@@ -86,7 +84,7 @@ import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol
 /** ... */
 
 // application-specific logic
-import {DeploySafeScript} from "@script/101_DeploySafe.s.sol";
+import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
 import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
 
 contract DeployAllScript is Script {
@@ -100,7 +98,7 @@ contract DeployAllScript is Script {
         // auto saving address schema in .json file
         deployerProcedue.setAutoSave(true);
 
-        DeploySafeScript safeDeployments = new DeploySafeScript();
+        DeploySafeProxyScript safeDeployments = new DeploySafeProxyScript();
         SetupSuperchainScript superchainSetups = new SetupSuperchainScript();
 
         //1) set up Safe Multisig
@@ -116,13 +114,11 @@ contract DeployAllScript is Script {
 }
 ```
 
-> **Note**💡
+>[!NOTE]
+>The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201A` or `deploy_201A_address_manager`).
 
-The first digit represents the higher level of deployment logic, compared to the last degits. For example, `setup_200_superchain` whose number is `200` includes all of scripts whose numbers starting with `2XX` (e.g. `201A` or `deploy_201A_address_manager`).
-
-> **Note**💡
-
-You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](./script/deployer/Deployer.sol)
+>[!NOTE]
+>You can also checkout how our implemented MVP of deployer library works as **a core engine** behind the scene here [Deployer.sol](./script/deployer/Deployer.sol)
 
 On the other hand, the second one is the original script from **Optimism**'s [`Deploy.s.sol`](https://github.com/ethereum-optimism/optimism/blob/abfc1e1f37a89405bacd08a3bb6363250d3f68f5/packages/contracts-bedrock/scripts/Deploy.s.sol).
 
@@ -219,9 +215,8 @@ GS_SEQUENCER_ADDRESS=0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 L1_RPC_URL=http://localhost:8545
 ```
 
-> **Note**💡
-
-More style and convention guide for environment variable management can be found here : [ldenv](https://github.com/wighawag/ldenv)
+>[!NOTE]
+> More style and convention guide for environment variable management can be found here : [ldenv](https://github.com/wighawag/ldenv)
 
 
 2. Run multi-windows terminal:

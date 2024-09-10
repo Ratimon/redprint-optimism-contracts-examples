@@ -16,9 +16,9 @@ import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeploySafeScript} from "@script/101_DeploySafe.s.sol";
-import {DeployAddressManagerScript} from "@script/201A_DeployAddressManager.s.sol";
-import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdmin.s.sol";
+import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
+import {DeployAddressManagerScript} from "@script/201A_DeployAddressManagerScript.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdminScript.s.sol";
 
 contract ProxyAdmin_Test is Test {
     string mnemonic = vm.envString("MNEMONIC");
@@ -40,7 +40,7 @@ contract ProxyAdmin_Test is Test {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoBroadcast(false);
 
-        DeploySafeScript safeDeployments = new DeploySafeScript();
+        DeploySafeProxyScript safeDeployments = new DeploySafeProxyScript();
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
         deployerProcedue.activatePrank(vm.envAddress("DEPLOYER_ADDRESS"));

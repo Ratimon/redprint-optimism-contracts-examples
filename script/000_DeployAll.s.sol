@@ -5,7 +5,7 @@ import {Script} from "@redprint-forge-std/Script.sol";
 import {console2 as console} from "@redprint-forge-std/console2.sol";
 
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {DeploySafeScript} from "@script/101_DeploySafe.s.sol";
+import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
 import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
 
 contract DeployAllScript is Script {
@@ -16,7 +16,7 @@ contract DeployAllScript is Script {
         deployerProcedue.setAutoSave(true);
 
         // DeploySafeProxy
-        DeploySafeScript safeDeployments = new DeploySafeScript();
+        DeploySafeProxyScript safeDeployments = new DeploySafeProxyScript();
         SetupSuperchainScript superchainSetups = new SetupSuperchainScript();
 
         //1) set up Safe Multisig

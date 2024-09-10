@@ -1,25 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-import {console2 as console} from "@redprint-forge-std/console2.sol";
-import {Vm,VmSafe} from "@redprint-forge-std/Vm.sol";
+pragma solidity ^0.8.20;
 
 import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
+import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
 import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
-import { ChainAssertions } from "@redprint-deploy/optimism/ChainAssertions.sol";
+import {console} from "@redprint-forge-std/console.sol";
+import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
+import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
+import {Proxy} from "@redprint-core/universal/Proxy.sol";
+import {SuperchainConfig} from "@redprint-core/L1/SuperchainConfig.sol";
 
-import { SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
-
-import {Proxy} from "@redprint-core/universal/ProxyAdmin.sol";
-import { SuperchainConfig } from "@redprint-core/L1/SuperchainConfig.sol";
-
-contract DeployAndInitializeSuperchainConfig is DeployScript, SafeScript {
-    using DeployerFunctions for IDeployer;
-
-    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
-
+/// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
+contract DeployAndInitializeSuperchainConfigScript is DeployScript, SafeScript {
+    using DeployerFunctions for IDeployer ;
     SuperchainConfig superchainConfig;
+    string mnemonic = vm.envString("MNEMONIC");
+    uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1);
+    address owner = vm.envOr("DEPLOYER_ADDRESS", vm.addr(ownerPrivateKey));
 
     function deploy() external returns (SuperchainConfig) {
         bytes32 _salt = DeployScript.implSalt();
@@ -30,13 +27,10 @@ contract DeployAndInitializeSuperchainConfig is DeployScript, SafeScript {
         return superchainConfig;
     }
 
-    function initialize() external  {
+    function initialize() external {
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
         if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
             console.log("Pranking owner ...");
-            // vm.prank(owner);
-            //  to do : doc this + how to write script
-            //  startPrank due to delegate call
             vm.startPrank(owner);
             initializeSuperchainConfig();
             vm.stopPrank();
@@ -50,8 +44,7 @@ contract DeployAndInitializeSuperchainConfig is DeployScript, SafeScript {
             vm.stopBroadcast();
         }
     }
-    
-    /// @notice Initialize the SuperchainConfig
+
     function initializeSuperchainConfig() public {
         console.log("Upgrading and initializing SuperchainConfig");
 
@@ -70,5 +63,4 @@ contract DeployAndInitializeSuperchainConfig is DeployScript, SafeScript {
 
         ChainAssertions.checkSuperchainConfig({ _contracts: deployer.getProxiesUnstrict(), _cfg: deployer.getConfig(), _isPaused: false });
     }
-
 }

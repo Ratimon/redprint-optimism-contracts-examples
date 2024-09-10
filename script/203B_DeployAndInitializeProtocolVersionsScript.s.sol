@@ -1,28 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-import {console2 as console} from "@redprint-forge-std/console2.sol";
-import {Vm,VmSafe} from "@redprint-forge-std/Vm.sol";
+pragma solidity ^0.8.20;
 
 import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
+import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
 import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
+import {console} from "@redprint-forge-std/console.sol";
+import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
+import {Types} from "@redprint-deploy/optimism/Types.sol";
+import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
+import {ProtocolVersions, ProtocolVersion} from "@redprint-core/L1/ProtocolVersions.sol";
 
-import { Types } from "@redprint-deploy/optimism/Types.sol";
-import { ChainAssertions } from "@redprint-deploy/optimism/ChainAssertions.sol";
-
-import { SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
-
-import {Proxy} from "@redprint-core/universal/ProxyAdmin.sol";
-
-import { ProtocolVersions, ProtocolVersion } from "@redprint-core/L1/ProtocolVersions.sol";
-
+/// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
 contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
-    using DeployerFunctions for IDeployer;
-
-    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
-
+    using DeployerFunctions for IDeployer ;
     ProtocolVersions versions;
+    string mnemonic = vm.envString("MNEMONIC");
+    uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1);
+    address owner = vm.envOr("DEPLOYER_ADDRESS", vm.addr(ownerPrivateKey));
 
     function deploy() external returns (ProtocolVersions) {
         bytes32 _salt = DeployScript.implSalt();
@@ -38,34 +32,10 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
         return versions;
     }
 
-    /// @notice Returns the proxy addresses, not reverting if any are unset.
-    function _proxiesUnstrict() internal view returns (Types.ContractSet memory proxies_) {
-        proxies_ = Types.ContractSet({
-            L1CrossDomainMessenger: deployer.getAddress("L1CrossDomainMessengerProxy"),
-            L1StandardBridge: deployer.getAddress("L1StandardBridgeProxy"),
-            L2OutputOracle: deployer.getAddress("L2OutputOracleProxy"),
-            DisputeGameFactory: deployer.getAddress("DisputeGameFactoryProxy"),
-            DelayedWETH: deployer.getAddress("DelayedWETHProxy"),
-            AnchorStateRegistry: deployer.getAddress("AnchorStateRegistryProxy"),
-            OptimismMintableERC20Factory: deployer.getAddress("OptimismMintableERC20FactoryProxy"),
-            OptimismPortal: deployer.getAddress("OptimismPortalProxy"),
-            OptimismPortal2: deployer.getAddress("OptimismPortalProxy"),
-            SystemConfig: deployer.getAddress("SystemConfigProxy"),
-            L1ERC721Bridge: deployer.getAddress("L1ERC721BridgeProxy"),
-            ProtocolVersions: deployer.getAddress("ProtocolVersionsProxy"),
-            SuperchainConfig: deployer.getAddress("SuperchainConfigProxy")
-        });
-    }
-
-
-    function initialize() external  {
-       
+    function initialize() external {
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
         if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
             console.log("Pranking owner ...");
-            // vm.prank(owner);
-            //  to do : doc this + how to write script
-            //  startPrank due to delegate call
             vm.startPrank(owner);
             initializeProtocolVersions();
             vm.stopPrank();
@@ -78,11 +48,8 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
 
             vm.stopBroadcast();
         }
-
     }
-    
 
-    /// @notice Initialize the ProtocolVersions
     function initializeProtocolVersions() public {
         console.log("Upgrading and initializing ProtocolVersions proxy");
 
@@ -119,4 +86,25 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
         ChainAssertions.checkProtocolVersions({ _contracts: _proxiesUnstrict(), _cfg: deployer.getConfig(), _isProxy: true });
     }
 
+    function _proxiesUnstrict()
+        internal
+        view
+        returns (Types.ContractSet memory proxies_)
+    {
+        proxies_ = Types.ContractSet({
+            L1CrossDomainMessenger: deployer.getAddress("L1CrossDomainMessengerProxy"),
+            L1StandardBridge: deployer.getAddress("L1StandardBridgeProxy"),
+            L2OutputOracle: deployer.getAddress("L2OutputOracleProxy"),
+            DisputeGameFactory: deployer.getAddress("DisputeGameFactoryProxy"),
+            DelayedWETH: deployer.getAddress("DelayedWETHProxy"),
+            AnchorStateRegistry: deployer.getAddress("AnchorStateRegistryProxy"),
+            OptimismMintableERC20Factory: deployer.getAddress("OptimismMintableERC20FactoryProxy"),
+            OptimismPortal: deployer.getAddress("OptimismPortalProxy"),
+            OptimismPortal2: deployer.getAddress("OptimismPortalProxy"),
+            SystemConfig: deployer.getAddress("SystemConfigProxy"),
+            L1ERC721Bridge: deployer.getAddress("L1ERC721BridgeProxy"),
+            ProtocolVersions: deployer.getAddress("ProtocolVersionsProxy"),
+            SuperchainConfig: deployer.getAddress("SuperchainConfigProxy")
+        });
+    }
 }

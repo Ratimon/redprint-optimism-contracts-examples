@@ -1,35 +1,29 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import {console2 as console} from "@redprint-forge-std/console2.sol";
-import {VmSafe} from "@redprint-forge-std/Vm.sol";
-
-import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {DeployerFunctions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
-
+import {DeployScript} from "@redprint-deploy/deployer/DeployScript.sol";
+import {DeployerFunctions, IDeployer} from "@redprint-deploy/deployer/DeployerFunctions.sol";
+import {console} from "@redprint-forge-std/console.sol";
+import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
+/// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
 contract DeployAndSetupProxyAdminScript is DeployScript {
-    using DeployerFunctions for IDeployer;
-
-    uint256 ownerPrivateKey = vm.deriveKey(vm.envString("MNEMONIC"), "m/44'/60'/0'/0/", 1); //  address = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-    address owner = vm.envOr("DEPLOYER", vm.addr(ownerPrivateKey));
-
+    using DeployerFunctions for IDeployer ;
     ProxyAdmin proxyAdmin;
+    string mnemonic = vm.envString("MNEMONIC");
+    uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1);
+    address owner = vm.envOr("DEPLOYER_ADDRESS", vm.addr(ownerPrivateKey));
 
     function deploy() external returns (ProxyAdmin) {
-
         proxyAdmin = deployer.deploy_ProxyAdmin("ProxyAdmin", address(owner));
         require(proxyAdmin.owner() == address(owner));
-
         return proxyAdmin;
     }
 
-    function initialize() external  {
-
+    function initialize() external {
         AddressManager addressManager = AddressManager(deployer.mustGetAddress("AddressManager"));
-
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
         if (proxyAdmin.addressManager() != addressManager) {
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
@@ -39,13 +33,10 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
                 console.log("Broadcasting ...");
                 vm.broadcast(owner);
              }
-
             proxyAdmin.setAddressManager(addressManager);
             console.log("AddressManager setted to : %s", address(addressManager));
         }
-
         address safe = deployer.mustGetAddress("SystemOwnerSafe");
-
         if (proxyAdmin.owner() != safe) {
             if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 console.log("Pranking ower ...");
@@ -59,6 +50,4 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
             console.log("ProxyAdmin ownership transferred to Safe at: %s", safe);
         }
     }
-
-    // to do : abstract inner setup functions
 }
