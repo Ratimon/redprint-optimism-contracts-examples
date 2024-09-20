@@ -16,7 +16,8 @@ import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy
 
 import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
 
-import {DeployAllScript} from "@script/000_DeployAll.s.sol";
+// import {DeployAllScript} from "@script/000_DeployAll.s.sol";
+import {DeployAllScript} from "@script/000_DeployAll2.s.sol";
 
 
 contract ProxyAdmin_Test is Test {

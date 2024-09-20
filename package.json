@@ -20,14 +20,15 @@
     "----------------------LOCAL DEPLOYMENT ----------------------": "",
     "generate_config": "script/getting-started/config.sh",
     "deploy_000_all": "DEPLOYMENT_OUTFILE=deployments/31337/.save_all.json ldenv -m localhost forge script script/000_DeployAll.s.sol -vvvv --sender @@DEPLOYER_ADDRESS --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_101_safe": "DEPLOYMENT_OUTFILE=deployments/31337/.save_safe.json ldenv -m localhost forge script script/101_DeploySafe.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_101_safe": "DEPLOYMENT_OUTFILE=deployments/31337/.save_safe.json ldenv -m localhost forge script script/101_DeploySafeProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
     "setup_200_superchain": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchain.json ldenv -m localhost forge script script/200_SetupSuperchain.s.sol -vvvv --sender @@DEPLOYER_ADDRESS --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_201A_address_manager": "DEPLOYMENT_OUTFILE=deployments/31337/.save_address_manager.json ldenv -m localhost forge script script/201A_DeployAddressManager.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_201B_proxy_admin": "DEPLOYMENT_OUTFILE=deployments/31337/.save_proxy_admin.json ldenv -m localhost forge script script/201B_DeployAndSetupProxyAdmin.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_202A_superchainconfig_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig_proxy.json ldenv -m localhost forge script script/202A_DeploySuperchainConfigProxy.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_202B_superchainconfig": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig.json ldenv -m localhost forge script script/202B_DeployAndInitializeSuperchainConfig.s.sol -vvvv --sender @@DEPLOYER_ADDRESS --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_203A_protocol_versions_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_protocol_versions_proxy.json ldenv -m localhost forge script script/203A_DeployProtocolVersionsProxy.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_203B_protocol_versions": "DEPLOYMENT_OUTFILE=deployments/31337/.save_protocol_versions.json ldenv -m localhost forge script script/203A_DeployProtocolVersionsProxy.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast"
+    "deploy_201A_address_manager": "DEPLOYMENT_OUTFILE=deployments/31337/.save_address_manager.json ldenv -m localhost forge script script/201A_DeployAddressManagerScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_201B_proxy_admin": "DEPLOYMENT_OUTFILE=deployments/31337/.save_proxy_admin.json ldenv -m localhost forge script script/201B_DeployAndSetupProxyAdminScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_202A_superchainconfig_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig_proxy.json ldenv -m localhost forge script script/202A_DeploySuperchainConfigProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_202B_superchainconfig": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig.json ldenv -m localhost forge script script/202B_DeployAndInitializeSuperchainConfigScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_203A_protocol_versions_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_protocol_versions_proxy.json ldenv -m localhost forge script script/203A_DeployProtocolVersionsProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_203B_protocol_versions": "DEPLOYMENT_OUTFILE=deployments/31337/.save_protocol_versions.json ldenv -m localhost forge script script/203B_DeployAndInitializeProtocolVersionsScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
+    "deploy_401A_optimism_portal_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig_proxy.json ldenv -m localhost forge script script/401A_DeployOptimismPortalProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast"
   },
   "keywords": [],
   "author": "",
@@ -41,5 +42,6 @@
     "set-defaults": "^0.0.2",
     "solady": "0.0.174",
     "solmate": "v6"
-  }
+  },
+  "packageManager": "pnpm@9.6.0+sha256.dae0f7e822c56b20979bb5965e3b73b8bdabb6b8b8ef121da6d857508599ca35"
 }
