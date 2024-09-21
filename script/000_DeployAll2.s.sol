@@ -10,7 +10,8 @@ import {DeploySuperchainConfigProxyScript} from "@script/202A_DeploySuperchainCo
 import {DeployAndInitializeSuperchainConfigScript} from "@script/202B_DeployAndInitializeSuperchainConfigScript.s.sol";
 import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxyScript.s.sol";
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
-import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxy.s.sol";
+import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
+import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
 
 
 contract DeployAllScript is Script {
@@ -32,6 +33,7 @@ contract DeployAllScript is Script {
         DeployAndInitializeProtocolVersionsScript protocolVersionsDeployments = new DeployAndInitializeProtocolVersionsScript();
 
         DeployOptimismPortalProxyScript optimismPortalProxyDeployments = new DeployOptimismPortalProxyScript();
+        DeploySystemConfigProxyScript systemConfigProxyDeployments = new DeploySystemConfigProxyScript();
 
         // Deploy a new ProxyAdmin and AddressManager
         addressManagerDeployments.deploy();
