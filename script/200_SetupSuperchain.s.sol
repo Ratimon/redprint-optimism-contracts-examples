@@ -15,7 +15,7 @@ import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndI
 
 import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
 import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
-import {DeployL1CrossDomainMessengerProxyScript} from "@script/401C_DeployL1CrossDomainMessengerProxyScript.s.sol";
+import {DeployL1CrossDomainMessengerProxyScript} from "@script/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
 
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 

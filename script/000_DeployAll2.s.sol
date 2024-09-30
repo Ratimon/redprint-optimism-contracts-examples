@@ -12,7 +12,8 @@ import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVers
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
 import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
-import {DeployL1CrossDomainMessengerProxyScript} from "@script/401C_DeployL1CrossDomainMessengerProxyScript.s.sol";
+
+import {DeployL1CrossDomainMessengerProxyScript} from "@script/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
 
 
 contract DeployAllScript is Script {

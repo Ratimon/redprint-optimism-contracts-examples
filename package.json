@@ -30,7 +30,7 @@
     "deploy_203B_protocol_versions": "DEPLOYMENT_OUTFILE=deployments/31337/.save_protocol_versions.json ldenv -m localhost forge script script/203B_DeployAndInitializeProtocolVersionsScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
     "deploy_401A_optimism_portal_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_superchainconfig_proxy.json ldenv -m localhost forge script script/401A_DeployOptimismPortalProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
     "deploy_401B_system_config_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_system_config_proxy.json ldenv -m localhost forge script script/401B_DeploySystemConfigProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast",
-    "deploy_401c_l1_crossdomain_messager_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_l1_crossdomain_messager_proxy.json ldenv -m localhost forge script script/401C_DeployL1CrossDomainMessengerProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast"
+    "deploy_401c_l1_crossdomain_messager_proxy": "DEPLOYMENT_OUTFILE=deployments/31337/.save_l1_crossdomain_messager_proxy.json ldenv -m localhost forge script script/401D_DeployL1CrossDomainMessengerProxyScript.s.sol -vvvv --sender @@DEPLOYER_ADDRESS  --private-key @@DEPLOYER_PRIVATE_KEY --rpc-url @@RPC_URL_localhost --broadcast"
   },
   "keywords": [],
   "author": "",
