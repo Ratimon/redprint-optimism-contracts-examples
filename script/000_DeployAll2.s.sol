@@ -12,6 +12,7 @@ import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVers
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
 import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
+import {DeployL1CrossDomainMessengerProxyScript} from "@script/401C_DeployL1CrossDomainMessengerProxyScript.s.sol";
 
 
 contract DeployAllScript is Script {
@@ -34,6 +35,7 @@ contract DeployAllScript is Script {
 
         DeployOptimismPortalProxyScript optimismPortalProxyDeployments = new DeployOptimismPortalProxyScript();
         DeploySystemConfigProxyScript systemConfigProxyDeployments = new DeploySystemConfigProxyScript();
+        DeployL1CrossDomainMessengerProxyScript l1CrossDomainMessengerProxyDeployments = new DeployL1CrossDomainMessengerProxyScript();
 
         // Deploy a new ProxyAdmin and AddressManager
         addressManagerDeployments.deploy();
@@ -49,5 +51,9 @@ contract DeployAllScript is Script {
         protocolVersionsProxyDeployments.deploy();
         protocolVersionsDeployments.deploy();
         protocolVersionsDeployments.initialize();
+
+        optimismPortalProxyDeployments.deploy();
+        systemConfigProxyDeployments.deploy();
+        l1CrossDomainMessengerProxyDeployments.deploy();
     }
 }

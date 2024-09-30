@@ -13,6 +13,10 @@ import {DeployAndInitializeSuperchainConfigScript} from "@script/202B_DeployAndI
 import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxyScript.s.sol";
 import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 
+import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
+import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
+import {DeployL1CrossDomainMessengerProxyScript} from "@script/401C_DeployL1CrossDomainMessengerProxyScript.s.sol";
+
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 
 contract SetupSuperchainScript is Script {

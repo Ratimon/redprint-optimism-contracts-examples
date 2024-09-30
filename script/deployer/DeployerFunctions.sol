@@ -17,9 +17,12 @@ import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
 import {Proxy} from "@redprint-core/universal/Proxy.sol";
+import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
+
 
 import { SuperchainConfig } from "@redprint-core/L1/SuperchainConfig.sol";
 import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
+
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -28,9 +31,12 @@ string constant Artifact_Safe = "Safe.sol:Safe";
 string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 string constant Artifact_Proxy = "Proxy.sol:Proxy";
+string constant Artifact_ResolvedDelegateProxy = "ResolvedDelegateProxy.sol:ResolvedDelegateProxy";
+
 
 string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConfig";
 string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersions";
+
 
 
 library DeployerFunctions {
@@ -125,9 +131,6 @@ library DeployerFunctions {
     {
         console.log("Deploying ERC1967Proxy");
 
-        // Proxy proxy = new Proxy({ _admin: _proxyOwner });
-        // deployer.save(name, address(proxy));
-
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
 
@@ -141,15 +144,35 @@ library DeployerFunctions {
     {
         console.log("Deploying ERC1967Proxy");
 
-        // Proxy proxy = new Proxy({ _admin: _proxyOwner });
-        // deployer.save(name, address(proxy));
-
         bytes memory args = abi.encode(_proxyOwner);
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 
         require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "admin must equal owner");
         return proxy;
     }
+
+    function deploy_ResolvedDelegateProxy(IDeployer deployer, string memory name, address _addressManager, string memory _implementationName)
+        internal
+        returns (ResolvedDelegateProxy)
+    {
+        console.log("Deploying ResolvedDelegateProxy");
+
+        bytes memory args = abi.encode(_addressManager, _implementationName);
+        ResolvedDelegateProxy proxy = ResolvedDelegateProxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
+        return proxy;
+    }
+
+    function deploy_ResolvedDelegateProxy(IDeployer deployer,string memory name, address _addressManager, string memory _implementationName,  DeployOptions memory options)
+        internal
+        returns (ResolvedDelegateProxy)
+    {
+        console.log("Deploying ResolvedDelegateProxy");
+
+        bytes memory args = abi.encode(_addressManager, _implementationName);
+        ResolvedDelegateProxy proxy = ResolvedDelegateProxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
+        return proxy;
+    }
+
 
     function deploy_SuperchainConfig(IDeployer deployer, string memory name)
         internal
