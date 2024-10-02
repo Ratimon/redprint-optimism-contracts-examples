@@ -7,6 +7,7 @@ import {console2 as console} from "@redprint-forge-std/console2.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
 import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
+import {SetupOpchainScript} from "@script/400_SetupOpchain.s.sol";
 
 contract DeployAllScript is Script {
     IDeployer deployerProcedue;
@@ -24,7 +25,8 @@ contract DeployAllScript is Script {
         //2) set up superChain
         superchainSetups.run();
         //3) TODO set up plasma
-        //4) TODO set up layer2 OP Chain
-
+        
+        //4) set up layer2 OP Chain
+        SetupOpchainScript opchainSetups = new SetupOpchainScript();
     }
 }
