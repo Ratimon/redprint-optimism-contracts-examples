@@ -18,11 +18,10 @@ import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
 import {Proxy} from "@redprint-core/universal/Proxy.sol";
 import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
-
+import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
 
 import { SuperchainConfig } from "@redprint-core/L1/SuperchainConfig.sol";
 import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
-
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -32,11 +31,11 @@ string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
 string constant Artifact_Proxy = "Proxy.sol:Proxy";
 string constant Artifact_ResolvedDelegateProxy = "ResolvedDelegateProxy.sol:ResolvedDelegateProxy";
+string constant Artifact_L1ChugSplashProxy = "L1ChugSplashProxy.sol:L1ChugSplashProxy";
 
 
 string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConfig";
 string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersions";
-
 
 
 library DeployerFunctions {
@@ -148,6 +147,34 @@ library DeployerFunctions {
         Proxy proxy = Proxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
 
         require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "admin must equal owner");
+        return proxy;
+    }
+
+
+
+    function deploy_L1ChugSplashProxy(IDeployer deployer, string memory name, address _proxyOwner)
+        internal
+        returns (L1ChugSplashProxy)
+    {
+        console.log("Deploying L1ChugSplashProxy");
+
+        bytes memory args = abi.encode(_proxyOwner);
+        L1ChugSplashProxy proxy = L1ChugSplashProxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args));
+
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "Admin address must equal the owner param");
+        return proxy;
+    }
+
+    function deploy_L1ChugSplashProxy(IDeployer deployer, string memory name, address _proxyOwner, DeployOptions memory options)
+        internal
+        returns (L1ChugSplashProxy)
+    {
+        console.log("Deploying L1ChugSplashProxy");
+
+        bytes memory args = abi.encode(_proxyOwner);
+        L1ChugSplashProxy proxy = L1ChugSplashProxy(DefaultDeployerFunction.deploy(deployer, name, Artifact_Proxy, args, options));
+
+        require(EIP1967Helper.getAdmin(address(proxy)) == _proxyOwner, "Admin address must equal the owner param");
         return proxy;
     }
 
