@@ -5,7 +5,7 @@ import {Script} from "@redprint-forge-std/Script.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {MyGovernor, IVotes, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
 
-contract DeployGovernerScript is Script {
+contract DeployGovernorScript is Script {
 
     IDeployer deployerProcedue;
 
@@ -26,9 +26,8 @@ contract DeployGovernerScript is Script {
 
         MyGovernor governer = new MyGovernor(_token, _timelock);
 
-        deployerProcedue.save("SystemOwnerSafe", address(governer));
-
-
         vm.stopBroadcast();
+
+        deployerProcedue.save("SystemOwnerSafe", address(governer));
     }
 }

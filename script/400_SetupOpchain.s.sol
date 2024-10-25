@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import {Script} from "@redprint-forge-std/Script.sol";
-import {console2 as console} from "@redprint-forge-std/console2.sol";
-
+import {console} from "@redprint-forge-std/console.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-
 import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
 import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
 import {DeployL1StandardBridgeProxyScript} from "@script/401C_DeployL1StandardBridgeProxyScript.s.sol";
@@ -18,17 +16,13 @@ import {DeployDelayedWETHProxyScript} from "@script/401I_DeployDelayedWETHProxyS
 import {DeployPermissionedDelayedWETHProxyScript} from "@script/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
 import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorStateRegistryProxyScript.s.sol";
 
-
-import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
-
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
 
     function run() public {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
-
-
+        
         DeployOptimismPortalProxyScript optimismPortalProxyDeployments = new DeployOptimismPortalProxyScript();
         DeploySystemConfigProxyScript systemConfigProxyDeployments = new DeploySystemConfigProxyScript();
         DeployL1StandardBridgeProxyScript l1StandardBridgeProxyDeployments = new DeployL1StandardBridgeProxyScript();
@@ -41,7 +35,6 @@ contract SetupOpchainScript is Script {
         DeployPermissionedDelayedWETHProxyScript permissionedDelayedWETHProxyDeployments = new DeployPermissionedDelayedWETHProxyScript();
         DeployAnchorStateRegistryProxyScript anchorStateRegistryProxyDeployments = new DeployAnchorStateRegistryProxyScript();
 
-
         optimismPortalProxyDeployments.deploy();
         systemConfigProxyDeployments.deploy();
         l1StandardBridgeProxyDeployments.deploy();
@@ -53,7 +46,7 @@ contract SetupOpchainScript is Script {
         delayedWETHProxyDeployments.deploy();
         permissionedDelayedWETHProxyDeployments.deploy();
         anchorStateRegistryProxyDeployments.deploy();
-
+        
         console.log("OptimismPortalProxy at: ", deployerProcedue.getAddress("OptimismPortalProxy"));
         console.log("SystemConfigProxy at: ", deployerProcedue.getAddress("SystemConfigProxy"));
         console.log("L1CrossDomainMessengerProxy at: ", deployerProcedue.getAddress("L1CrossDomainMessengerProxy"));
@@ -64,7 +57,5 @@ contract SetupOpchainScript is Script {
         console.log("DelayedWETHProxy at: ", deployerProcedue.getAddress("DelayedWETHProxy"));
         console.log("PermissionedDelayedWETHProxy at: ", deployerProcedue.getAddress("PermissionedDelayedWETHProxy"));
         console.log("AnchorStateRegistryProxy at: ", deployerProcedue.getAddress("AnchorStateRegistryProxy"));
-
-
     }
 }
