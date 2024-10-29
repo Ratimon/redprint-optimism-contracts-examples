@@ -3,7 +3,9 @@ pragma solidity ^0.8.20;
 
 import {Script} from "@redprint-forge-std/Script.sol";
 import {console} from "@redprint-forge-std/console.sol";
+import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
+import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
 import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
 import {DeployL1StandardBridgeProxyScript} from "@script/401C_DeployL1StandardBridgeProxyScript.s.sol";
@@ -46,6 +48,7 @@ contract SetupOpchainScript is Script {
         delayedWETHProxyDeployments.deploy();
         permissionedDelayedWETHProxyDeployments.deploy();
         anchorStateRegistryProxyDeployments.deploy();
+        transferAddressManagerOwnership();
         
         console.log("OptimismPortalProxy at: ", deployerProcedue.getAddress("OptimismPortalProxy"));
         console.log("SystemConfigProxy at: ", deployerProcedue.getAddress("SystemConfigProxy"));
@@ -57,5 +60,30 @@ contract SetupOpchainScript is Script {
         console.log("DelayedWETHProxy at: ", deployerProcedue.getAddress("DelayedWETHProxy"));
         console.log("PermissionedDelayedWETHProxy at: ", deployerProcedue.getAddress("PermissionedDelayedWETHProxy"));
         console.log("AnchorStateRegistryProxy at: ", deployerProcedue.getAddress("AnchorStateRegistryProxy"));
+    }
+
+    function transferAddressManagerOwnership() internal {
+        
+        console.log("Transferring AddressManager ownership to ProxyAdmin");
+        AddressManager addressManager = AddressManager(deployerProcedue.mustGetAddress("AddressManager"));
+        address owner = addressManager.owner();
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
+
+        if (owner != proxyAdmin) {
+
+            if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
+                console.log("Pranking ower ...");
+                vm.prank(owner);
+             } else {
+                console.log("Broadcasting ...");
+                vm.broadcast(owner);
+             }
+
+            addressManager.transferOwnership(proxyAdmin);
+            console.log("AddressManager ownership transferred to %s", proxyAdmin);
+        }
+
+        require(addressManager.owner() == proxyAdmin);
     }
 }
