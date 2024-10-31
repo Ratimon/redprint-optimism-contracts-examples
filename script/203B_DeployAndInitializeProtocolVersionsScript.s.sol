@@ -25,7 +25,9 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
 
         versions = deployer.deploy_ProtocolVersions("ProtocolVersions", options);
 
-        Types.ContractSet memory contracts = _proxiesUnstrict();
+        // Types.ContractSet memory contracts = _proxiesUnstrict();
+        Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
+
         contracts.ProtocolVersions = address(versions);
         ChainAssertions.checkProtocolVersions({ _contracts: contracts, _cfg: deployer.getConfig(), _isProxy: false });
 
@@ -83,28 +85,28 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
         string memory version = _versions.version();
         console.log("ProtocolVersions version: %s", version);
 
-        ChainAssertions.checkProtocolVersions({ _contracts: _proxiesUnstrict(), _cfg: deployer.getConfig(), _isProxy: true });
+        ChainAssertions.checkProtocolVersions({ _contracts: deployer.getProxiesUnstrict(), _cfg: deployer.getConfig(), _isProxy: true });
     }
 
-    function _proxiesUnstrict()
-        internal
-        view
-        returns (Types.ContractSet memory proxies_)
-    {
-        proxies_ = Types.ContractSet({
-            L1CrossDomainMessenger: deployer.getAddress("L1CrossDomainMessengerProxy"),
-            L1StandardBridge: deployer.getAddress("L1StandardBridgeProxy"),
-            L2OutputOracle: deployer.getAddress("L2OutputOracleProxy"),
-            DisputeGameFactory: deployer.getAddress("DisputeGameFactoryProxy"),
-            DelayedWETH: deployer.getAddress("DelayedWETHProxy"),
-            AnchorStateRegistry: deployer.getAddress("AnchorStateRegistryProxy"),
-            OptimismMintableERC20Factory: deployer.getAddress("OptimismMintableERC20FactoryProxy"),
-            OptimismPortal: deployer.getAddress("OptimismPortalProxy"),
-            OptimismPortal2: deployer.getAddress("OptimismPortalProxy"),
-            SystemConfig: deployer.getAddress("SystemConfigProxy"),
-            L1ERC721Bridge: deployer.getAddress("L1ERC721BridgeProxy"),
-            ProtocolVersions: deployer.getAddress("ProtocolVersionsProxy"),
-            SuperchainConfig: deployer.getAddress("SuperchainConfigProxy")
-        });
-    }
+    // function _proxiesUnstrict()
+    //     internal
+    //     view
+    //     returns (Types.ContractSet memory proxies_)
+    // {
+    //     proxies_ = Types.ContractSet({
+    //         L1CrossDomainMessenger: deployer.getAddress("L1CrossDomainMessengerProxy"),
+    //         L1StandardBridge: deployer.getAddress("L1StandardBridgeProxy"),
+    //         L2OutputOracle: deployer.getAddress("L2OutputOracleProxy"),
+    //         DisputeGameFactory: deployer.getAddress("DisputeGameFactoryProxy"),
+    //         DelayedWETH: deployer.getAddress("DelayedWETHProxy"),
+    //         AnchorStateRegistry: deployer.getAddress("AnchorStateRegistryProxy"),
+    //         OptimismMintableERC20Factory: deployer.getAddress("OptimismMintableERC20FactoryProxy"),
+    //         OptimismPortal: deployer.getAddress("OptimismPortalProxy"),
+    //         OptimismPortal2: deployer.getAddress("OptimismPortalProxy"),
+    //         SystemConfig: deployer.getAddress("SystemConfigProxy"),
+    //         L1ERC721Bridge: deployer.getAddress("L1ERC721BridgeProxy"),
+    //         ProtocolVersions: deployer.getAddress("ProtocolVersionsProxy"),
+    //         SuperchainConfig: deployer.getAddress("SuperchainConfigProxy")
+    //     });
+    // }
 }

@@ -23,6 +23,8 @@ import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
 import { SuperchainConfig } from "@redprint-core/L1/SuperchainConfig.sol";
 import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
 
+import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
+
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
 string constant Artifact_Safe = "Safe.sol:Safe";
@@ -33,9 +35,10 @@ string constant Artifact_Proxy = "Proxy.sol:Proxy";
 string constant Artifact_ResolvedDelegateProxy = "ResolvedDelegateProxy.sol:ResolvedDelegateProxy";
 string constant Artifact_L1ChugSplashProxy = "L1ChugSplashProxy.sol:L1ChugSplashProxy";
 
-
 string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConfig";
 string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersions";
+
+string constant Artifact_L1CrossDomainMessenger = "L1CrossDomainMessenger.sol:L1CrossDomainMessenger";
 
 
 library DeployerFunctions {
@@ -245,6 +248,24 @@ library DeployerFunctions {
         console.log("Deploying ProtocolVersions");
         bytes memory args = abi.encode();
         return ProtocolVersions(DefaultDeployerFunction.deploy(deployer, name, Artifact_ProtocolVersions, args, options));
+    }
+
+    function deploy_L1CrossDomainMessenger(IDeployer deployer, string memory name)
+        internal
+        returns (L1CrossDomainMessenger)
+    {
+        console.log("Deploying L1CrossDomainMessenger");
+        bytes memory args = abi.encode();
+        return L1CrossDomainMessenger(DefaultDeployerFunction.deploy(deployer, name, Artifact_L1CrossDomainMessenger, args));
+    }
+
+    function deploy_L1CrossDomainMessenger(IDeployer deployer, string memory name, DeployOptions memory options)
+        internal
+        returns (L1CrossDomainMessenger)
+    {
+        console.log("Deploying L1CrossDomainMessenger");
+        bytes memory args = abi.encode();
+        return L1CrossDomainMessenger(DefaultDeployerFunction.deploy(deployer, name, Artifact_L1CrossDomainMessenger, args, options));
     }
 
 }
