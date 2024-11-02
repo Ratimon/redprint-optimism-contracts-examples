@@ -25,7 +25,6 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
 
         versions = deployer.deploy_ProtocolVersions("ProtocolVersions", options);
 
-        // Types.ContractSet memory contracts = _proxiesUnstrict();
         Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
 
         contracts.ProtocolVersions = address(versions);
