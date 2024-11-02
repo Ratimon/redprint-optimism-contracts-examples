@@ -24,6 +24,7 @@ import { SuperchainConfig } from "@redprint-core/L1/SuperchainConfig.sol";
 import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
 
 import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
+import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMintableERC20Factory.sol";
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -39,6 +40,7 @@ string constant Artifact_SuperchainConfig = "SuperchainConfig.sol:SuperchainConf
 string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersions";
 
 string constant Artifact_L1CrossDomainMessenger = "L1CrossDomainMessenger.sol:L1CrossDomainMessenger";
+string constant Artifact_OptimismMintableERC20Factory = "OptimismMintableERC20Factory.sol:OptimismMintableERC20Factory";
 
 
 library DeployerFunctions {
@@ -266,6 +268,24 @@ library DeployerFunctions {
         console.log("Deploying L1CrossDomainMessenger");
         bytes memory args = abi.encode();
         return L1CrossDomainMessenger(DefaultDeployerFunction.deploy(deployer, name, Artifact_L1CrossDomainMessenger, args, options));
+    }
+
+    function deploy_OptimismMintableERC20Factory(IDeployer deployer, string memory name)
+        internal
+        returns (OptimismMintableERC20Factory)
+    {
+        console.log("Deploying OptimismMintableERC20Factory");
+        bytes memory args = abi.encode();
+        return OptimismMintableERC20Factory(DefaultDeployerFunction.deploy(deployer, name, Artifact_OptimismMintableERC20Factory, args));
+    }
+
+    function deploy_OptimismMintableERC20Factory(IDeployer deployer, string memory name, DeployOptions memory options)
+        internal
+        returns (OptimismMintableERC20Factory)
+    {
+        console.log("Deploying OptimismMintableERC20Factory");
+        bytes memory args = abi.encode();
+        return OptimismMintableERC20Factory(DefaultDeployerFunction.deploy(deployer, name, Artifact_OptimismMintableERC20Factory, args, options));
     }
 
 }

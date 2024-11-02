@@ -19,6 +19,7 @@ import {DeployPermissionedDelayedWETHProxyScript} from "@script/401J_DeployPermi
 import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorStateRegistryProxyScript.s.sol";
 
 import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDomainMessengerScript.s.sol";
+import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -64,8 +65,11 @@ contract SetupOpchainScript is Script {
         console.log("AnchorStateRegistryProxy at: ", deployerProcedue.getAddress("AnchorStateRegistryProxy"));
 
         DeployL1CrossDomainMessengerScript l1CrossDomainMessengerDeployments = new DeployL1CrossDomainMessengerScript();
-        l1CrossDomainMessengerDeployments.deploy();
+        DeployOptimismMintableERC20FactoryScript optimismMintableERC20FactoryDeployments = new DeployOptimismMintableERC20FactoryScript();
         
+        l1CrossDomainMessengerDeployments.deploy();
+        optimismMintableERC20FactoryDeployments.deploy();
+
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
     }
 
