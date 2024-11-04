@@ -20,6 +20,7 @@ import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorSta
 
 import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDomainMessengerScript.s.sol";
 import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
+import {DeploySystemConfigScript} from "@script/402C_DeploySystemConfig.s.sol";
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -66,10 +67,12 @@ contract SetupOpchainScript is Script {
 
         DeployL1CrossDomainMessengerScript l1CrossDomainMessengerDeployments = new DeployL1CrossDomainMessengerScript();
         DeployOptimismMintableERC20FactoryScript optimismMintableERC20FactoryDeployments = new DeployOptimismMintableERC20FactoryScript();
-        
+        DeploySystemConfigScript systemConfigDeployments = new DeploySystemConfigScript();
+
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
-
+        systemConfigDeployments.deploy();
+        
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
     }
 

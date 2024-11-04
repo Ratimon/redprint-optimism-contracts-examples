@@ -25,6 +25,7 @@ import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
 
 import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
 import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMintableERC20Factory.sol";
+import {SystemConfig} from "@redprint-core/L1/SystemConfig.sol";
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -41,6 +42,7 @@ string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersio
 
 string constant Artifact_L1CrossDomainMessenger = "L1CrossDomainMessenger.sol:L1CrossDomainMessenger";
 string constant Artifact_OptimismMintableERC20Factory = "OptimismMintableERC20Factory.sol:OptimismMintableERC20Factory";
+string constant Artifact_SystemConfig = "SystemConfig.sol:SystemConfig";
 
 
 library DeployerFunctions {
@@ -286,6 +288,24 @@ library DeployerFunctions {
         console.log("Deploying OptimismMintableERC20Factory");
         bytes memory args = abi.encode();
         return OptimismMintableERC20Factory(DefaultDeployerFunction.deploy(deployer, name, Artifact_OptimismMintableERC20Factory, args, options));
+    }
+
+    function deploy_SystemConfig(IDeployer deployer, string memory name)
+        internal
+        returns (SystemConfig)
+    {
+        console.log("Deploying SystemConfig");
+        bytes memory args = abi.encode();
+        return SystemConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SystemConfig, args));
+    }
+
+    function deploy_SystemConfig(IDeployer deployer, string memory name, DeployOptions memory options)
+        internal
+        returns (SystemConfig)
+    {
+        console.log("Deploying SystemConfig");
+        bytes memory args = abi.encode();
+        return SystemConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SystemConfig, args, options));
     }
 
 }
