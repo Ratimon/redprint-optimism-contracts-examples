@@ -4,7 +4,7 @@ out = "out"
 script = 'script'
 test = 'test'
 libs = ["node_modules", "lib"]
-# solc_version = '0.8.20'
+solc_version = '0.8.25'
 auto_detect_solc = true
 fs_permissions = [
     { access = 'read-write', path = './deployments/' },

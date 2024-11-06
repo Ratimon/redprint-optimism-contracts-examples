@@ -6,11 +6,11 @@ import {console2 as console} from "@redprint-forge-std/console2.sol";
 import {stdJson} from "@redprint-forge-std/StdJson.sol";
 
 import {Predeploys} from "@redprint-core/libraries/Predeploys.sol";
-import {Config} from "@script/deployer/Config.sol";
-import {ForgeArtifacts} from "@script/deployer/ForgeArtifacts.sol";
+import {Config} from "@redprint-deploy/deployer/Config.sol";
+import {ForgeArtifacts} from "@redprint-deploy/deployer/ForgeArtifacts.sol";
 
-import { DeployConfig } from "@script/deployer/DeployConfig.s.sol";
-import { Types } from "@script/optimism/Types.sol";
+import { DeployConfig } from "@redprint-deploy/deployer/DeployConfig.s.sol";
+import { Types } from "@redprint-deploy/optimism/Types.sol";
 
 
 /// @notice represent a deployment
@@ -239,6 +239,7 @@ contract GlobalDeployer is IDeployer {
             L2OutputOracle: getAddress("L2OutputOracleProxy"),
             DisputeGameFactory: getAddress("DisputeGameFactoryProxy"),
             DelayedWETH: getAddress("DelayedWETHProxy"),
+            PermissionedDelayedWETH: getAddress("PermissionedDelayedWETH"),
             AnchorStateRegistry: getAddress("AnchorStateRegistryProxy"),
             OptimismMintableERC20Factory: getAddress("OptimismMintableERC20FactoryProxy"),
             OptimismPortal: getAddress("OptimismPortalProxy"),
@@ -274,8 +275,6 @@ contract GlobalDeployer is IDeployer {
             return payable(Predeploys.L1_MESSAGE_SENDER);
         } else if (digest == keccak256(bytes("DeployerWhitelist"))) {
             return payable(Predeploys.DEPLOYER_WHITELIST);
-        } else if (digest == keccak256(bytes("WETH9"))) {
-            return payable(Predeploys.WETH9);
         } else if (digest == keccak256(bytes("LegacyERC20ETH"))) {
             return payable(Predeploys.LEGACY_ERC20_ETH);
         } else if (digest == keccak256(bytes("L1BlockNumber"))) {

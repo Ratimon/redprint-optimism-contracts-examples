@@ -17,15 +17,12 @@ contract DeploySystemConfigScript is DeployScript {
     // SystemConfigInterop systemConfigInterop;
 
     function deploy() external returns (SystemConfig) {
-
         DeployConfig cfg = deployer.getConfig();
 
         bytes32 _salt = DeployScript.implSalt();
         DeployOptions memory options = DeployOptions({salt:_salt});
 
-        // to do add interop
         systemConfig = deployer.deploy_SystemConfig("SystemConfig", options);
-        // systemConfigInterop = deployer.deploy_SystemConfigInterop("SystemConfigInterop", options);
 
         Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
        

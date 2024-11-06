@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 import {console2 as console} from "@redprint-forge-std/console2.sol";
 import { Vm } from "@redprint-forge-std/Vm.sol";
 
-import {IDeployer} from "@script/deployer/Deployer.sol";
-import {DefaultDeployerFunction, DeployOptions} from "@script/deployer/DefaultDeployerFunction.sol";
+import {IDeployer} from "@redprint-deploy/deployer/Deployer.sol";
+import {DefaultDeployerFunction, DeployOptions} from "@redprint-deploy/deployer/DefaultDeployerFunction.sol";
 
 import { EIP1967Helper } from "@redprint-core/universal/EIP1967Helper.sol";
 
@@ -26,6 +26,7 @@ import { ProtocolVersions } from "@redprint-core/L1/ProtocolVersions.sol";
 import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
 import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMintableERC20Factory.sol";
 import {SystemConfig} from "@redprint-core/L1/SystemConfig.sol";
+import {SystemConfigInterop} from "@redprint-core/L1/SystemConfigInterop.sol";
 
 
 string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
@@ -43,6 +44,7 @@ string constant Artifact_ProtocolVersions = "ProtocolVersions.sol:ProtocolVersio
 string constant Artifact_L1CrossDomainMessenger = "L1CrossDomainMessenger.sol:L1CrossDomainMessenger";
 string constant Artifact_OptimismMintableERC20Factory = "OptimismMintableERC20Factory.sol:OptimismMintableERC20Factory";
 string constant Artifact_SystemConfig = "SystemConfig.sol:SystemConfig";
+string constant Artifact_SystemConfigInterop = "SystemConfigInterop.sol:SystemConfigInterop";
 
 
 library DeployerFunctions {
@@ -306,6 +308,24 @@ library DeployerFunctions {
         console.log("Deploying SystemConfig");
         bytes memory args = abi.encode();
         return SystemConfig(DefaultDeployerFunction.deploy(deployer, name, Artifact_SystemConfig, args, options));
+    }
+
+    function deploy_SystemConfigInterop(IDeployer deployer, string memory name)
+        internal
+        returns (SystemConfigInterop)
+    {
+        console.log("Deploying SystemConfigInterop");
+        bytes memory args = abi.encode();
+        return SystemConfigInterop(DefaultDeployerFunction.deploy(deployer, name, Artifact_SystemConfigInterop, args));
+    }
+
+    function deploy_SystemConfigInterop(IDeployer deployer, string memory name, DeployOptions memory options)
+        internal
+        returns (SystemConfigInterop)
+    {
+        console.log("Deploying SystemConfigInterop");
+        bytes memory args = abi.encode();
+        return SystemConfigInterop(DefaultDeployerFunction.deploy(deployer, name, Artifact_SystemConfigInterop, args, options));
     }
 
 }
