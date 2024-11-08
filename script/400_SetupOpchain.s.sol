@@ -22,6 +22,7 @@ import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDoma
 import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
 // import {DeploySystemConfigScript} from "@script/402C_DeploySystemConfig.s.sol";
 import {DeploySystemConfigInteropScript} from "@script/402C_DeploySystemConfig2.s.sol";
+import {DeployL1StandardBridgeScript} from "@script/402D_DeployL1StandardBridge.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -70,12 +71,17 @@ contract SetupOpchainScript is Script {
         DeployL1CrossDomainMessengerScript l1CrossDomainMessengerDeployments = new DeployL1CrossDomainMessengerScript();
         DeployOptimismMintableERC20FactoryScript optimismMintableERC20FactoryDeployments = new DeployOptimismMintableERC20FactoryScript();
         DeploySystemConfigInteropScript systemConfigDeployments = new DeploySystemConfigInteropScript();
+        DeployL1StandardBridgeScript l1StandardBridgeDeployments = new DeployL1StandardBridgeScript();
 
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
         systemConfigDeployments.deploy();
+        l1StandardBridgeDeployments.deploy();
 
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
+        console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
+        console.log("SystemConfigInterop at: ", deployerProcedue.getAddress("SystemConfigInterop"));
+        console.log("L1StandardBridge at: ", deployerProcedue.getAddress("L1StandardBridge"));
     }
 
     function transferAddressManagerOwnership() internal {

@@ -6,8 +6,8 @@
 @test/=test/
 
 @redprint-forge-std/=lib/forge-std/src/
-@redprint-openzeppelin/=lib/openzeppelin-4_9_4/contracts
-@redprint-openzeppelin-upgradable/=lib/openzeppelin-upgradeable-4_9_4/contracts
+@redprint-openzeppelin/=lib/openzeppelin-4_7_3/contracts
+@redprint-openzeppelin-upgradable/=lib/openzeppelin-upgradeable-4_7_3/contracts
 @redprint-safe-contracts/=lib/safe-smart-account/contracts/
 @redprint-lib-keccak/=lib/lib-keccak/contracts/lib/
 
