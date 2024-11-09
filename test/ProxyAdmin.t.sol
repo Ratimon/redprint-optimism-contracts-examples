@@ -6,6 +6,7 @@ import {console} from "@redprint-forge-std/console.sol";
 import {Test} from "@redprint-forge-std/Test.sol";
 
 import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
+import {IAddressManager} from "@redprint-core/legacy/interfaces/IAddressManager.sol";
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
@@ -108,7 +109,7 @@ contract ProxyAdmin_Test is Test {
     function test_setAddressManager_notOwner_reverts() external beforeEach {
         vm.startPrank(address(0));
         vm.expectRevert("Ownable: caller is not the owner");
-        admin.setAddressManager(AddressManager((address(0))));
+        admin.setAddressManager(IAddressManager((address(0))));
         vm.stopPrank();
     }
 

@@ -5,6 +5,7 @@ import {DeployScript} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployerFunctions, IDeployer} from "@redprint-deploy/deployer/DeployerFunctions.sol";
 import {console} from "@redprint-forge-std/console.sol";
 import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
+import {IAddressManager} from "@redprint-core/legacy/interfaces/IAddressManager.sol";
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
@@ -25,7 +26,7 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
     function initialize() external {
         AddressManager addressManager = AddressManager(deployer.mustGetAddress("AddressManager"));
         (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
-        if (proxyAdmin.addressManager() != addressManager) {
+        if ( address(proxyAdmin.addressManager()) != address(addressManager)) {
              if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
                 console.log("Pranking ower ...");
                 vm.prank(owner);
@@ -33,7 +34,7 @@ contract DeployAndSetupProxyAdminScript is DeployScript {
                 console.log("Broadcasting ...");
                 vm.broadcast(owner);
              }
-            proxyAdmin.setAddressManager(addressManager);
+            proxyAdmin.setAddressManager( IAddressManager(address(addressManager)));
             console.log("AddressManager setted to : %s", address(addressManager));
         }
         address safe = deployer.mustGetAddress("SystemOwnerSafe");

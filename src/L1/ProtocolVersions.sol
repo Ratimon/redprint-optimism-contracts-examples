@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { OwnableUpgradeable } from "@redprint-openzeppelin-upgradable/access/OwnableUpgradeable.sol";
+import { OwnableUpgradeable } from "@redprint-openzeppelin-upgradeable/access/OwnableUpgradeable.sol";
 import { ISemver } from "@redprint-core/universal/interfaces/ISemver.sol";
 import { Storage } from "@redprint-core/libraries/Storage.sol";
 import { Constants } from "@redprint-core/libraries/Constants.sol";
