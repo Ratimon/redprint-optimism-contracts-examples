@@ -21,8 +21,9 @@ import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorSta
 import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDomainMessengerScript.s.sol";
 import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
 // import {DeploySystemConfigScript} from "@script/402C_DeploySystemConfig.s.sol";
-import {DeploySystemConfigInteropScript} from "@script/402C_DeploySystemConfig2.s.sol";
-import {DeployL1StandardBridgeScript} from "@script/402D_DeployL1StandardBridge.s.sol";
+import {DeploySystemConfigInteropScript} from "@script/402C_DeploySystemConfigScript2.s.sol";
+import {DeployL1StandardBridgeScript} from "@script/402D_DeployL1StandardBridgeScript.s.sol";
+import {DeployL1ERC721BridgeScript} from "@script/402E_DeployL1ERC721BridgeScript.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -72,16 +73,18 @@ contract SetupOpchainScript is Script {
         DeployOptimismMintableERC20FactoryScript optimismMintableERC20FactoryDeployments = new DeployOptimismMintableERC20FactoryScript();
         DeploySystemConfigInteropScript systemConfigDeployments = new DeploySystemConfigInteropScript();
         DeployL1StandardBridgeScript l1StandardBridgeDeployments = new DeployL1StandardBridgeScript();
+        DeployL1ERC721BridgeScript l1ERC721BridgeDeployments = new DeployL1ERC721BridgeScript();
 
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
         systemConfigDeployments.deploy();
         l1StandardBridgeDeployments.deploy();
-
+        l1ERC721BridgeDeployments.deploy();
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
         console.log("SystemConfigInterop at: ", deployerProcedue.getAddress("SystemConfigInterop"));
         console.log("L1StandardBridge at: ", deployerProcedue.getAddress("L1StandardBridge"));
+        console.log("L1ERC721Bridge at: ", deployerProcedue.getAddress("L1ERC721Bridge"));
     }
 
     function transferAddressManagerOwnership() internal {
