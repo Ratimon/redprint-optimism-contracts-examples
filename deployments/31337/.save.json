@@ -12,6 +12,7 @@
   "L2OutputOracleProxy": "0xf67fa79195b03988bfab85Ad5BeCD7EadAD6Deee",
   "OptimismMintableERC20Factory": "0x2dFFf1ca5ADB73C2a1c4Ed53b8897C2E9a792a6f",
   "OptimismMintableERC20FactoryProxy": "0x396C99901aF44B261860b5484193Fc128257Ec28",
+  "OptimismPortal": "0xcE12fd75997362752F33A9b61fC6363128ba96d6",
   "OptimismPortalProxy": "0x34f3b34d381939596BE877e3B42Eb58d5B9146bf",
   "PermissionedDelayedWETHProxy": "0x6834f2C3252Adf7e2AAe01437D40E5b380733468",
   "ProtocolVersions": "0xd5EAd8168FE42d9957d694Dde9f2fC2d557AC581",
