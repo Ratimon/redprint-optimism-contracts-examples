@@ -25,6 +25,7 @@ import {DeploySystemConfigInteropScript} from "@script/402C_DeploySystemConfigSc
 import {DeployL1StandardBridgeScript} from "@script/402D_DeployL1StandardBridgeScript.s.sol";
 import {DeployL1ERC721BridgeScript} from "@script/402E_DeployL1ERC721BridgeScript.s.sol";
 import {DeployOptimismPortalScript} from "@script/402F_DeployOptimismPortalScript.s.sol";
+import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScript.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -76,6 +77,7 @@ contract SetupOpchainScript is Script {
         DeployL1StandardBridgeScript l1StandardBridgeDeployments = new DeployL1StandardBridgeScript();
         DeployL1ERC721BridgeScript l1ERC721BridgeDeployments = new DeployL1ERC721BridgeScript();
         DeployOptimismPortalScript optimismPortalDeployments = new DeployOptimismPortalScript();
+        DeployL2OutputOracleScript l2OutputOracleDeployments = new DeployL2OutputOracleScript();
 
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
@@ -83,7 +85,8 @@ contract SetupOpchainScript is Script {
         l1StandardBridgeDeployments.deploy();
         l1ERC721BridgeDeployments.deploy();
         optimismPortalDeployments.deploy();
-        
+        l2OutputOracleDeployments.deploy();
+
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
         console.log("SystemConfigInterop at: ", deployerProcedue.getAddress("SystemConfigInterop"));

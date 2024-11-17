@@ -3,26 +3,29 @@ pragma solidity ^0.8.20;
 
 import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
+import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
-import {L1StandardBridge} from "@redprint-core/L1/L1StandardBridge.sol";
+import {L2OutputOracle} from "@redprint-core/L1/L2OutputOracle.sol";
 
 /// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
-contract DeployL1StandardBridgeScript is DeployScript {
+contract DeployL2OutputOracleScript is DeployScript {
     using DeployerFunctions for IDeployer ;
-    L1StandardBridge l1StandardBridge;
+    L2OutputOracle l2OutputOracle;
 
-    function deploy() external returns (L1StandardBridge) {
+    function deploy() external returns (L2OutputOracle) {
+        DeployConfig cfg = deployer.getConfig();
+
         bytes32 _salt = DeployScript.implSalt();
         DeployOptions memory options = DeployOptions({salt:_salt});
 
-        l1StandardBridge = deployer.deploy_L1StandardBridge("L1StandardBridge", options);
+        l2OutputOracle = deployer.deploy_L2OutputOracle("L2OutputOracle", options);
 
         Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
        
-        contracts.L1StandardBridge = address(l1StandardBridge);
-        ChainAssertions.checkL1StandardBridge({ _contracts: contracts, _isProxy: false });
+        contracts.L2OutputOracle = address(l2OutputOracle);
+        ChainAssertions.checkL2OutputOracle({ _contracts: contracts, _cfg: cfg, _l2OutputOracleStartingTimestamp: 0, _isProxy: false });
 
-        return l1StandardBridge;
+        return l2OutputOracle;
     }
 }
