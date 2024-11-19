@@ -6,14 +6,14 @@ import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/Deploy
 import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
-import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
+import {OptimismPortalInterop} from "@redprint-core/L1/OptimismPortalInterop.sol";
 
 /// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
-contract DeployOptimismPortal2Script is DeployScript {
+contract DeployOptimismPortalInteropScript is DeployScript {
     using DeployerFunctions for IDeployer ;
-    OptimismPortal2 optimismPortal;
+    OptimismPortalInterop optimismPortal;
 
-    function deploy() external returns (OptimismPortal2) {
+    function deploy() external returns (OptimismPortalInterop) {
         DeployConfig cfg = deployer.getConfig();
         // Could also verify this inside DeployConfig but doing it here is a bit more reliable.
         require(
@@ -23,7 +23,7 @@ contract DeployOptimismPortal2Script is DeployScript {
         bytes32 _salt = DeployScript.implSalt();
         DeployOptions memory options = DeployOptions({salt:_salt});
 
-        optimismPortal = deployer.deploy_OptimismPortal2("OptimismPortal2", cfg.proofMaturityDelaySeconds(), cfg.disputeGameFinalityDelaySeconds(), options);
+        optimismPortal = deployer.deploy_OptimismPortalInterop("OptimismPortal2", cfg.proofMaturityDelaySeconds(), cfg.disputeGameFinalityDelaySeconds(), options);
 
         Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
        
