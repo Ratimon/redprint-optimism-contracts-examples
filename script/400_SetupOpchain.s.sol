@@ -29,6 +29,7 @@ import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScrip
 // import {DeployOptimismPortal2Script} from "@script/402H_DeployOptimismPortal2Script.s.sol";
 import {DeployOptimismPortalInteropScript} from "@script/402H_DeployOptimismPortalInteropScript.s.sol";
 import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
+import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.sol";
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -83,7 +84,7 @@ contract SetupOpchainScript is Script {
         // DeployOptimismPortal2Script optimismPortal2Deployments = new DeployOptimismPortal2Script();
         DeployOptimismPortalInteropScript optimismPortal2Deployments = new DeployOptimismPortalInteropScript();
         DeployDisputeGameFactoryScript disputeGameFactoryDeployments = new DeployDisputeGameFactoryScript();
-
+        DeployDelayedWETHScript delayedWETHDeployments = new DeployDelayedWETHScript();
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
         systemConfigDeployments.deploy();
@@ -92,7 +93,8 @@ contract SetupOpchainScript is Script {
         optimismPortalDeployments.deploy();
         l2OutputOracleDeployments.deploy();
         optimismPortal2Deployments.deploy();
-
+        disputeGameFactoryDeployments.deploy();
+        delayedWETHDeployments.deploy();
 
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
@@ -105,6 +107,7 @@ contract SetupOpchainScript is Script {
         console.log("OptimismPortal2 at: ", deployerProcedue.getAddress("OptimismPortal2"));
         console.log("L2OutputOracle at: ", deployerProcedue.getAddress("L2OutputOracle"));
         console.log("DisputeGameFactory at: ", deployerProcedue.getAddress("DisputeGameFactory"));
+        console.log("DelayedWETH at: ", deployerProcedue.getAddress("DelayedWETH"));
     }
 
     function transferAddressManagerOwnership() internal {
