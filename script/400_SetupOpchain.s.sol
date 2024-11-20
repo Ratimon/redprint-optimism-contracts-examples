@@ -31,6 +31,8 @@ import {DeployOptimismPortalInteropScript} from "@script/402H_DeployOptimismPort
 import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
 import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.sol";
 import {DeployPreimageOracleScript} from "@script/402K_PreimageOracleScript.s.sol";
+import {DeployMIPSScript} from "@script/402L_DeployMIPSScript.s.sol";
+
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -87,6 +89,7 @@ contract SetupOpchainScript is Script {
         DeployDisputeGameFactoryScript disputeGameFactoryDeployments = new DeployDisputeGameFactoryScript();
         DeployDelayedWETHScript delayedWETHDeployments = new DeployDelayedWETHScript();
         DeployPreimageOracleScript preimageOracleDeployments = new DeployPreimageOracleScript();
+        DeployMIPSScript mipsDeployments = new DeployMIPSScript();
 
 
         l1CrossDomainMessengerDeployments.deploy();
@@ -100,6 +103,7 @@ contract SetupOpchainScript is Script {
         disputeGameFactoryDeployments.deploy();
         delayedWETHDeployments.deploy();
         preimageOracleDeployments.deploy();
+        mipsDeployments.deploy();
 
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
@@ -114,6 +118,7 @@ contract SetupOpchainScript is Script {
         console.log("DisputeGameFactory at: ", deployerProcedue.getAddress("DisputeGameFactory"));
         console.log("DelayedWETH at: ", deployerProcedue.getAddress("DelayedWETH"));
         console.log("PreimageOracle at: ", deployerProcedue.getAddress("PreimageOracle"));
+        console.log("MIPS at: ", deployerProcedue.getAddress("MIPS"));
     }
 
     function transferAddressManagerOwnership() internal {
@@ -127,7 +132,7 @@ contract SetupOpchainScript is Script {
         if (owner != proxyAdmin) {
 
             if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
-                console.log("Pranking ower ...");
+                console.log("Pranking owner ...");
                 vm.prank(owner);
              } else {
                 console.log("Broadcasting ...");
