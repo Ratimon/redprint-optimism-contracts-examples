@@ -28,6 +28,7 @@ import {DeployOptimismPortalScript} from "@script/402F_DeployOptimismPortalScrip
 import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScript.s.sol";
 // import {DeployOptimismPortal2Script} from "@script/402H_DeployOptimismPortal2Script.s.sol";
 import {DeployOptimismPortalInteropScript} from "@script/402H_DeployOptimismPortalInteropScript.s.sol";
+import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -81,6 +82,8 @@ contract SetupOpchainScript is Script {
         DeployL2OutputOracleScript l2OutputOracleDeployments = new DeployL2OutputOracleScript();
         // DeployOptimismPortal2Script optimismPortal2Deployments = new DeployOptimismPortal2Script();
         DeployOptimismPortalInteropScript optimismPortal2Deployments = new DeployOptimismPortalInteropScript();
+        DeployDisputeGameFactoryScript disputeGameFactoryDeployments = new DeployDisputeGameFactoryScript();
+
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
         systemConfigDeployments.deploy();
@@ -97,7 +100,11 @@ contract SetupOpchainScript is Script {
         console.log("L1StandardBridge at: ", deployerProcedue.getAddress("L1StandardBridge"));
         console.log("L1ERC721Bridge at: ", deployerProcedue.getAddress("L1ERC721Bridge"));
         console.log("OptimismPortal at: ", deployerProcedue.getAddress("OptimismPortal"));
+
+        console.log("FaultProof Contract"); 
         console.log("OptimismPortal2 at: ", deployerProcedue.getAddress("OptimismPortal2"));
+        console.log("L2OutputOracle at: ", deployerProcedue.getAddress("L2OutputOracle"));
+        console.log("DisputeGameFactory at: ", deployerProcedue.getAddress("DisputeGameFactory"));
     }
 
     function transferAddressManagerOwnership() internal {

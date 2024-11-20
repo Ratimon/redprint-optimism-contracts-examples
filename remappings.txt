@@ -10,13 +10,16 @@
 @redprint-openzeppelin-upgradeable/=lib/openzeppelin-upgradeable-4_7_3/contracts
 @redprint-safe-contracts/=lib/safe-smart-account/contracts/
 @redprint-lib-keccak/=lib/lib-keccak/contracts/lib/
+@redprint-solady/=lib/solady/src/
+@redprint-solmate/=lib/solmate/src/
 
-@solady/=node_modules/solady/src/
-@solmate/=node_modules/solmate/src/
+
+forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src
+solidity-stringutils/=lib/openzeppelin-foundry-upgrades/lib/solidity-stringutils
 
 @openzeppelin=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts
 @openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts
 @openzeppelin-foundry-upgrades/=lib/openzeppelin-foundry-upgrades/src
 
-forge-std/=lib/openzeppelin-foundry-upgrades/lib/forge-std/src
-solidity-stringutils/=lib/openzeppelin-foundry-upgrades/lib/solidity-stringutils
+@solady/=node_modules/solady/src/
+@solmate/=node_modules/solmate/src/
