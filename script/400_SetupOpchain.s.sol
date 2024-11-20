@@ -30,6 +30,7 @@ import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScrip
 import {DeployOptimismPortalInteropScript} from "@script/402H_DeployOptimismPortalInteropScript.s.sol";
 import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
 import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.sol";
+import {DeployPreimageOracleScript} from "@script/402K_PreimageOracleScript.s.sol";
 
 contract SetupOpchainScript is Script {
     IDeployer deployerProcedue;
@@ -85,6 +86,9 @@ contract SetupOpchainScript is Script {
         DeployOptimismPortalInteropScript optimismPortal2Deployments = new DeployOptimismPortalInteropScript();
         DeployDisputeGameFactoryScript disputeGameFactoryDeployments = new DeployDisputeGameFactoryScript();
         DeployDelayedWETHScript delayedWETHDeployments = new DeployDelayedWETHScript();
+        DeployPreimageOracleScript preimageOracleDeployments = new DeployPreimageOracleScript();
+
+
         l1CrossDomainMessengerDeployments.deploy();
         optimismMintableERC20FactoryDeployments.deploy();
         systemConfigDeployments.deploy();
@@ -95,6 +99,7 @@ contract SetupOpchainScript is Script {
         optimismPortal2Deployments.deploy();
         disputeGameFactoryDeployments.deploy();
         delayedWETHDeployments.deploy();
+        preimageOracleDeployments.deploy();
 
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
@@ -108,6 +113,7 @@ contract SetupOpchainScript is Script {
         console.log("L2OutputOracle at: ", deployerProcedue.getAddress("L2OutputOracle"));
         console.log("DisputeGameFactory at: ", deployerProcedue.getAddress("DisputeGameFactory"));
         console.log("DelayedWETH at: ", deployerProcedue.getAddress("DelayedWETH"));
+        console.log("PreimageOracle at: ", deployerProcedue.getAddress("PreimageOracle"));
     }
 
     function transferAddressManagerOwnership() internal {
