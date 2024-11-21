@@ -17,7 +17,9 @@ import {DeployL2OutputOracleProxyScript} from "@script/401H_DeployL2OutputOracle
 import {DeployDelayedWETHProxyScript} from "@script/401I_DeployDelayedWETHProxyScript.s.sol";
 import {DeployPermissionedDelayedWETHProxyScript} from "@script/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
 import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorStateRegistryProxyScript.s.sol";
+import {TransferAddressManagerOwnershipScript} from "@script/401L_TransferAddressManagerOwnershipScript.s.sol";
 
+// implementations
 import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDomainMessengerScript.s.sol";
 import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
 // import {DeploySystemConfigScript} from "@script/402C_DeploySystemConfig.s.sol";
@@ -53,6 +55,7 @@ contract SetupOpchainScript is Script {
         DeployDelayedWETHProxyScript delayedWETHProxyDeployments = new DeployDelayedWETHProxyScript();
         DeployPermissionedDelayedWETHProxyScript permissionedDelayedWETHProxyDeployments = new DeployPermissionedDelayedWETHProxyScript();
         DeployAnchorStateRegistryProxyScript anchorStateRegistryProxyDeployments = new DeployAnchorStateRegistryProxyScript();
+        TransferAddressManagerOwnershipScript transferAddressManagerOwnership = new TransferAddressManagerOwnershipScript();
 
         optimismPortalProxyDeployments.deploy();
         systemConfigProxyDeployments.deploy();
@@ -65,7 +68,7 @@ contract SetupOpchainScript is Script {
         delayedWETHProxyDeployments.deploy();
         permissionedDelayedWETHProxyDeployments.deploy();
         anchorStateRegistryProxyDeployments.deploy();
-        transferAddressManagerOwnership();
+        transferAddressManagerOwnership.run();
         
         console.log("OptimismPortalProxy at: ", deployerProcedue.getAddress("OptimismPortalProxy"));
         console.log("SystemConfigProxy at: ", deployerProcedue.getAddress("SystemConfigProxy"));
@@ -125,28 +128,29 @@ contract SetupOpchainScript is Script {
         console.log("AnchorStateRegistry at: ", deployerProcedue.getAddress("AnchorStateRegistry"));
     }
 
-    function transferAddressManagerOwnership() internal {
+
+    // function transferAddressManagerOwnership() internal {
         
-        console.log("Transferring AddressManager ownership to ProxyAdmin");
-        AddressManager addressManager = AddressManager(deployerProcedue.mustGetAddress("AddressManager"));
-        address owner = addressManager.owner();
-        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
-        (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
+    //     console.log("Transferring AddressManager ownership to ProxyAdmin");
+    //     AddressManager addressManager = AddressManager(deployerProcedue.mustGetAddress("AddressManager"));
+    //     address owner = addressManager.owner();
+    //     address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+    //     (VmSafe.CallerMode mode ,address msgSender, ) = vm.readCallers();
 
-        if (owner != proxyAdmin) {
+    //     if (owner != proxyAdmin) {
 
-            if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
-                console.log("Pranking owner ...");
-                vm.prank(owner);
-             } else {
-                console.log("Broadcasting ...");
-                vm.broadcast(owner);
-             }
+    //         if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
+    //             console.log("Pranking owner ...");
+    //             vm.prank(owner);
+    //          } else {
+    //             console.log("Broadcasting ...");
+    //             vm.broadcast(owner);
+    //          }
 
-            addressManager.transferOwnership(proxyAdmin);
-            console.log("AddressManager ownership transferred to %s", proxyAdmin);
-        }
+    //         addressManager.transferOwnership(proxyAdmin);
+    //         console.log("AddressManager ownership transferred to %s", proxyAdmin);
+    //     }
 
-        require(addressManager.owner() == proxyAdmin);
-    }
+    //     require(addressManager.owner() == proxyAdmin);
+    // }
 }

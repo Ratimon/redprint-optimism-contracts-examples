@@ -87,25 +87,4 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
         ChainAssertions.checkProtocolVersions({ _contracts: deployer.getProxiesUnstrict(), _cfg: deployer.getConfig(), _isProxy: true });
     }
 
-    // function _proxiesUnstrict()
-    //     internal
-    //     view
-    //     returns (Types.ContractSet memory proxies_)
-    // {
-    //     proxies_ = Types.ContractSet({
-    //         L1CrossDomainMessenger: deployer.getAddress("L1CrossDomainMessengerProxy"),
-    //         L1StandardBridge: deployer.getAddress("L1StandardBridgeProxy"),
-    //         L2OutputOracle: deployer.getAddress("L2OutputOracleProxy"),
-    //         DisputeGameFactory: deployer.getAddress("DisputeGameFactoryProxy"),
-    //         DelayedWETH: deployer.getAddress("DelayedWETHProxy"),
-    //         AnchorStateRegistry: deployer.getAddress("AnchorStateRegistryProxy"),
-    //         OptimismMintableERC20Factory: deployer.getAddress("OptimismMintableERC20FactoryProxy"),
-    //         OptimismPortal: deployer.getAddress("OptimismPortalProxy"),
-    //         OptimismPortal2: deployer.getAddress("OptimismPortalProxy"),
-    //         SystemConfig: deployer.getAddress("SystemConfigProxy"),
-    //         L1ERC721Bridge: deployer.getAddress("L1ERC721BridgeProxy"),
-    //         ProtocolVersions: deployer.getAddress("ProtocolVersionsProxy"),
-    //         SuperchainConfig: deployer.getAddress("SuperchainConfigProxy")
-    //     });
-    // }
 }
