@@ -30,8 +30,9 @@ import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScrip
 import {DeployOptimismPortalInteropScript} from "@script/402H_DeployOptimismPortalInteropScript.s.sol";
 import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
 import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.sol";
-import {DeployPreimageOracleScript} from "@script/402K_PreimageOracleScript.s.sol";
+import {DeployPreimageOracleScript} from "@script/402K_DeployPreimageOracleScript.s.sol";
 import {DeployMIPSScript} from "@script/402L_DeployMIPSScript.s.sol";
+import {DeployAnchorStateRegistryScript} from "@script/402M_DeployAnchorStateRegistryScript.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -90,6 +91,7 @@ contract SetupOpchainScript is Script {
         DeployDelayedWETHScript delayedWETHDeployments = new DeployDelayedWETHScript();
         DeployPreimageOracleScript preimageOracleDeployments = new DeployPreimageOracleScript();
         DeployMIPSScript mipsDeployments = new DeployMIPSScript();
+        DeployAnchorStateRegistryScript anchorStateRegistryDeployments = new DeployAnchorStateRegistryScript();
 
 
         l1CrossDomainMessengerDeployments.deploy();
@@ -104,6 +106,7 @@ contract SetupOpchainScript is Script {
         delayedWETHDeployments.deploy();
         preimageOracleDeployments.deploy();
         mipsDeployments.deploy();
+        anchorStateRegistryDeployments.deploy();
 
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
@@ -119,6 +122,7 @@ contract SetupOpchainScript is Script {
         console.log("DelayedWETH at: ", deployerProcedue.getAddress("DelayedWETH"));
         console.log("PreimageOracle at: ", deployerProcedue.getAddress("PreimageOracle"));
         console.log("MIPS at: ", deployerProcedue.getAddress("MIPS"));
+        console.log("AnchorStateRegistry at: ", deployerProcedue.getAddress("AnchorStateRegistry"));
     }
 
     function transferAddressManagerOwnership() internal {
