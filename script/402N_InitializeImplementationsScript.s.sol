@@ -11,12 +11,15 @@ import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
 
-import { GameType} from "@redprint-core/dispute/lib/LibUDT.sol";
-import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
+// import { GameType} from "@redprint-core/dispute/lib/LibUDT.sol";
+// import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
 import { ISystemConfig } from "@redprint-core/L1/interfaces/ISystemConfig.sol";
 import { ISuperchainConfig } from "@redprint-core/L1/interfaces/ISuperchainConfig.sol";
+import {IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol";
 
-import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
+import {OptimismPortal} from "@redprint-core/L1/OptimismPortal.sol";
+// import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
+
 
 
 contract InitializeImplementationsScript is Script , SafeScript{
@@ -38,7 +41,8 @@ contract InitializeImplementationsScript is Script , SafeScript{
             console.log("Pranking owner ...");
             vm.startPrank(owner);
 
-            initializeOptimismPortal2();
+            // initializeOptimismPortal2();
+            initializeOptimismPortal();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -46,7 +50,8 @@ contract InitializeImplementationsScript is Script , SafeScript{
             console.log("Broadcasting ...");
             vm.startBroadcast(owner);
 
-            initializeOptimismPortal2();
+            // initializeOptimismPortal2();
+            initializeOptimismPortal();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -55,15 +60,55 @@ contract InitializeImplementationsScript is Script , SafeScript{
     }
 
 
-    function initializeOptimismPortal2() internal {
+    // function initializeOptimismPortal2() internal {
+    //     console.log("Upgrading and initializing OptimismPortal2 proxy");
+
+    //     address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+    //     address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+    //     address optimismPortalProxy = deployerProcedue.mustGetAddress("OptimismPortalProxy");
+    //     address optimismPortal2 = deployerProcedue.mustGetAddress("OptimismPortal2");
+    //     address disputeGameFactoryProxy = deployerProcedue.mustGetAddress("DisputeGameFactoryProxy");
+    //     address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
+    //     address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
+
+    //     DeployConfig cfg = deployerProcedue.getConfig();
+
+    //     _upgradeAndCallViaSafe({
+    //         _proxyAdmin: proxyAdmin,
+    //         _safe: safe,
+    //         _owner: owner,   
+    //         _proxy: payable(optimismPortalProxy),
+    //         _implementation: optimismPortal2,
+    //         _innerCallData: abi.encodeCall(
+    //             OptimismPortal2.initialize,
+    //                 (
+    //                     IDisputeGameFactory(disputeGameFactoryProxy),
+    //                     ISystemConfig(systemConfigProxy),
+    //                     ISuperchainConfig(superchainConfigProxy),
+    //                     GameType.wrap(uint32(cfg.respectedGameType()))
+    //                 )
+    //         )
+    //     });
+
+    //     OptimismPortal2 portal = OptimismPortal2(payable(optimismPortalProxy));
+    //     string memory version = portal.version();
+    //     console.log("OptimismPortal2 version: %s", version);
+
+    //     Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+    //     ChainAssertions.checkOptimismPortal2({ _contracts: proxies, _cfg: cfg, _isProxy: true });
+
+    // }
+
+    function initializeOptimismPortal() internal {
         console.log("Upgrading and initializing OptimismPortal2 proxy");
 
         address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
         address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
 
         address optimismPortalProxy = deployerProcedue.mustGetAddress("OptimismPortalProxy");
-        address optimismPortal2 = deployerProcedue.mustGetAddress("OptimismPortal2");
-        address disputeGameFactoryProxy = deployerProcedue.mustGetAddress("DisputeGameFactoryProxy");
+        address optimismPortal = deployerProcedue.mustGetAddress("OptimismPortal");
+        address l2OutputOracleProxy = deployerProcedue.mustGetAddress("L2OutputOracleProxy");
         address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
         address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
 
@@ -74,24 +119,23 @@ contract InitializeImplementationsScript is Script , SafeScript{
             _safe: safe,
             _owner: owner,   
             _proxy: payable(optimismPortalProxy),
-            _implementation: optimismPortal2,
+            _implementation: optimismPortal,
             _innerCallData: abi.encodeCall(
-                OptimismPortal2.initialize,
+                OptimismPortal.initialize,
                     (
-                        IDisputeGameFactory(disputeGameFactoryProxy),
+                        IL2OutputOracle(l2OutputOracleProxy),
                         ISystemConfig(systemConfigProxy),
-                        ISuperchainConfig(superchainConfigProxy),
-                        GameType.wrap(uint32(cfg.respectedGameType()))
+                        ISuperchainConfig(superchainConfigProxy)
                     )
             )
         });
 
-        OptimismPortal2 portal = OptimismPortal2(payable(optimismPortalProxy));
+        OptimismPortal portal = OptimismPortal(payable(optimismPortalProxy));
         string memory version = portal.version();
         console.log("OptimismPortal2 version: %s", version);
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
-        ChainAssertions.checkOptimismPortal2({ _contracts: proxies, _cfg: cfg, _isProxy: true });
+        ChainAssertions.checkOptimismPortal({ _contracts: proxies, _cfg: cfg, _isProxy: true });
 
     }
 
