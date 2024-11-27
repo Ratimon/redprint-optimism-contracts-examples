@@ -11,6 +11,8 @@ import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
 
+import { Constants } from "@redprint-core/libraries/Constants.sol";
+
 // import { GameType} from "@redprint-core/dispute/lib/LibUDT.sol";
 // import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
 import { ISystemConfig } from "@redprint-core/L1/interfaces/ISystemConfig.sol";
@@ -19,11 +21,13 @@ import {IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol"
 
 import {OptimismPortal} from "@redprint-core/L1/OptimismPortal.sol";
 // import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
+import {SystemConfig} from "@redprint-core/L1/SystemConfig.sol";
 
 
 
 contract InitializeImplementationsScript is Script , SafeScript{
     IDeployer deployerProcedue;
+    address public constant customGasTokenAddress = 0x0000000000000000000000000000000000000000;
 
     string mnemonic = vm.envString("MNEMONIC");
     uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1);
@@ -43,6 +47,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
             // initializeOptimismPortal2();
             initializeOptimismPortal();
+            initializeSystemConfig();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -52,6 +57,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
             // initializeOptimismPortal2();
             initializeOptimismPortal();
+            initializeSystemConfig();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -136,6 +142,60 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkOptimismPortal({ _contracts: proxies, _cfg: cfg, _isProxy: true });
+
+    }
+
+    function initializeSystemConfig() internal {
+        console.log("Upgrading and initializing SystemConfig proxy");
+
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
+        address systemConfig = deployerProcedue.mustGetAddress("SystemConfig");
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        bytes32 batcherHash = bytes32(uint256(uint160(cfg.batchSenderAddress())));
+
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,   
+            _proxy: payable(systemConfigProxy),
+            _implementation: systemConfig,
+            _innerCallData: abi.encodeCall(
+                SystemConfig.initialize,
+                (
+                    cfg.finalSystemOwner(),
+                    cfg.basefeeScalar(),
+                    cfg.blobbasefeeScalar(),
+                    batcherHash,
+                    uint64(cfg.l2GenesisBlockGasLimit()),
+                    cfg.p2pSequencerAddress(),
+                    Constants.DEFAULT_RESOURCE_CONFIG(),
+                    cfg.batchInboxAddress(),
+                    SystemConfig.Addresses({
+                        l1CrossDomainMessenger: deployerProcedue.mustGetAddress("L1CrossDomainMessengerProxy"),
+                        l1ERC721Bridge: deployerProcedue.mustGetAddress("L1ERC721BridgeProxy"),
+                        l1StandardBridge: deployerProcedue.mustGetAddress("L1StandardBridgeProxy"),
+                        disputeGameFactory: deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"),
+                        optimismPortal: deployerProcedue.mustGetAddress("OptimismPortalProxy"),
+                        optimismMintableERC20Factory: deployerProcedue.mustGetAddress("OptimismMintableERC20FactoryProxy"),
+                        // gasPayingToken: Constants.ETHER
+                        gasPayingToken: customGasTokenAddress               
+                    })
+                )
+            )
+        });
+
+        SystemConfig config = SystemConfig(systemConfigProxy);
+        string memory version = config.version();
+        console.log("SystemConfig version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkSystemConfig({ _contracts: proxies, _cfg: cfg, _isProxy: true });
 
     }
 
