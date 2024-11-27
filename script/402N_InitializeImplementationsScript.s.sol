@@ -17,12 +17,16 @@ import { Constants } from "@redprint-core/libraries/Constants.sol";
 // import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
 import { ISystemConfig } from "@redprint-core/L1/interfaces/ISystemConfig.sol";
 import { ISuperchainConfig } from "@redprint-core/L1/interfaces/ISuperchainConfig.sol";
-import {IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol";
+import { IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol";
 
 import {OptimismPortal} from "@redprint-core/L1/OptimismPortal.sol";
 // import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
 import {SystemConfig} from "@redprint-core/L1/SystemConfig.sol";
 
+import {IL1CrossDomainMessenger} from "@redprint-core/L1/interfaces/IL1CrossDomainMessenger.sol";
+import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
+import {Safe} from "@redprint-safe-contracts/Safe.sol";
+import {L1StandardBridge} from "@redprint-core/L1/L1StandardBridge.sol";
 
 
 contract InitializeImplementationsScript is Script , SafeScript{
@@ -48,6 +52,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             // initializeOptimismPortal2();
             initializeOptimismPortal();
             initializeSystemConfig();
+            initializeL1StandardBridge();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -58,6 +63,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             // initializeOptimismPortal2();
             initializeOptimismPortal();
             initializeSystemConfig();
+            initializeL1StandardBridge();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -196,6 +202,60 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkSystemConfig({ _contracts: proxies, _cfg: cfg, _isProxy: true });
+
+    }
+
+    function initializeL1StandardBridge() internal {
+
+        console.log("Upgrading and initializing L1StandardBridge proxy");
+        address proxyAdminAddress = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safeAddress = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address l1StandardBridgeProxy = deployerProcedue.mustGetAddress("L1StandardBridgeProxy");
+        address l1StandardBridge = deployerProcedue.mustGetAddress("L1StandardBridge");
+        address l1CrossDomainMessengerProxy = deployerProcedue.mustGetAddress("L1CrossDomainMessengerProxy");
+        address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
+        address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
+
+        uint256 proxyType = uint256(ProxyAdmin(proxyAdminAddress).proxyType(l1StandardBridgeProxy));
+
+        ProxyAdmin proxyAdmin = ProxyAdmin(proxyAdminAddress);
+        Safe safe = Safe(payable(safeAddress));
+
+        // to do ? is it needed ?
+
+        // if (proxyType != uint256(ProxyAdmin.ProxyType.CHUGSPLASH)) {
+        //     _callViaSafe({
+        //         _safe: safe,
+        //         _owner: owner,
+        //         _target: address(proxyAdmin),
+        //         _data: abi.encodeCall(ProxyAdmin.setProxyType, (l1StandardBridgeProxy, ProxyAdmin.ProxyType.CHUGSPLASH))
+        //     });
+        // }
+
+        // require(uint256(proxyAdmin.proxyType(l1StandardBridgeProxy)) == uint256(ProxyAdmin.ProxyType.CHUGSPLASH),"Type not CHUGSPLASH");
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: address(proxyAdmin),
+            _safe: address(safe),
+            _owner: owner,
+            _proxy: payable(l1StandardBridgeProxy),
+            _implementation: l1StandardBridge,
+            _innerCallData: abi.encodeCall(
+                L1StandardBridge.initialize,
+                (
+                    IL1CrossDomainMessenger(l1CrossDomainMessengerProxy),
+                    ISuperchainConfig(superchainConfigProxy),
+                    ISystemConfig(systemConfigProxy)
+                )
+            )
+        });
+
+        string memory version = L1StandardBridge(payable(l1StandardBridgeProxy)).version();
+        console.log("L1StandardBridge version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkL1StandardBridge({ _contracts: proxies, _isProxy: true });
 
     }
 
