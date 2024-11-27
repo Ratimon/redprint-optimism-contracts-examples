@@ -10,7 +10,7 @@ import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 
 import {Proxy} from "@redprint-core/universal/Proxy.sol";
-import {SimpleStorage} from "./Proxy.t.sol";
+// import {SimpleStorage} from "./Proxy.t.sol";
 import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
 import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
 
@@ -32,7 +32,7 @@ contract DeployAll_Test is Test {
     ProxyAdmin admin;
 
     Proxy proxy;
-    SimpleStorage implementation;
+    // SimpleStorage implementation;
     L1ChugSplashProxy chugsplash;
     ResolvedDelegateProxy resolved;
 

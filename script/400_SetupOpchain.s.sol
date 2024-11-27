@@ -35,6 +35,7 @@ import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.so
 import {DeployPreimageOracleScript} from "@script/402K_DeployPreimageOracleScript.s.sol";
 import {DeployMIPSScript} from "@script/402L_DeployMIPSScript.s.sol";
 import {DeployAnchorStateRegistryScript} from "@script/402M_DeployAnchorStateRegistryScript.s.sol";
+import {InitializeImplementationsScript} from "@script/402N_InitializeImplementationsScript.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -95,6 +96,7 @@ contract SetupOpchainScript is Script {
         DeployPreimageOracleScript preimageOracleDeployments = new DeployPreimageOracleScript();
         DeployMIPSScript mipsDeployments = new DeployMIPSScript();
         DeployAnchorStateRegistryScript anchorStateRegistryDeployments = new DeployAnchorStateRegistryScript();
+        InitializeImplementationsScript initializeImplementations = new InitializeImplementationsScript();
 
 
         l1CrossDomainMessengerDeployments.deploy();
@@ -110,7 +112,8 @@ contract SetupOpchainScript is Script {
         preimageOracleDeployments.deploy();
         mipsDeployments.deploy();
         anchorStateRegistryDeployments.deploy();
-
+        initializeImplementations.run();
+        
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
         console.log("SystemConfigInterop at: ", deployerProcedue.getAddress("SystemConfigInterop"));
