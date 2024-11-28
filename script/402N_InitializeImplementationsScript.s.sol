@@ -30,6 +30,8 @@ import {L1StandardBridge} from "@redprint-core/L1/L1StandardBridge.sol";
 
 import {L1ERC721Bridge} from "@redprint-core/L1/L1ERC721Bridge.sol";
 
+import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMintableERC20Factory.sol";
+
 
 contract InitializeImplementationsScript is Script , SafeScript{
     IDeployer deployerProcedue;
@@ -56,6 +58,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             initializeSystemConfig();
             initializeL1StandardBridge();
             initializeL1ERC721Bridge();
+            initializeOptimismMintableERC20Factory();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -68,6 +71,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             initializeSystemConfig();
             initializeL1StandardBridge();
             initializeL1ERC721Bridge();
+            initializeOptimismMintableERC20Factory();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -296,6 +300,34 @@ contract InitializeImplementationsScript is Script , SafeScript{
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
 
         ChainAssertions.checkL1ERC721Bridge({ _contracts: proxies, _isProxy: true });
+    }
+
+    function initializeOptimismMintableERC20Factory() internal {
+
+        console.log("Upgrading and initializing OptimismMintableERC20Factory proxy");
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address optimismMintableERC20FactoryProxy = deployerProcedue.mustGetAddress("OptimismMintableERC20FactoryProxy");
+        address optimismMintableERC20Factory = deployerProcedue.mustGetAddress("OptimismMintableERC20Factory");
+        address l1StandardBridgeProxy = deployerProcedue.mustGetAddress("L1StandardBridgeProxy");
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,
+            _proxy: payable(optimismMintableERC20FactoryProxy),
+            _implementation: optimismMintableERC20Factory,
+            _innerCallData: abi.encodeCall(OptimismMintableERC20Factory.initialize, (l1StandardBridgeProxy))
+        });
+
+        OptimismMintableERC20Factory factory = OptimismMintableERC20Factory(optimismMintableERC20FactoryProxy);
+        string memory version = factory.version();
+        console.log("OptimismMintableERC20Factory version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkOptimismMintableERC20Factory({ _contracts: proxies, _isProxy: true });
+
     }
 
 }
