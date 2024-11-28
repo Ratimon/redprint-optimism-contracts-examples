@@ -28,6 +28,8 @@ import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 import {Safe} from "@redprint-safe-contracts/Safe.sol";
 import {L1StandardBridge} from "@redprint-core/L1/L1StandardBridge.sol";
 
+import {L1ERC721Bridge} from "@redprint-core/L1/L1ERC721Bridge.sol";
+
 
 contract InitializeImplementationsScript is Script , SafeScript{
     IDeployer deployerProcedue;
@@ -53,6 +55,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             initializeOptimismPortal();
             initializeSystemConfig();
             initializeL1StandardBridge();
+            initializeL1ERC721Bridge();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -64,6 +67,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
             initializeOptimismPortal();
             initializeSystemConfig();
             initializeL1StandardBridge();
+            initializeL1ERC721Bridge();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -257,6 +261,41 @@ contract InitializeImplementationsScript is Script , SafeScript{
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkL1StandardBridge({ _contracts: proxies, _isProxy: true });
 
+    }
+
+    function initializeL1ERC721Bridge() internal {
+        console.log("Upgrading and initializing L1ERC721Bridge proxy");
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address l1ERC721BridgeProxy = deployerProcedue.mustGetAddress("L1ERC721BridgeProxy");
+        address l1ERC721Bridge = deployerProcedue.mustGetAddress("L1ERC721Bridge");
+        address l1CrossDomainMessengerProxy = deployerProcedue.mustGetAddress("L1CrossDomainMessengerProxy");
+        address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
+        address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,
+            _proxy: payable(l1ERC721BridgeProxy),
+            _implementation: l1ERC721Bridge,
+            _innerCallData: abi.encodeCall(
+                L1ERC721Bridge.initialize,
+                (
+                    IL1CrossDomainMessenger(l1CrossDomainMessengerProxy),
+                    ISuperchainConfig(superchainConfigProxy)
+                )
+            )
+        });
+
+        L1ERC721Bridge bridge = L1ERC721Bridge(l1ERC721BridgeProxy);
+        string memory version = bridge.version();
+        console.log("L1ERC721Bridge version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+
+        ChainAssertions.checkL1ERC721Bridge({ _contracts: proxies, _isProxy: true });
     }
 
 }
