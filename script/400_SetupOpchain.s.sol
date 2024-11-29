@@ -127,7 +127,7 @@ contract SetupOpchainScript is Script {
         console.log("DisputeGameFactory at: ", deployerProcedue.getAddress("DisputeGameFactory"));
         console.log("DelayedWETH at: ", deployerProcedue.getAddress("DelayedWETH"));
         console.log("PreimageOracle at: ", deployerProcedue.getAddress("PreimageOracle"));
-        console.log("MIPS at: ", deployerProcedue.getAddress("MIPS"));
+        console.log("MIPS at: ", deployerProcedue.getAddress("Mips"));
         console.log("AnchorStateRegistry at: ", deployerProcedue.getAddress("AnchorStateRegistry"));
     }
 

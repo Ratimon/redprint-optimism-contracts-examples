@@ -24,6 +24,7 @@ import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMin
 import {IOptimismPortal} from "@redprint-core/L1/interfaces/IOptimismPortal.sol";
 import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
 import {L2OutputOracle} from "@redprint-core/L1/L2OutputOracle.sol";
+import {DisputeGameFactory} from "@redprint-core/dispute/DisputeGameFactory.sol";
 
 contract InitializeImplementationsScript is Script, SafeScript {
     IDeployer deployerProcedue;
@@ -49,6 +50,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeOptimismMintableERC20Factory();
             initializeL1CrossDomainMessenger();
             initializeL2OutputOracle();
+            initializeDisputeGameFactory();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -62,6 +64,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeOptimismMintableERC20Factory();
             initializeL1CrossDomainMessenger();
             initializeL2OutputOracle();
+            initializeDisputeGameFactory();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -387,5 +390,29 @@ contract InitializeImplementationsScript is Script, SafeScript {
             _l2OutputOracleStartingTimestamp: cfg.l2OutputOracleStartingTimestamp(),
             _isProxy: true
         });
+    }
+
+    function initializeDisputeGameFactory() internal {
+        console.log("Upgrading and initializing DisputeGameFactory proxy");
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address disputeGameFactoryProxy = deployerProcedue.mustGetAddress("DisputeGameFactoryProxy");
+        address disputeGameFactory = deployerProcedue.mustGetAddress("DisputeGameFactory");
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,
+            _proxy: payable(disputeGameFactoryProxy),
+            _implementation: disputeGameFactory,
+            _innerCallData: abi.encodeCall(DisputeGameFactory.initialize, (msg.sender))
+        });
+
+        string memory version = DisputeGameFactory(disputeGameFactoryProxy).version();
+        console.log("DisputeGameFactory version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkDisputeGameFactory({ _contracts: proxies, _expectedOwner: msg.sender, _isProxy: true });
     }
 }
