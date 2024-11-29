@@ -2,51 +2,37 @@
 pragma solidity ^0.8.20;
 
 import {Script} from "@redprint-forge-std/Script.sol";
+import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
 import {console} from "@redprint-forge-std/console.sol";
 import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
-import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
-
 import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
-
-import { Constants } from "@redprint-core/libraries/Constants.sol";
-
-// import { GameType} from "@redprint-core/dispute/lib/LibUDT.sol";
-// import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
-import { ISystemConfig } from "@redprint-core/L1/interfaces/ISystemConfig.sol";
-import { ISuperchainConfig } from "@redprint-core/L1/interfaces/ISuperchainConfig.sol";
-import { IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol";
-
+import {Constants} from "@redprint-core/libraries/Constants.sol";
+import {IL2OutputOracle} from "@redprint-core/L1/interfaces/IL2OutputOracle.sol";
+import {ISystemConfig} from "@redprint-core/L1/interfaces/ISystemConfig.sol";
+import {ISuperchainConfig} from "@redprint-core/L1/interfaces/ISuperchainConfig.sol";
 import {OptimismPortal} from "@redprint-core/L1/OptimismPortal.sol";
-// import {OptimismPortal2} from "@redprint-core/L1/OptimismPortal2.sol";
 import {SystemConfig} from "@redprint-core/L1/SystemConfig.sol";
-
 import {IL1CrossDomainMessenger} from "@redprint-core/L1/interfaces/IL1CrossDomainMessenger.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
 import {Safe} from "@redprint-safe-contracts/Safe.sol";
 import {L1StandardBridge} from "@redprint-core/L1/L1StandardBridge.sol";
-
 import {L1ERC721Bridge} from "@redprint-core/L1/L1ERC721Bridge.sol";
-
 import {OptimismMintableERC20Factory} from "@redprint-core/universal/OptimismMintableERC20Factory.sol";
-
 import {IOptimismPortal} from "@redprint-core/L1/interfaces/IOptimismPortal.sol";
 import {L1CrossDomainMessenger} from "@redprint-core/L1/L1CrossDomainMessenger.sol";
+import {L2OutputOracle} from "@redprint-core/L1/L2OutputOracle.sol";
 
-
-
-contract InitializeImplementationsScript is Script , SafeScript{
+contract InitializeImplementationsScript is Script, SafeScript {
     IDeployer deployerProcedue;
-    address public constant customGasTokenAddress = 0x0000000000000000000000000000000000000000;
-
+    address public constant customGasTokenAddress = Constants.ETHER;
     string mnemonic = vm.envString("MNEMONIC");
     uint256 ownerPrivateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/0/", 1);
     address owner = vm.envOr("DEPLOYER_ADDRESS", vm.addr(ownerPrivateKey));
 
     function run() public {
-
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
 
@@ -56,75 +42,31 @@ contract InitializeImplementationsScript is Script , SafeScript{
         if(mode != VmSafe.CallerMode.Broadcast && msgSender != owner) {
             console.log("Pranking owner ...");
             vm.startPrank(owner);
-
-            // initializeOptimismPortal2();
             initializeOptimismPortal();
             initializeSystemConfig();
             initializeL1StandardBridge();
             initializeL1ERC721Bridge();
             initializeOptimismMintableERC20Factory();
             initializeL1CrossDomainMessenger();
+            initializeL2OutputOracle();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
         } else {
             console.log("Broadcasting ...");
             vm.startBroadcast(owner);
-
-            // initializeOptimismPortal2();
             initializeOptimismPortal();
             initializeSystemConfig();
             initializeL1StandardBridge();
             initializeL1ERC721Bridge();
             initializeOptimismMintableERC20Factory();
             initializeL1CrossDomainMessenger();
+            initializeL2OutputOracle();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
         }
-
     }
-
-
-    // function initializeOptimismPortal2() internal {
-    //     console.log("Upgrading and initializing OptimismPortal2 proxy");
-
-    //     address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
-    //     address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
-
-    //     address optimismPortalProxy = deployerProcedue.mustGetAddress("OptimismPortalProxy");
-    //     address optimismPortal2 = deployerProcedue.mustGetAddress("OptimismPortal2");
-    //     address disputeGameFactoryProxy = deployerProcedue.mustGetAddress("DisputeGameFactoryProxy");
-    //     address systemConfigProxy = deployerProcedue.mustGetAddress("SystemConfigProxy");
-    //     address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
-
-    //     DeployConfig cfg = deployerProcedue.getConfig();
-
-    //     _upgradeAndCallViaSafe({
-    //         _proxyAdmin: proxyAdmin,
-    //         _safe: safe,
-    //         _owner: owner,   
-    //         _proxy: payable(optimismPortalProxy),
-    //         _implementation: optimismPortal2,
-    //         _innerCallData: abi.encodeCall(
-    //             OptimismPortal2.initialize,
-    //                 (
-    //                     IDisputeGameFactory(disputeGameFactoryProxy),
-    //                     ISystemConfig(systemConfigProxy),
-    //                     ISuperchainConfig(superchainConfigProxy),
-    //                     GameType.wrap(uint32(cfg.respectedGameType()))
-    //                 )
-    //         )
-    //     });
-
-    //     OptimismPortal2 portal = OptimismPortal2(payable(optimismPortalProxy));
-    //     string memory version = portal.version();
-    //     console.log("OptimismPortal2 version: %s", version);
-
-    //     Types.ContractSet memory proxies =  deployerProcedue.getProxies();
-    //     ChainAssertions.checkOptimismPortal2({ _contracts: proxies, _cfg: cfg, _isProxy: true });
-
-    // }
 
     function initializeOptimismPortal() internal {
         console.log("Upgrading and initializing OptimismPortal2 proxy");
@@ -162,7 +104,6 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkOptimismPortal({ _contracts: proxies, _cfg: cfg, _isProxy: true });
-
     }
 
     function initializeSystemConfig() internal {
@@ -177,7 +118,6 @@ contract InitializeImplementationsScript is Script , SafeScript{
         DeployConfig cfg = deployerProcedue.getConfig();
 
         bytes32 batcherHash = bytes32(uint256(uint160(cfg.batchSenderAddress())));
-
 
         _upgradeAndCallViaSafe({
             _proxyAdmin: proxyAdmin,
@@ -203,8 +143,7 @@ contract InitializeImplementationsScript is Script , SafeScript{
                         disputeGameFactory: deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"),
                         optimismPortal: deployerProcedue.mustGetAddress("OptimismPortalProxy"),
                         optimismMintableERC20Factory: deployerProcedue.mustGetAddress("OptimismMintableERC20FactoryProxy"),
-                        // gasPayingToken: Constants.ETHER
-                        gasPayingToken: customGasTokenAddress               
+                        gasPayingToken: customGasTokenAddress 
                     })
                 )
             )
@@ -216,11 +155,9 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkSystemConfig({ _contracts: proxies, _cfg: cfg, _isProxy: true });
-
     }
 
     function initializeL1StandardBridge() internal {
-
         console.log("Upgrading and initializing L1StandardBridge proxy");
         address proxyAdminAddress = deployerProcedue.mustGetAddress("ProxyAdmin");
         address safeAddress = deployerProcedue.mustGetAddress("SystemOwnerSafe");
@@ -268,7 +205,6 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkL1StandardBridge({ _contracts: proxies, _isProxy: true });
-
     }
 
     function initializeL1ERC721Bridge() internal {
@@ -330,7 +266,6 @@ contract InitializeImplementationsScript is Script , SafeScript{
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkOptimismMintableERC20Factory({ _contracts: proxies, _isProxy: true });
-
     }
 
     function initializeL1CrossDomainMessenger() internal {
@@ -410,4 +345,47 @@ contract InitializeImplementationsScript is Script , SafeScript{
         ChainAssertions.checkL1CrossDomainMessenger({ _contracts: proxies, _vm: vm, _isProxy: true });
     }
 
+    function initializeL2OutputOracle() internal {
+        console.log("Upgrading and initializing L2OutputOracle proxy");
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address l2OutputOracleProxy = deployerProcedue.mustGetAddress("L2OutputOracleProxy");
+        address l2OutputOracle = deployerProcedue.mustGetAddress("L2OutputOracle");
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: address(safe),
+            _owner: owner,
+            _proxy: payable(l2OutputOracleProxy),
+            _implementation: l2OutputOracle,
+            _innerCallData: abi.encodeCall(
+                L2OutputOracle.initialize,
+                (
+                    cfg.l2OutputOracleSubmissionInterval(),
+                    cfg.l2BlockTime(),
+                    cfg.l2OutputOracleStartingBlockNumber(),
+                    cfg.l2OutputOracleStartingTimestamp(),
+                    cfg.l2OutputOracleProposer(),
+                    cfg.l2OutputOracleChallenger(),
+                    cfg.finalizationPeriodSeconds()
+                )
+            )
+        });
+
+        L2OutputOracle oracle = L2OutputOracle(l2OutputOracleProxy);
+        string memory version = oracle.version();
+        console.log("L2OutputOracle version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+
+        ChainAssertions.checkL2OutputOracle({
+            _contracts: proxies,
+            _cfg: cfg,
+            _l2OutputOracleStartingTimestamp: cfg.l2OutputOracleStartingTimestamp(),
+            _isProxy: true
+        });
+    }
 }
