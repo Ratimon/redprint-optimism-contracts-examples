@@ -27,6 +27,7 @@ import {L2OutputOracle} from "@redprint-core/L1/L2OutputOracle.sol";
 import {DisputeGameFactory} from "@redprint-core/dispute/DisputeGameFactory.sol";
 
 import {DelayedWETH} from "@redprint-core/dispute/DelayedWETH.sol";
+// import {PermissionedDelayedWETH} from "@redprint-core/dispute/PermissionedDelayedWETH.sol";
 
 contract InitializeImplementationsScript is Script, SafeScript {
     IDeployer deployerProcedue;
@@ -54,6 +55,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeL2OutputOracle();
             initializeDisputeGameFactory();
             initializeDelayedWETH();
+            initializePermissionedDelayedWETH();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -69,6 +71,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeL2OutputOracle();
             initializeDisputeGameFactory();
             initializeDelayedWETH();
+            initializePermissionedDelayedWETH();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -450,6 +453,45 @@ contract InitializeImplementationsScript is Script, SafeScript {
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
         ChainAssertions.checkDelayedWETH({
+            _contracts: proxies,
+            _cfg: cfg,
+            _isProxy: true,
+            _expectedOwner: owner
+        });
+    }
+
+    function initializePermissionedDelayedWETH() internal {
+        console.log("Upgrading and initializing permissioned DelayedWETH proxy");
+
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address delayedWETHProxy = deployerProcedue.mustGetAddress("PermissionedDelayedWETHProxy");
+        address delayedWETH = deployerProcedue.mustGetAddress("DelayedWETH");
+        address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,
+            _proxy: payable(delayedWETHProxy),
+            _implementation: delayedWETH,
+            _innerCallData: abi.encodeCall(
+                DelayedWETH.initialize, (
+                    owner,
+                    ISuperchainConfig(superchainConfigProxy)
+                )
+            )
+        });
+
+        string memory version = DelayedWETH(payable(delayedWETHProxy)).version();
+        console.log("DelayedWETH version: %s", version);
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+
+        ChainAssertions.checkPermissionedDelayedWETH({
             _contracts: proxies,
             _cfg: cfg,
             _isProxy: true,
