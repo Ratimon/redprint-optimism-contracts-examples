@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import { Constants } from "@redprint-core/libraries/Constants.sol";
 
-/// @title Proxy
 /// @notice Proxy is a transparent proxy that passes through the call if the caller is the owner or
 ///         if the caller is address(0), meaning that the call originated from an off-chain
 ///         simulation.
