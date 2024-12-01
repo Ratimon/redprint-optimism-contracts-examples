@@ -29,6 +29,10 @@ import {DisputeGameFactory} from "@redprint-core/dispute/DisputeGameFactory.sol"
 import {DelayedWETH} from "@redprint-core/dispute/DelayedWETH.sol";
 // import {PermissionedDelayedWETH} from "@redprint-core/dispute/PermissionedDelayedWETH.sol";
 
+import {AnchorStateRegistry} from "@redprint-core/dispute/AnchorStateRegistry.sol";
+import { GameTypes, OutputRoot, Hash } from "@redprint-core/dispute/lib/Types.sol";
+
+
 contract InitializeImplementationsScript is Script, SafeScript {
     IDeployer deployerProcedue;
     address public constant customGasTokenAddress = Constants.ETHER;
@@ -56,6 +60,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeDisputeGameFactory();
             initializeDelayedWETH();
             initializePermissionedDelayedWETH();
+            initializeAnchorStateRegistry();
             console.log("Pranking Stopped ...");
 
             vm.stopPrank();
@@ -72,6 +77,7 @@ contract InitializeImplementationsScript is Script, SafeScript {
             initializeDisputeGameFactory();
             initializeDelayedWETH();
             initializePermissionedDelayedWETH();
+            initializeAnchorStateRegistry();
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -497,5 +503,67 @@ contract InitializeImplementationsScript is Script, SafeScript {
             _isProxy: true,
             _expectedOwner: owner
         });
+    }
+
+    function initializeAnchorStateRegistry() internal {
+        console.log("Upgrading and initializing AnchorStateRegistry proxy");
+
+        address proxyAdmin = deployerProcedue.mustGetAddress("ProxyAdmin");
+        address safe = deployerProcedue.mustGetAddress("SystemOwnerSafe");
+
+        address anchorStateRegistryProxy = deployerProcedue.mustGetAddress("AnchorStateRegistryProxy");
+        address anchorStateRegistry = deployerProcedue.mustGetAddress("AnchorStateRegistry");
+        address superchainConfigProxy = deployerProcedue.mustGetAddress("SuperchainConfigProxy");
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        AnchorStateRegistry.StartingAnchorRoot[] memory roots = new AnchorStateRegistry.StartingAnchorRoot[](5);
+        roots[0] = AnchorStateRegistry.StartingAnchorRoot({
+            gameType: GameTypes.CANNON,
+            outputRoot: OutputRoot({
+                root: Hash.wrap(cfg.faultGameGenesisOutputRoot()),
+                l2BlockNumber: cfg.faultGameGenesisBlock()
+            })
+        });
+        roots[1] = AnchorStateRegistry.StartingAnchorRoot({
+            gameType: GameTypes.PERMISSIONED_CANNON,
+            outputRoot: OutputRoot({
+                root: Hash.wrap(cfg.faultGameGenesisOutputRoot()),
+                l2BlockNumber: cfg.faultGameGenesisBlock()
+            })
+        });
+        roots[2] = AnchorStateRegistry.StartingAnchorRoot({
+            gameType: GameTypes.ALPHABET,
+            outputRoot: OutputRoot({
+                root: Hash.wrap(cfg.faultGameGenesisOutputRoot()),
+                l2BlockNumber: cfg.faultGameGenesisBlock()
+            })
+        });
+        roots[3] = AnchorStateRegistry.StartingAnchorRoot({
+            gameType: GameTypes.ASTERISC,
+            outputRoot: OutputRoot({
+                root: Hash.wrap(cfg.faultGameGenesisOutputRoot()),
+                l2BlockNumber: cfg.faultGameGenesisBlock()
+            })
+        });
+        roots[4] = AnchorStateRegistry.StartingAnchorRoot({
+            gameType: GameTypes.FAST,
+            outputRoot: OutputRoot({
+                root: Hash.wrap(cfg.faultGameGenesisOutputRoot()),
+                l2BlockNumber: cfg.faultGameGenesisBlock()
+            })
+        });
+
+        _upgradeAndCallViaSafe({
+            _proxyAdmin: proxyAdmin,
+            _safe: safe,
+            _owner: owner,
+            _proxy: payable(anchorStateRegistryProxy),
+            _implementation: anchorStateRegistry,
+            _innerCallData: abi.encodeCall(AnchorStateRegistry.initialize, (roots, ISuperchainConfig(superchainConfigProxy)))
+        });
+
+        string memory version = AnchorStateRegistry(payable(anchorStateRegistryProxy)).version();
+        console.log("AnchorStateRegistry version: %s", version);
     }
 }
