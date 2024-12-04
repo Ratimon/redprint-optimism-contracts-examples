@@ -25,8 +25,7 @@ import { IDelayedWETH } from "@redprint-core/dispute/interfaces/IDelayedWETH.sol
 import { AlphabetVM } from "@redprint-test/mocks/AlphabetVM.sol";
 
 import { IPreimageOracle } from "@redprint-core/dispute/interfaces/IBigStepper.sol";
-
-// import {PreimageOracle} from "@redprint-core/cannon/PreimageOracle.sol";
+import {PreimageOracle} from "@redprint-core/cannon/PreimageOracle.sol";
 
 
 
@@ -51,6 +50,7 @@ contract SetFaultGameImplementationScript is Script {
             console.log("Pranking owner ...");
             vm.startPrank(owner);
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
+            setFastFaultGameImplementation({ _allowUpgrade: false });
   
             console.log("Pranking Stopped ...");
 
@@ -59,6 +59,7 @@ contract SetFaultGameImplementationScript is Script {
             console.log("Broadcasting ...");
             vm.startBroadcast(owner);
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
+            setFastFaultGameImplementation({ _allowUpgrade: false });
    
             console.log("Broadcasted");
 
@@ -101,6 +102,31 @@ contract SetFaultGameImplementationScript is Script {
         });
     }
 
+    function setFastFaultGameImplementation(bool _allowUpgrade) internal {
+        console.log("Setting Fast FaultDisputeGame implementation");
+        DisputeGameFactory factory = DisputeGameFactory(deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"));
+        IDelayedWETH weth = IDelayedWETH(deployerProcedue.mustGetAddress("DelayedWETHProxy"));
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        Claim outputAbsolutePrestate = Claim.wrap(bytes32(cfg.faultGameAbsolutePrestate()));
+        PreimageOracle fastOracle = new PreimageOracle(cfg.preimageOracleMinProposalSize(), 0);
+        _setFaultGameImplementation({
+            _factory: factory,
+            _allowUpgrade: _allowUpgrade,
+            _params: FaultDisputeGameParams({
+                anchorStateRegistry: IAnchorStateRegistry(deployerProcedue.mustGetAddress("AnchorStateRegistryProxy")),
+                weth: weth,
+                gameType: GameTypes.FAST,
+                absolutePrestate: outputAbsolutePrestate,
+                faultVm: IBigStepper(new AlphabetVM(outputAbsolutePrestate, IPreimageOracle(address(fastOracle)))),
+                // The max depth for the alphabet trace is always 3. Add 1 because split depth is fully inclusive.
+                maxGameDepth: cfg.faultGameSplitDepth() + 3 + 1,
+                maxClockDuration: Duration.wrap(0) // Resolvable immediately
+             })
+        });
+    }
+
     /// @notice Sets the implementation for the given fault game type in the `DisputeGameFactory`.
     function _setFaultGameImplementation(
         DisputeGameFactory _factory,
@@ -133,7 +159,6 @@ contract SetFaultGameImplementationScript is Script {
                 _anchorStateRegistry: _params.anchorStateRegistry,
                 _l2ChainId: cfg.l2ChainID()
             }));
-             deployerProcedue.save("FaultDisputeGame", faultDisputeGameAddress);
 
             _factory.setImplementation(
                 _params.gameType,
@@ -156,7 +181,6 @@ contract SetFaultGameImplementationScript is Script {
                     _challenger: cfg.l2OutputOracleChallenger()
             }));
             
-            deployerProcedue.save("PermissionedDisputeGame", permissionedDisputeGameAddress);
             _factory.setImplementation(
                 _params.gameType,
                 IDisputeGame(permissionedDisputeGameAddress)
