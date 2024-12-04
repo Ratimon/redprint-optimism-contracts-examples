@@ -419,14 +419,17 @@ contract InitializeImplementationsScript is Script, SafeScript {
             _owner: owner,
             _proxy: payable(disputeGameFactoryProxy),
             _implementation: disputeGameFactory,
-            _innerCallData: abi.encodeCall(DisputeGameFactory.initialize, (msg.sender))
+            _innerCallData: abi.encodeCall(
+                DisputeGameFactory.initialize,
+                (owner)
+            )
         });
 
         string memory version = DisputeGameFactory(disputeGameFactoryProxy).version();
         console.log("DisputeGameFactory version: %s", version);
 
         Types.ContractSet memory proxies =  deployerProcedue.getProxies();
-        ChainAssertions.checkDisputeGameFactory({ _contracts: proxies, _expectedOwner: msg.sender, _isProxy: true });
+        ChainAssertions.checkDisputeGameFactory({ _contracts: proxies, _expectedOwner: owner, _isProxy: true });
     }
 
     function initializeDelayedWETH() internal {

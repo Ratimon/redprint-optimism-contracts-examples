@@ -36,6 +36,7 @@ import {DeployPreimageOracleScript} from "@script/402K_DeployPreimageOracleScrip
 import {DeployMIPSScript} from "@script/402L_DeployMIPSScript.s.sol";
 import {DeployAnchorStateRegistryScript} from "@script/402M_DeployAnchorStateRegistryScript.s.sol";
 import {InitializeImplementationsScript} from "@script/402N_InitializeImplementationsScript.s.sol";
+import {SetFaultGameImplementationScript} from "@script/402O_SetFaultGameImplementationScript.s.sol";
 
 
 contract SetupOpchainScript is Script {
@@ -97,6 +98,7 @@ contract SetupOpchainScript is Script {
         DeployMIPSScript mipsDeployments = new DeployMIPSScript();
         DeployAnchorStateRegistryScript anchorStateRegistryDeployments = new DeployAnchorStateRegistryScript();
         InitializeImplementationsScript initializeImplementations = new InitializeImplementationsScript();
+        SetFaultGameImplementationScript setFaultGameImplementation = new SetFaultGameImplementationScript();
 
 
         l1CrossDomainMessengerDeployments.deploy();
@@ -113,10 +115,10 @@ contract SetupOpchainScript is Script {
         mipsDeployments.deploy();
         anchorStateRegistryDeployments.deploy();
         initializeImplementations.run();
-        
+        setFaultGameImplementation.run();
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
-        console.log("SystemConfigInterop at: ", deployerProcedue.getAddress("SystemConfigInterop"));
+        console.log("SystemConfig at: ", deployerProcedue.getAddress("SystemConfig"));
         console.log("L1StandardBridge at: ", deployerProcedue.getAddress("L1StandardBridge"));
         console.log("L1ERC721Bridge at: ", deployerProcedue.getAddress("L1ERC721Bridge"));
         console.log("OptimismPortal at: ", deployerProcedue.getAddress("OptimismPortal"));

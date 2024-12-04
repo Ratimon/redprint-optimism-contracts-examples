@@ -1,4 +1,5 @@
 @redprint-core/=src/
+@redprint-test/=test/
 @main-5_0_2/=src-oz_5_0_2/
 @redprint-deploy/=script/
 @script/=script
