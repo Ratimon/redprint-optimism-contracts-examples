@@ -7,6 +7,9 @@ import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 
+import {Types} from "@redprint-deploy/optimism/Types.sol";
+import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
+
 import { Chains } from "@redprint-deploy/libraries/Chains.sol";
 import { Config } from "@redprint-deploy/libraries/Config.sol";
 import { Process } from "@redprint-deploy/libraries/Process.sol";
@@ -30,6 +33,7 @@ import { AlphabetVM } from "@redprint-test/mocks/AlphabetVM.sol";
 import { IPreimageOracle } from "@redprint-core/dispute/interfaces/IBigStepper.sol";
 import {PreimageOracle} from "@redprint-core/cannon/PreimageOracle.sol";
 
+import { IDisputeGameFactory } from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
 
 
 contract SetFaultGameImplementationScript is Script {
@@ -56,6 +60,8 @@ contract SetFaultGameImplementationScript is Script {
             setFastFaultGameImplementation({ _allowUpgrade: false });
             setCannonFaultGameImplementation({ _allowUpgrade: false });
             setPermissionedCannonFaultGameImplementation({ _allowUpgrade: false });
+            transferDisputeGameFactoryOwnership();
+            transferDelayedWETHOwnership();
   
             console.log("Pranking Stopped ...");
 
@@ -67,6 +73,9 @@ contract SetFaultGameImplementationScript is Script {
             setFastFaultGameImplementation({ _allowUpgrade: false });
             setCannonFaultGameImplementation({ _allowUpgrade: false });
             setPermissionedCannonFaultGameImplementation({ _allowUpgrade: false });
+            transferDisputeGameFactoryOwnership();
+            transferDelayedWETHOwnership();
+
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -176,6 +185,48 @@ contract SetFaultGameImplementationScript is Script {
                 maxGameDepth: cfg.faultGameMaxDepth(),
                 maxClockDuration: Duration.wrap(uint64(cfg.faultGameMaxClockDuration()))
             })
+        });
+    }
+
+    function transferDisputeGameFactoryOwnership() internal {
+        console.log("Transferring DisputeGameFactory ownership to Safe");
+        IDisputeGameFactory disputeGameFactory = IDisputeGameFactory(deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"));
+        address _owner = disputeGameFactory.owner();
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+        address finalSystemOwner = cfg.finalSystemOwner();
+
+        if (_owner != finalSystemOwner) {
+            disputeGameFactory.transferOwnership(finalSystemOwner);
+            console.log("DisputeGameFactory ownership transferred to final system owner at: %s", finalSystemOwner);
+        }
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkDisputeGameFactory({
+            _contracts: proxies,
+            _expectedOwner: finalSystemOwner,
+            _isProxy: true
+        });
+    }
+
+    function transferDelayedWETHOwnership() internal {
+        console.log("Transferring DelayedWETH ownership to Safe");
+        IDelayedWETH weth = IDelayedWETH(deployerProcedue.mustGetAddress("DelayedWETHProxy"));
+        address _owner = weth.owner();
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+        address finalSystemOwner = cfg.finalSystemOwner();
+        if (_owner != finalSystemOwner) {
+            weth.transferOwnership(finalSystemOwner);
+            console.log("DelayedWETH ownership transferred to final system owner at: %s", finalSystemOwner);
+        }
+
+        Types.ContractSet memory proxies =  deployerProcedue.getProxies();
+        ChainAssertions.checkDelayedWETH({
+            _contracts: proxies,
+            _cfg: cfg,
+            _isProxy: true,
+            _expectedOwner: finalSystemOwner
         });
     }
 
