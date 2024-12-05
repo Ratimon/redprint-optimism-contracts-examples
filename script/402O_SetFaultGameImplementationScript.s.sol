@@ -55,6 +55,7 @@ contract SetFaultGameImplementationScript is Script {
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
             setFastFaultGameImplementation({ _allowUpgrade: false });
             setCannonFaultGameImplementation({ _allowUpgrade: false });
+            setPermissionedCannonFaultGameImplementation({ _allowUpgrade: false });
   
             console.log("Pranking Stopped ...");
 
@@ -65,7 +66,7 @@ contract SetFaultGameImplementationScript is Script {
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
             setFastFaultGameImplementation({ _allowUpgrade: false });
             setCannonFaultGameImplementation({ _allowUpgrade: false });
-   
+            setPermissionedCannonFaultGameImplementation({ _allowUpgrade: false });
             console.log("Broadcasted");
 
             vm.stopBroadcast();
@@ -147,6 +148,29 @@ contract SetFaultGameImplementationScript is Script {
                 anchorStateRegistry: IAnchorStateRegistry(deployerProcedue.mustGetAddress("AnchorStateRegistryProxy")),
                 weth: weth,
                 gameType: GameTypes.CANNON,
+                absolutePrestate: loadMipsAbsolutePrestate(),
+                faultVm: IBigStepper(deployerProcedue.mustGetAddress("Mips")),
+                maxGameDepth: cfg.faultGameMaxDepth(),
+                maxClockDuration: Duration.wrap(uint64(cfg.faultGameMaxClockDuration()))
+            })
+        });
+    }
+
+    function setPermissionedCannonFaultGameImplementation(bool _allowUpgrade) internal {
+        console.log("Setting Cannon PermissionedDisputeGame implementation");
+        DisputeGameFactory factory = DisputeGameFactory(deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"));
+        IDelayedWETH weth = IDelayedWETH(deployerProcedue.mustGetAddress("PermissionedDelayedWETHProxy"));
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        // Set the Cannon FaultDisputeGame implementation in the factory.
+        _setFaultGameImplementation({
+            _factory: factory,
+            _allowUpgrade: _allowUpgrade,
+            _params: FaultDisputeGameParams({
+                anchorStateRegistry: IAnchorStateRegistry(deployerProcedue.mustGetAddress("AnchorStateRegistryProxy")),
+                weth: weth,
+                gameType: GameTypes.PERMISSIONED_CANNON,
                 absolutePrestate: loadMipsAbsolutePrestate(),
                 faultVm: IBigStepper(deployerProcedue.mustGetAddress("Mips")),
                 maxGameDepth: cfg.faultGameMaxDepth(),
