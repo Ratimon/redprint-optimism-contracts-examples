@@ -40,7 +40,7 @@ contract MIPS is ISemver {
         ORACLE = _oracle;
     }
 
-    function oracle(IPreimageOracle oracle_) external view {
+    function oracle() external view returns (IPreimageOracle oracle_) {
         oracle_ = ORACLE;
     }
 

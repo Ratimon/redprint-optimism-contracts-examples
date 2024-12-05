@@ -7,6 +7,9 @@ import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployConfig} from "@redprint-deploy/deployer/DeployConfig.s.sol";
 
+import { Chains } from "@redprint-deploy/libraries/Chains.sol";
+import { Config } from "@redprint-deploy/libraries/Config.sol";
+import { Process } from "@redprint-deploy/libraries/Process.sol";
 
 import { IBigStepper } from "@redprint-core/dispute/interfaces/IBigStepper.sol";
 import {  GameType, GameTypes, Claim, Duration } from "@redprint-core/dispute/lib/Types.sol";
@@ -51,6 +54,7 @@ contract SetFaultGameImplementationScript is Script {
             vm.startPrank(owner);
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
             setFastFaultGameImplementation({ _allowUpgrade: false });
+            setCannonFaultGameImplementation({ _allowUpgrade: false });
   
             console.log("Pranking Stopped ...");
 
@@ -60,6 +64,7 @@ contract SetFaultGameImplementationScript is Script {
             vm.startBroadcast(owner);
             setAlphabetFaultGameImplementation({ _allowUpgrade: false });
             setFastFaultGameImplementation({ _allowUpgrade: false });
+            setCannonFaultGameImplementation({ _allowUpgrade: false });
    
             console.log("Broadcasted");
 
@@ -125,6 +130,87 @@ contract SetFaultGameImplementationScript is Script {
                 maxClockDuration: Duration.wrap(0) // Resolvable immediately
              })
         });
+    }
+
+    function setCannonFaultGameImplementation(bool _allowUpgrade) internal {
+        console.log("Setting Cannon FaultDisputeGame implementation");
+        DisputeGameFactory factory = DisputeGameFactory(deployerProcedue.mustGetAddress("DisputeGameFactoryProxy"));
+        IDelayedWETH weth = IDelayedWETH(deployerProcedue.mustGetAddress("DelayedWETHProxy"));
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        // Set the Cannon FaultDisputeGame implementation in the factory.
+        _setFaultGameImplementation({
+            _factory: factory,
+            _allowUpgrade: _allowUpgrade,
+            _params: FaultDisputeGameParams({
+                anchorStateRegistry: IAnchorStateRegistry(deployerProcedue.mustGetAddress("AnchorStateRegistryProxy")),
+                weth: weth,
+                gameType: GameTypes.CANNON,
+                absolutePrestate: loadMipsAbsolutePrestate(),
+                faultVm: IBigStepper(deployerProcedue.mustGetAddress("Mips")),
+                maxGameDepth: cfg.faultGameMaxDepth(),
+                maxClockDuration: Duration.wrap(uint64(cfg.faultGameMaxClockDuration()))
+            })
+        });
+    }
+
+    function loadMipsAbsolutePrestate() internal returns (Claim mipsAbsolutePrestate_) {
+
+        DeployConfig cfg = deployerProcedue.getConfig();
+
+        if (block.chainid == Chains.LocalDevnet || block.chainid == Chains.GethDevnet) {
+            if (Config.useMultithreadedCannon()) {
+                return _loadDevnetMtMipsAbsolutePrestate();
+            } else {
+                return _loadDevnetStMipsAbsolutePrestate();
+            }
+        } else {
+            console.log(
+                "[Cannon Dispute Game] Using absolute prestate from config: %x", cfg.faultGameAbsolutePrestate()
+            );
+            mipsAbsolutePrestate_ = Claim.wrap(bytes32(cfg.faultGameAbsolutePrestate()));
+        }
+    }
+
+    function _loadDevnetMtMipsAbsolutePrestate() internal returns (Claim mipsAbsolutePrestate_) {
+        // Fetch the absolute prestate dump
+        string memory filePath = string.concat(vm.projectRoot(), "/../op-program/bin/prestate-proof-mt.json");
+        string[] memory commands = new string[](3);
+        commands[0] = "bash";
+        commands[1] = "-c";
+        commands[2] = string.concat("[[ -f ", filePath, " ]] && echo \"present\"");
+        if (Process.run(commands).length == 0) {
+            revert(
+                "Deploy: MT-Cannon prestate dump not found, generate it with `make cannon-prestate-mt` in the monorepo root"
+            );
+        }
+        commands[2] = string.concat("cat ", filePath, " | jq -r .pre");
+        mipsAbsolutePrestate_ = Claim.wrap(abi.decode(Process.run(commands), (bytes32)));
+        console.log(
+            "[MT-Cannon Dispute Game] Using devnet MIPS2 Absolute prestate: %s",
+            vm.toString(Claim.unwrap(mipsAbsolutePrestate_))
+        );
+    }
+
+    function _loadDevnetStMipsAbsolutePrestate() internal returns (Claim mipsAbsolutePrestate_) {
+        // Fetch the absolute prestate dump
+        string memory filePath = string.concat(vm.projectRoot(), "/../op-program/bin/prestate-proof.json");
+        string[] memory commands = new string[](3);
+        commands[0] = "bash";
+        commands[1] = "-c";
+        commands[2] = string.concat("[[ -f ", filePath, " ]] && echo \"present\"");
+        if (Process.run(commands).length == 0) {
+            revert(
+                "Deploy: cannon prestate dump not found, generate it with `make cannon-prestate` in the monorepo root"
+            );
+        }
+        commands[2] = string.concat("cat ", filePath, " | jq -r .pre");
+        mipsAbsolutePrestate_ = Claim.wrap(abi.decode(Process.run(commands), (bytes32)));
+        console.log(
+            "[Cannon Dispute Game] Using devnet MIPS Absolute prestate: %s",
+            vm.toString(Claim.unwrap(mipsAbsolutePrestate_))
+        );
     }
 
     /// @notice Sets the implementation for the given fault game type in the `DisputeGameFactory`.
