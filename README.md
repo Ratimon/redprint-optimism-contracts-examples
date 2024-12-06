@@ -257,6 +257,10 @@ or deploy all of them in single script:
 pnpm deploy_000_all
 ```
 
+>[!NOTE]
+> It is required to generate the prestate json file when running [402O_SetFaultGameImplementationScript.s.sol](https://github.com/Ratimon/redprint-optimism-contracts-examples/blob/main/script/402O_SetFaultGameImplementationScript.s.sol). The instruction is here : [op-program](https://github.com/ethereum-optimism/optimism/blob/v1.9.4/op-program/README.md)
+
+
 4. Test your contracts
 
 ```bash
