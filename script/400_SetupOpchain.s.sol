@@ -45,6 +45,8 @@ contract SetupOpchainScript is Script {
     function run() public {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
+
+        console.log("Setup Opchain ... ");
         
         DeployOptimismPortalProxyScript optimismPortalProxyDeployments = new DeployOptimismPortalProxyScript();
         DeploySystemConfigProxyScript systemConfigProxyDeployments = new DeploySystemConfigProxyScript();
@@ -116,6 +118,7 @@ contract SetupOpchainScript is Script {
         anchorStateRegistryDeployments.deploy();
         initializeImplementations.run();
         setFaultGameImplementation.run();
+        
         console.log("L1CrossDomainMessenger at: ", deployerProcedue.getAddress("L1CrossDomainMessenger"));
         console.log("OptimismMintableERC20Factory at: ", deployerProcedue.getAddress("OptimismMintableERC20Factory"));
         console.log("SystemConfig at: ", deployerProcedue.getAddress("SystemConfig"));

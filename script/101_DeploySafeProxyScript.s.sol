@@ -20,6 +20,8 @@ contract DeploySafeProxyScript is DeployScript {
         external
         returns (SafeProxyFactory safeProxyFactory_, Safe safeSingleton_, SafeProxy safeProxy_)
     {
+        console.log("Setup Governance ... ");
+
         // These are the standard create2 deployed contracts. First we'll check if they are deployed,
         // if not we'll deploy new ones, though not at these addresses.
         address safeProxyFactory = 0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2;

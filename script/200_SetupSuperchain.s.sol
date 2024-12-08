@@ -17,6 +17,9 @@ contract SetupSuperchainScript is Script {
     function run() public {
         deployerProcedue = getDeployer();
         deployerProcedue.setAutoSave(true);
+
+        console.log("Setup Superchain ... ");
+
         DeployAddressManagerScript addressManagerDeployments = new DeployAddressManagerScript();
         DeployAndSetupProxyAdminScript proxyAdminDeployments = new DeployAndSetupProxyAdminScript();
 
@@ -48,8 +51,6 @@ contract SetupSuperchainScript is Script {
         console.log("SuperchainConfig at: ", deployerProcedue.getAddress("SuperchainConfig"));
         console.log("ProtocolVersionsProxy at: ", deployerProcedue.getAddress("ProtocolVersionsProxy"));
 
-        //  to do :
-        // deployerProcedue.save("SuperchainConfig", deployerProcedue.getAddress("SuperchainConfig"));
 
     }
 }
