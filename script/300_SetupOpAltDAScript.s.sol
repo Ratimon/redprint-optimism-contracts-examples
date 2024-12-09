@@ -5,7 +5,7 @@ import {Script} from "@redprint-forge-std/Script.sol";
 import {console} from "@redprint-forge-std/console.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {DeployDataAvailabilityChallengeProxyScript} from "@script/301A_DeployDataAvailabilityChallengeProxyScript.s.sol";
-import {DeployDataAvailabilityChallengeScript} from "@script/301B_DeployDataAvailabilityChallengeScript.s.sol";
+import {DeployAndInitializeDataAvailabilityChallengeScript} from "@script/301B_DeployAndInitializeDataAvailabilityChallengeScript.s.sol";
 
 contract SetupOpAltDAScript is Script {
     IDeployer deployerProcedue;
@@ -17,10 +17,11 @@ contract SetupOpAltDAScript is Script {
         console.log("Setup Op Alt DA ... ");
 
         DeployDataAvailabilityChallengeProxyScript dataAvailabilityChallengeProxyDeployments = new DeployDataAvailabilityChallengeProxyScript();
-        DeployDataAvailabilityChallengeScript dataAvailabilityChallengeDeployments = new DeployDataAvailabilityChallengeScript();
+        DeployAndInitializeDataAvailabilityChallengeScript dataAvailabilityChallengeDeployments = new DeployAndInitializeDataAvailabilityChallengeScript();
 
         dataAvailabilityChallengeProxyDeployments.deploy();
         dataAvailabilityChallengeDeployments.deploy();
+        dataAvailabilityChallengeDeployments.initialize();
 
 
         console.log("DataAvailabilityChallengeProxy at: ", deployerProcedue.getAddress("DataAvailabilityChallengeProxy"));
