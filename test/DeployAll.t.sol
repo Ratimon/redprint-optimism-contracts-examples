@@ -14,10 +14,10 @@ import {Proxy} from "@redprint-core/universal/Proxy.sol";
 import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
 import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
 
-import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+import {IDeployer, getDeployer} from "@scripts/deployer/DeployScript.sol";
 
-import {DeployAllScript} from "@script/000_DeployAll.s.sol";
-// import {DeployAllScript} from "@script/000_DeployAll2.s.sol";
+import {DeployAllScript} from "@scripts/000_DeployAll.s.sol";
+// import {DeployAllScript} from "@scripts/000_DeployAll2.s.sol";
 
 
 contract DeployAll_Test is Test {

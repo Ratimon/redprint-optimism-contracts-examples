@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {Script} from "@redprint-forge-std/Script.sol";
 import {console} from "@redprint-forge-std/console.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {DeployDataAvailabilityChallengeProxyScript} from "@script/301A_DeployDataAvailabilityChallengeProxyScript.s.sol";
-import {DeployAndInitializeDataAvailabilityChallengeScript} from "@script/301B_DeployAndInitializeDataAvailabilityChallengeScript.s.sol";
+import {DeployDataAvailabilityChallengeProxyScript} from "@scripts/301A_DeployDataAvailabilityChallengeProxyScript.s.sol";
+import {DeployAndInitializeDataAvailabilityChallengeScript} from "@scripts/301B_DeployAndInitializeDataAvailabilityChallengeScript.s.sol";
 
 contract SetupOpAltDAScript is Script {
     IDeployer deployerProcedue;

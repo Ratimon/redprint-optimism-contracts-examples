@@ -1,27 +1,27 @@
 // // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.20;
+// pragma solidity ^0.8.0;
 
 // import {Script} from "@redprint-forge-std/Script.sol";
 // import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-// import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
-// import {DeployAddressManagerScript} from "@script/201A_DeployAddressManagerScript.s.sol";
-// import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdminScript.s.sol";
-// import {DeploySuperchainConfigProxyScript} from "@script/202A_DeploySuperchainConfigProxyScript.s.sol";
-// import {DeployAndInitializeSuperchainConfigScript} from "@script/202B_DeployAndInitializeSuperchainConfigScript.s.sol";
-// import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxyScript.s.sol";
-// import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
+// import {DeploySafeProxyScript} from "@scripts/101_DeploySafeProxyScript.s.sol";
+// import {DeployAddressManagerScript} from "@scripts/201A_DeployAddressManagerScript.s.sol";
+// import {DeployAndSetupProxyAdminScript} from "@scripts/201B_DeployAndSetupProxyAdminScript.s.sol";
+// import {DeploySuperchainConfigProxyScript} from "@scripts/202A_DeploySuperchainConfigProxyScript.s.sol";
+// import {DeployAndInitializeSuperchainConfigScript} from "@scripts/202B_DeployAndInitializeSuperchainConfigScript.s.sol";
+// import {DeployProtocolVersionsProxyScript} from "@scripts/203A_DeployProtocolVersionsProxyScript.s.sol";
+// import {DeployAndInitializeProtocolVersionsScript} from "@scripts/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 
-// import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
-// import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
-// import {DeployL1StandardBridgeProxyScript} from "@script/401C_DeployL1StandardBridgeProxyScript.s.sol";
-// import {DeployL1CrossDomainMessengerProxyScript} from "@script/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
-// import {DeployOptimismMintableERC20FactoryProxyScript} from "@script/401E_DeployOptimismMintableERC20FactoryProxyScript.s.sol";
-// import {DeployL1ERC721BridgeProxyScript} from "@script/401F_DeployL1ERC721BridgeProxyScript.s.sol";
-// import {DeployDisputeGameFactoryProxyScript} from "@script/401G_DeployDisputeGameFactoryProxyScript.s.sol";
-// import {DeployL2OutputOracleProxyScript} from "@script/401H_DeployL2OutputOracleProxyScript.s.sol";
-// import {DeployDelayedWETHProxyScript} from "@script/401I_DeployDelayedWETHProxyScript.s.sol";
-// import {DeployPermissionedDelayedWETHProxyScript} from "@script/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
-// import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorStateRegistryProxyScript.s.sol";
+// import {DeployOptimismPortalProxyScript} from "@scripts/401A_DeployOptimismPortalProxyScript.s.sol";
+// import {DeploySystemConfigProxyScript} from "@scripts/401B_DeploySystemConfigProxyScript.s.sol";
+// import {DeployL1StandardBridgeProxyScript} from "@scripts/401C_DeployL1StandardBridgeProxyScript.s.sol";
+// import {DeployL1CrossDomainMessengerProxyScript} from "@scripts/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
+// import {DeployOptimismMintableERC20FactoryProxyScript} from "@scripts/401E_DeployOptimismMintableERC20FactoryProxyScript.s.sol";
+// import {DeployL1ERC721BridgeProxyScript} from "@scripts/401F_DeployL1ERC721BridgeProxyScript.s.sol";
+// import {DeployDisputeGameFactoryProxyScript} from "@scripts/401G_DeployDisputeGameFactoryProxyScript.s.sol";
+// import {DeployL2OutputOracleProxyScript} from "@scripts/401H_DeployL2OutputOracleProxyScript.s.sol";
+// import {DeployDelayedWETHProxyScript} from "@scripts/401I_DeployDelayedWETHProxyScript.s.sol";
+// import {DeployPermissionedDelayedWETHProxyScript} from "@scripts/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
+// import {DeployAnchorStateRegistryProxyScript} from "@scripts/401K_DeployAnchorStateRegistryProxyScript.s.sol";
 
 
 // contract DeployAllScript is Script {

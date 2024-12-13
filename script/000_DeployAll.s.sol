@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
-import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
 import {Script} from "@redprint-forge-std/Script.sol";
-import {SetupOpAltDAScript} from "@script/300_SetupOpAltDAScript.s.sol";
-import {SetupOpchainScript} from "@script/400_SetupOpchain.s.sol";
-import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
+import {DeploySafeProxyScript} from "@scripts/101_DeploySafeProxyScript.s.sol";
+import {SetupOpAltDAScript} from "@scripts/300_SetupOpAltDAScript.s.sol";
+import {SetupOpchainScript} from "@scripts/400_SetupOpchain.s.sol";
+import {SetupSuperchainScript} from "@scripts/200_SetupSuperchain.s.sol";
 
 contract DeployAllScript is Script {
     function run() public {

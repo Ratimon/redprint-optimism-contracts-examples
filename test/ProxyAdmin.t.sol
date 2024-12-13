@@ -15,11 +15,11 @@ import {SimpleStorage} from "./Proxy.t.sol";
 import {L1ChugSplashProxy} from "@redprint-core/legacy/L1ChugSplashProxy.sol";
 import {ResolvedDelegateProxy} from "@redprint-core/legacy/ResolvedDelegateProxy.sol";
 
-import {IDeployer, getDeployer} from "@script/deployer/DeployScript.sol";
+import {IDeployer, getDeployer} from "@scripts/deployer/DeployScript.sol";
 
-import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
-import {DeployAddressManagerScript} from "@script/201A_DeployAddressManagerScript.s.sol";
-import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdminScript.s.sol";
+import {DeploySafeProxyScript} from "@scripts/101_DeploySafeProxyScript.s.sol";
+import {DeployAddressManagerScript} from "@scripts/201A_DeployAddressManagerScript.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@scripts/201B_DeployAndSetupProxyAdminScript.s.sol";
 
 contract ProxyAdmin_Test is Test {
     string mnemonic = vm.envString("MNEMONIC");

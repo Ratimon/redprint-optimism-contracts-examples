@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {Script} from "@redprint-forge-std/Script.sol";
 import {console} from "@redprint-forge-std/console.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {DeployAddressManagerScript} from "@script/201A_DeployAddressManagerScript.s.sol";
-import {DeployAndSetupProxyAdminScript} from "@script/201B_DeployAndSetupProxyAdminScript.s.sol";
-import {DeploySuperchainConfigProxyScript} from "@script/202A_DeploySuperchainConfigProxyScript.s.sol";
-import {DeployAndInitializeSuperchainConfigScript} from "@script/202B_DeployAndInitializeSuperchainConfigScript.s.sol";
-import {DeployProtocolVersionsProxyScript} from "@script/203A_DeployProtocolVersionsProxyScript.s.sol";
-import {DeployAndInitializeProtocolVersionsScript} from "@script/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
+import {DeployAddressManagerScript} from "@scripts/201A_DeployAddressManagerScript.s.sol";
+import {DeployAndSetupProxyAdminScript} from "@scripts/201B_DeployAndSetupProxyAdminScript.s.sol";
+import {DeploySuperchainConfigProxyScript} from "@scripts/202A_DeploySuperchainConfigProxyScript.s.sol";
+import {DeployAndInitializeSuperchainConfigScript} from "@scripts/202B_DeployAndInitializeSuperchainConfigScript.s.sol";
+import {DeployProtocolVersionsProxyScript} from "@scripts/203A_DeployProtocolVersionsProxyScript.s.sol";
+import {DeployAndInitializeProtocolVersionsScript} from "@scripts/203B_DeployAndInitializeProtocolVersionsScript.s.sol";
 
 contract SetupSuperchainScript is Script {
     IDeployer deployerProcedue;

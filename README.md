@@ -84,8 +84,8 @@ import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol
 /** ... */
 
 // application-specific logic
-import {DeploySafeProxyScript} from "@script/101_DeploySafeProxyScript.s.sol";
-import {SetupSuperchainScript} from "@script/200_SetupSuperchain.s.sol";
+import {DeploySafeProxyScript} from "@scripts/101_DeploySafeProxyScript.s.sol";
+import {SetupSuperchainScript} from "@scripts/200_SetupSuperchain.s.sol";
 
 contract DeployAllScript is Script {
 

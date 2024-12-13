@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { Vm, VmSafe } from "@redprint-forge-std/Vm.sol";
-import {Chains} from "@script/deployer/Chains.sol";
+import {Chains} from "@scripts/deployer/Chains.sol";
 
 /// @notice Enum representing different ways of outputting genesis allocs.
 /// @custom:value NONE    No output, used in internal tests.
@@ -73,8 +73,8 @@ library Config {
     /// @notice Returns the path on the local filesystem where the deploy config is
     function deployConfigPath() internal view returns (string memory _env) {
         if (vm.isContext(VmSafe.ForgeContext.TestGroup)) {
-            _env = string.concat(vm.projectRoot(), "/script/deploy-config/hardhat.json");
-            // _env = string.concat(vm.projectRoot(), "/deploy-config/hardhat.json");
+            // _env = string.concat(vm.projectRoot(), "/script/deploy-config/hardhat.json");
+            _env = string.concat(vm.projectRoot(), "/deploy-config/hardhat.json");
         } else {
             _env = vm.envOr("DEPLOY_CONFIG_PATH", string(""));
             require(bytes(_env).length > 0, "Config: must set DEPLOY_CONFIG_PATH to filesystem path of deploy config");

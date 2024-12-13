@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
 import {DeployOptions, DeployerFunctions} from "@redprint-deploy/deployer/DeployerFunctions.sol";

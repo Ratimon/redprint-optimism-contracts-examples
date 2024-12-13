@@ -1,36 +1,38 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
+
+import {Script} from "@redprint-forge-std/Script.sol";
+
 
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
-import {DeployAnchorStateRegistryProxyScript} from "@script/401K_DeployAnchorStateRegistryProxyScript.s.sol";
-import {DeployAnchorStateRegistryScript} from "@script/402M_DeployAnchorStateRegistryScript.s.sol";
-import {DeployDelayedWETHProxyScript} from "@script/401I_DeployDelayedWETHProxyScript.s.sol";
-import {DeployDelayedWETHScript} from "@script/402J_DeployDelayedWETHScript.s.sol";
-import {DeployDisputeGameFactoryProxyScript} from "@script/401G_DeployDisputeGameFactoryProxyScript.s.sol";
-import {DeployDisputeGameFactoryScript} from "@script/402I_DeployDisputeGameFactoryScript.s.sol";
-import {DeployL1CrossDomainMessengerProxyScript} from "@script/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
-import {DeployL1CrossDomainMessengerScript} from "@script/402A_DeployL1CrossDomainMessengerScript.s.sol";
-import {DeployL1ERC721BridgeProxyScript} from "@script/401F_DeployL1ERC721BridgeProxyScript.s.sol";
-import {DeployL1ERC721BridgeScript} from "@script/402E_DeployL1ERC721BridgeScript.s.sol";
-import {DeployL1StandardBridgeProxyScript} from "@script/401C_DeployL1StandardBridgeProxyScript.s.sol";
-import {DeployL1StandardBridgeScript} from "@script/402D_DeployL1StandardBridgeScript.s.sol";
-import {DeployL2OutputOracleProxyScript} from "@script/401H_DeployL2OutputOracleProxyScript.s.sol";
-import {DeployL2OutputOracleScript} from "@script/402G_DeployL2OutputOracleScript.s.sol";
-import {DeployMIPSScript} from "@script/402L_DeployMIPSScript.s.sol";
-import {DeployOptimismMintableERC20FactoryProxyScript} from "@script/401E_DeployOptimismMintableERC20FactoryProxyScript.s.sol";
-import {DeployOptimismMintableERC20FactoryScript} from "@script/402B_DeployOptimismMintableERC20Factory.s.sol";
-import {DeployOptimismPortal2Script} from "@script/402H_DeployOptimismPortal2Script.s.sol";
-import {DeployOptimismPortalProxyScript} from "@script/401A_DeployOptimismPortalProxyScript.s.sol";
-import {DeployOptimismPortalScript} from "@script/402F_DeployOptimismPortalScript.s.sol";
-import {DeployPermissionedDelayedWETHProxyScript} from "@script/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
-import {DeployPreimageOracleScript} from "@script/402K_DeployPreimageOracleScript.s.sol";
-import {DeploySystemConfigProxyScript} from "@script/401B_DeploySystemConfigProxyScript.s.sol";
-import {DeploySystemConfigScript} from "@script/402C_DeploySystemConfigScript.s.sol";
+import {DeployAnchorStateRegistryProxyScript} from "@scripts/401K_DeployAnchorStateRegistryProxyScript.s.sol";
+import {DeployAnchorStateRegistryScript} from "@scripts/402M_DeployAnchorStateRegistryScript.s.sol";
+import {DeployDelayedWETHProxyScript} from "@scripts/401I_DeployDelayedWETHProxyScript.s.sol";
+import {DeployDelayedWETHScript} from "@scripts/402J_DeployDelayedWETHScript.s.sol";
+import {DeployDisputeGameFactoryProxyScript} from "@scripts/401G_DeployDisputeGameFactoryProxyScript.s.sol";
+import {DeployDisputeGameFactoryScript} from "@scripts/402I_DeployDisputeGameFactoryScript.s.sol";
+import {DeployL1CrossDomainMessengerProxyScript} from "@scripts/401D_DeployL1CrossDomainMessengerProxyScript.s.sol";
+import {DeployL1CrossDomainMessengerScript} from "@scripts/402A_DeployL1CrossDomainMessengerScript.s.sol";
+import {DeployL1ERC721BridgeProxyScript} from "@scripts/401F_DeployL1ERC721BridgeProxyScript.s.sol";
+import {DeployL1ERC721BridgeScript} from "@scripts/402E_DeployL1ERC721BridgeScript.s.sol";
+import {DeployL1StandardBridgeProxyScript} from "@scripts/401C_DeployL1StandardBridgeProxyScript.s.sol";
+import {DeployL1StandardBridgeScript} from "@scripts/402D_DeployL1StandardBridgeScript.s.sol";
+import {DeployL2OutputOracleProxyScript} from "@scripts/401H_DeployL2OutputOracleProxyScript.s.sol";
+import {DeployL2OutputOracleScript} from "@scripts/402G_DeployL2OutputOracleScript.s.sol";
+import {DeployMIPSScript} from "@scripts/402L_DeployMIPSScript.s.sol";
+import {DeployOptimismMintableERC20FactoryProxyScript} from "@scripts/401E_DeployOptimismMintableERC20FactoryProxyScript.s.sol";
+import {DeployOptimismMintableERC20FactoryScript} from "@scripts/402B_DeployOptimismMintableERC20Factory.s.sol";
+import {DeployOptimismPortal2Script} from "@scripts/402H_DeployOptimismPortal2Script.s.sol";
+import {DeployOptimismPortalProxyScript} from "@scripts/401A_DeployOptimismPortalProxyScript.s.sol";
+import {DeployOptimismPortalScript} from "@scripts/402F_DeployOptimismPortalScript.s.sol";
+import {DeployPermissionedDelayedWETHProxyScript} from "@scripts/401J_DeployPermissionedDelayedWETHProxyScript.s.sol";
+import {DeployPreimageOracleScript} from "@scripts/402K_DeployPreimageOracleScript.s.sol";
+import {DeploySystemConfigProxyScript} from "@scripts/401B_DeploySystemConfigProxyScript.s.sol";
+import {DeploySystemConfigScript} from "@scripts/402C_DeploySystemConfigScript.s.sol";
 import {IDeployer, getDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {InitializeImplementationsScript} from "@script/402N_InitializeImplementationsScript.s.sol";
-import {Script} from "@redprint-forge-std/Script.sol";
-import {SetFaultGameImplementationScript} from "@script/402O_SetFaultGameImplementationScript.s.sol";
-import {TransferAddressManagerOwnershipScript} from "@script/401L_TransferAddressManagerOwnershipScript.s.sol";
+import {InitializeImplementationsScript} from "@scripts/402N_InitializeImplementationsScript.s.sol";
+import {SetFaultGameImplementationScript} from "@scripts/402O_SetFaultGameImplementationScript.s.sol";
+import {TransferAddressManagerOwnershipScript} from "@scripts/401L_TransferAddressManagerOwnershipScript.s.sol";
 import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
 import {console} from "@redprint-forge-std/console.sol";
 
