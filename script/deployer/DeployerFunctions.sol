@@ -10,11 +10,11 @@ import {DefaultDeployerFunction, DeployOptions} from "@redprint-deploy/deployer/
 import {IPreimageOracle} from "@redprint-core/cannon/interfaces/IPreimageOracle.sol";
 import {IDisputeGameFactory} from "@redprint-core/dispute/interfaces/IDisputeGameFactory.sol";
 
-import { EIP1967Helper } from "@redprint-core/universal/EIP1967Helper.sol";
+import { EIP1967Helper } from "@redprint-test/mocks/EIP1967Helper.sol";
 
-import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
-import {SafeProxyFactory} from "@redprint-safe-contracts/proxies/SafeProxyFactory.sol";
-import {Safe} from "@redprint-safe-contracts/Safe.sol";
+import {GnosisSafeProxyFactory as SafeProxyFactory} from "@redprint-safe-contracts/proxies/GnosisSafeProxyFactory.sol";
+import {GnosisSafe as Safe} from "@redprint-safe-contracts/GnosisSafe.sol";
+import {GnosisSafeProxy as SafeProxy} from "@redprint-safe-contracts/proxies/GnosisSafeProxy.sol";
 
 import {AddressManager} from "@redprint-core/legacy/AddressManager.sol";
 import {ProxyAdmin} from "@redprint-core/universal/ProxyAdmin.sol";
@@ -45,8 +45,8 @@ import {MIPS} from "@redprint-core/cannon/MIPS.sol";
 import {AnchorStateRegistry} from "@redprint-core/dispute/AnchorStateRegistry.sol";
 
 
-string constant Artifact_SafeProxyFactory = "SafeProxyFactory.sol:SafeProxyFactory";
-string constant Artifact_Safe = "Safe.sol:Safe";
+string constant Artifact_GnosisSafeProxyFactory = "GnosisSafeProxyFactory.sol:GnosisSafeProxyFactory";
+string constant Artifact_GnosisSafe = "GnosisSafe.sol:GnosisSafe";
 
 string constant Artifact_AddressManager = "AddressManager.sol:AddressManager";
 string constant Artifact_ProxyAdmin = "ProxyAdmin.sol:ProxyAdmin";
@@ -82,7 +82,7 @@ library DeployerFunctions {
     function deploy_SafeProxyFactory(IDeployer deployer, string memory name) internal returns (SafeProxyFactory) {
         console.log("Deploying SafeProxyFactory");
         bytes memory args = abi.encode();
-        return SafeProxyFactory(DefaultDeployerFunction.deploy(deployer, name, Artifact_SafeProxyFactory, args));
+        return SafeProxyFactory(DefaultDeployerFunction.deploy(deployer, name, Artifact_GnosisSafeProxyFactory, args));
     }
 
     function deploy_SafeProxyFactory(IDeployer deployer, string memory name, DeployOptions memory options)
@@ -92,13 +92,13 @@ library DeployerFunctions {
         console.log("Deploying SafeProxyFactory");
         bytes memory args = abi.encode();
         return
-            SafeProxyFactory(DefaultDeployerFunction.deploy(deployer, name, Artifact_SafeProxyFactory, args, options));
+            SafeProxyFactory(DefaultDeployerFunction.deploy(deployer, name, Artifact_GnosisSafeProxyFactory, args, options));
     }
 
     function deploy_Safe(IDeployer deployer, string memory name) internal returns (Safe) {
         console.log("Deploying Safe");
         bytes memory args = abi.encode();
-        return Safe(DefaultDeployerFunction.deploy(deployer, name, Artifact_Safe, args));
+        return Safe(DefaultDeployerFunction.deploy(deployer, name, Artifact_GnosisSafe, args));
     }
 
     function deploy_Safe(IDeployer deployer, string memory name, DeployOptions memory options)
@@ -107,7 +107,7 @@ library DeployerFunctions {
     {
         console.log("Deploying Safe");
         bytes memory args = abi.encode();
-        return Safe(DefaultDeployerFunction.deploy(deployer, name, Artifact_Safe, args, options));
+        return Safe(DefaultDeployerFunction.deploy(deployer, name, Artifact_GnosisSafe, args, options));
     }
 
     function deploy_SystemOwnerSafe(

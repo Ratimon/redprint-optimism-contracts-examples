@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@redprint-core/cannon/libraries/CannonErrors.sol";
+import "@redprint-core/cannon/libraries/CannonTypes.sol";
 import {ISemver} from "@redprint-core/universal/interfaces/ISemver.sol";
 import {LibKeccak} from "@redprint-lib-keccak/LibKeccak.sol";
 import {PreimageKeyLib} from "@redprint-core/cannon/PreimageKeyLib.sol";
-import "@redprint-core/cannon/libraries/CannonErrors.sol";
-import "@redprint-core/cannon/libraries/CannonTypes.sol";
 
 /// @custom:security-contact Consult full code at https://github.com/ethereum-optimism/optimism/blob/v1.9.4/packages/contracts-bedrock/src/cannon/PreimageOracle.sol
 contract PreimageOracle is ISemver {

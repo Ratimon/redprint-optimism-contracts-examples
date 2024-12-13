@@ -1,6 +1,6 @@
-<h1>📚 POC : OPStack Contracts 's Deployment Pipeline using Redprint 📚</h1>
+<h1>📚OPStack Contracts 's Deployment Pipeline using Redprint Toolkit 📚</h1>
 
-This repo shows how `Redprint` works. it includes a template experiment **OPstack** features. This can be done by modifying their smart contracts components using our [`Redprint Wizard`](https://github.com/Ratimon/redprint-wizard). Then, [`redprint-forge`](https://github.com/Ratimon/redprint-forge) could be used to deploy such customized contracts in production.
+This repo shows how `Redprint` works. it includes a template experimenting **OPstack** features. This is shown by modifying their smart contracts components using our [`Redprint Wizard`](https://github.com/Ratimon/redprint-wizard). Then, [`redprint-forge`](https://github.com/Ratimon/redprint-forge) could be used to deploy such customized contracts in production.
 
 Hence, this acts an educational place to study OPStack component at smart contract level.
 
@@ -17,7 +17,7 @@ Hence, this acts an educational place to study OPStack component at smart contra
 
 ## What is it for ?
 
-This **OP-Stack-oriented App-chain** building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain](https://docs.optimism.io/stack/explainer) Ecosystem.
+This **OP-Stack-oriented L2** building block is intended to better introduce and onboard blockchain builder into Optimism 's [Superchain](https://docs.optimism.io/stack/explainer) Ecosystem.
 
 >[!NOTE]
 > **The OP Stack can be thought of as software components that either help define a specific layer of the Optimism ecosystem or fill a role as a module within an existing layer.**
@@ -48,9 +48,9 @@ To be more specific, another option is **Compound-style contract**. Different se
 
 This is just one example. There are many other interesting customizable contracts to explore and add hackable features. For instance, customized bridge can be created by extending `IStandardard Bridge` as well as modifying `L1StandardBridge` or `L1ERC721Bridge`.
 
-2. `redprint-forge` (**Framework**)
+2. `redprint-forge` (**Framework/Library**)
 
-We are developing `redprint-forge`, a modular solidity-based framework to deploy OP stack smart contract. It works as an engine to:
+We are also developing `redprint-forge`, a modular solidity-based framework to deploy OP stack smart contract. It works as an engine to:
 
 - Provide type-safe deployment functions for **OPStack**'s smart contract component. This ensures correct type and order of arguments, enhancing security in smart contract development
 - Save deployment schemas in **json** file
@@ -218,6 +218,12 @@ L1_RPC_URL=http://localhost:8545
 >[!NOTE]
 > More style and convention guide for environment variable management can be found here : [ldenv](https://github.com/wighawag/ldenv)
 
+
+or run this command to initialize the environment variables:
+
+```sh
+pnpm init:env
+```
 
 2. Run multi-windows terminal:
 

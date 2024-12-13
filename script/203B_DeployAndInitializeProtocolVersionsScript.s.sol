@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
-import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
-import {DeployerFunctions, DeployOptions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
-import {console} from "@redprint-forge-std/console.sol";
-import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
-import {Types} from "@redprint-deploy/optimism/Types.sol";
 import {ChainAssertions} from "@redprint-deploy/optimism/ChainAssertions.sol";
+import {DeployOptions, DeployerFunctions} from "@redprint-deploy/deployer/DeployerFunctions.sol";
+import {DeployScript, IDeployer} from "@redprint-deploy/deployer/DeployScript.sol";
 import {ProtocolVersions, ProtocolVersion} from "@redprint-core/L1/ProtocolVersions.sol";
+import {SafeScript} from "@redprint-deploy/safe-management/SafeScript.sol";
+import {Types} from "@redprint-deploy/optimism/Types.sol";
+import {Vm, VmSafe} from "@redprint-forge-std/Vm.sol";
+import {console} from "@redprint-forge-std/console.sol";
 
 /// @custom:security-contact Consult full internal deploy script at https://github.com/Ratimon/redprint-forge
 contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
@@ -25,8 +25,7 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
 
         versions = deployer.deploy_ProtocolVersions("ProtocolVersions", options);
 
-        Types.ContractSet memory contracts =  deployer.getProxiesUnstrict();
-
+        Types.ContractSet memory contracts = deployer.getProxiesUnstrict();
         contracts.ProtocolVersions = address(versions);
         ChainAssertions.checkProtocolVersions({ _contracts: contracts, _cfg: deployer.getConfig(), _isProxy: false });
 
@@ -86,5 +85,4 @@ contract DeployAndInitializeProtocolVersionsScript is DeployScript, SafeScript {
 
         ChainAssertions.checkProtocolVersions({ _contracts: deployer.getProxiesUnstrict(), _cfg: deployer.getConfig(), _isProxy: true });
     }
-
 }

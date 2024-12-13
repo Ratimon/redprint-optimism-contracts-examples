@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import {IOptimismERC20Factory} from "@redprint-core/L2/interfaces/IOptimismERC20Factory.sol";
 import {ISemver} from "@redprint-core/universal/interfaces/ISemver.sol";
 import {Initializable} from "@redprint-openzeppelin/proxy/utils/Initializable.sol";
-import {IOptimismERC20Factory} from "@redprint-core/L2/interfaces/IOptimismERC20Factory.sol";
 import {OptimismMintableERC20} from "@redprint-core/universal/OptimismMintableERC20.sol";
 
 /// @custom:security-contact Consult full code at https://github.com/ethereum-optimism/optimism/blob/v1.9.4/packages/contracts-bedrock/src/universal/OptimismMintableERC20Factory.sol

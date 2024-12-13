@@ -6,9 +6,9 @@ import {console2 as console} from "@redprint-forge-std/console2.sol";
 import {IDeployer} from "@script/deployer/Deployer.sol";
 import {DefaultDeployerFunction, DeployOptions} from "@script/deployer/DefaultDeployerFunction.sol";
 
-import {SafeProxy} from "@redprint-safe-contracts/proxies/SafeProxy.sol";
-import {SafeProxyFactory} from "@redprint-safe-contracts/proxies/SafeProxyFactory.sol";
-import {Safe} from "@redprint-safe-contracts/Safe.sol";
+import {GnosisSafeProxyFactory as SafeProxyFactory} from "@redprint-safe-contracts/proxies/GnosisSafeProxyFactory.sol";
+import {GnosisSafe as Safe} from "@redprint-safe-contracts/GnosisSafe.sol";
+import {GnosisSafeProxy as SafeProxy} from "@redprint-safe-contracts/proxies/GnosisSafeProxy.sol";
 
 import {MyGovernor, IVotes, TimelockController, TimelockController} from "@main-5_0_2/governer/MyGovernor.sol";
 import { ICompoundTimelock} from"@redprint-openzeppelin/governance/extensions/GovernorTimelockCompound.sol";
